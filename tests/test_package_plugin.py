@@ -46,7 +46,14 @@ class PackagePluginTests(unittest.TestCase):
         with zipfile.ZipFile(first) as archive:
             self.assertNotIn(".agents/plugins/marketplace.json", archive.namelist())
             self.assertEqual(archive.read("README.md"), b"# fixture\r\n")
-            self.assertEqual(len([name for name in archive.namelist() if name.endswith("/SKILL.md")]), 7)
+            packaged_skills = {
+                Path(name).parent.name
+                for name in archive.namelist()
+                if name.endswith("/SKILL.md")
+            }
+            self.assertEqual(packaged_skills, EXPECTED_SKILLS)
+            self.assertEqual(len(packaged_skills), 8)
+            self.assertIn("acceso_webs", packaged_skills)
             for name, digest in report_one["files"].items():
                 self.assertEqual(hashlib.sha256(archive.read(name)).hexdigest(), digest)
 
@@ -91,3 +98,4 @@ class PackagePluginTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
