@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.5
+version: 0.2.6
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -15,6 +15,7 @@ Conseguir resultados fiables y verificables con el menor gasto razonable de tiem
 
 ## Puerta de eficiencia antes de actuar
 1. Recuperar objetivo, limitaciones, autorizaciones, estado maestro y decisiones previas; examinar primero resultados, pruebas, archivos y repositorios. Distinguir VERIFICADO, COMUNICADO, HIPÓTESIS, PENDIENTE, BLOQUEADO y DESCARTADO.
+   Cuando exista un procedimiento de publicación, despliegue o recuperación ya ejecutado con éxito y aún compatible, reutilizarlo como ruta base antes de improvisar otra; confirmar identidad, versión, precondiciones y diferencias del entorno, y registrar cualquier desviación necesaria.
 2. Descubrir skills y conectores **realmente disponibles** para este entorno, revisar permisos y coste antes de inventar soluciones. No suponer que Chat, Codex y Work comparten capacidades. Reutilizar código/librerías compatibles previa auditoría de licencia, seguridad y mantenimiento.
 3. Elegir la ruta de menor **coste total efectivo**, incluyendo minutos, créditos, riesgo y esfuerzo del usuario: (a) razonamiento/inspección en Chat; (b) análisis estático y prueba local o simulada; (c) API/feed oficial público y gratuito; (d) HTTP HTML/JSON autorizado; (e) navegador local/runner cuando sea imprescindible; (f) Codex para programación compleja; (g) Work para interacción gráfica excepcional. Orden adaptable a las necesidades técnicas, no rígido.
 4. En proyectos de software, estudiar si una inspección o prueba local resuelve la duda antes de crear workflow. **No usar GitHub Actions como laboratorio iterativo** cuando pruebas locales o análisis en lote den la misma evidencia.
@@ -83,6 +84,7 @@ Cuando haya programación, fallos, pruebas o despliegues, consultar **`ingenieri
 Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit → GitHub Actions → log para localizar partes de JavaScript. Antes de repetir ese patrón: recuperar el APK/código y JS disponible, analizar estáticamente/localmente, agrupar hipótesis y pruebas, reservar GitHub Actions para verificar integración y funcionamiento diario. Considerar tiempo y clics del usuario como recurso; evitar optimizar minutos gratis a costa de esfuerzo humano.
 
 ## Historial
+- 0.2.6 (19 oct 2026): reutilización prioritaria de procedimientos publicados ya verificados, con comprobación de identidad, versión, precondiciones y diferencias antes de repetirlos.
 - 0.2.5 (19 oct 2026): puerta reforzada para detectar alternativas disponibles antes de programar o repetir diagnósticos; integración metodológica con acceso_webs.
 - 0.1.0–0.1.5 (18 oct 2026): protocolo original en `vtsalamanca/Buscar-Curro`; continuidad, auditoría de fuentes, elección HTTP/API y descubrimiento de capacidades.
 - 0.1.6 (19 oct 2026): desarrollo y pruebas locales primero; validación remota selectiva y medición del coste total.
@@ -91,3 +93,4 @@ Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit �
 - 0.2.2 (19 oct 2026): la fuente canónica se integra en el paquete completo de GitHub y se distribuye mediante su marketplace.
 - 0.2.3 (19 oct 2026): publicación y verificación de plugin incorporadas como fase obligatoria de cambios en skills.
 - 0.2.4 (19 oct 2026): autocomprobación al iniciar trabajos, una vez por sesión, con actualización bajo demanda y límites antibucle.
+
