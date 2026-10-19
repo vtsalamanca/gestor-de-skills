@@ -76,13 +76,13 @@ def export_commit(repository: str, commit: str, destination: Path) -> str:
         source = local_repository
         resolved = run_git(["rev-parse", f"{commit}^{{commit}}"], source)
     else:
-        fetch_repository = destination.parent / f".git-fetch-{uuid.uuid4().hex}"
+        fetch_repository = destination.parent / f".fetch-{uuid.uuid4().hex[:8]}"
         run_git(["init", "--quiet", str(fetch_repository)])
         run_git(["-c", "http.sslBackend=openssl", "fetch", "--quiet", "--depth", "1", repository, commit], fetch_repository)
         resolved = run_git(["rev-parse", "FETCH_HEAD^{commit}"], fetch_repository)
         source = fetch_repository
 
-    archive_path = destination.parent / f".snapshot-{uuid.uuid4().hex}.tar"
+    archive_path = destination.parent / f".snapshot-{uuid.uuid4().hex[:8]}.tar"
     try:
         run_git(["archive", "--format=tar", f"--output={archive_path}", resolved], source)
         destination.mkdir(parents=True)
@@ -213,7 +213,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         output = args.output.resolve()
         output.parent.mkdir(parents=True, exist_ok=True)
-        temporary = output.parent / f".gestor-de-skills-package-{uuid.uuid4().hex}"
+        temporary = output.parent / f".pkg-{uuid.uuid4().hex[:8]}"
         temporary.mkdir()
         try:
             snapshot = temporary / "repository"

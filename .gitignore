@@ -2,4 +2,4 @@ __pycache__/
 *.py[cod]
 dist/
 .package-tests-*/
-.gestor-de-skills-package-*/
+.pkg-*/
