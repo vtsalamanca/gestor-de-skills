@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.6
+version: 0.2.7
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -60,6 +60,17 @@ Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/g
 5. Si publicar o comprobar exige otra herramienta, permiso, tarifa desconocida o servicio de pago, no ejecutarlo; comunicar el bloqueo concreto, el siguiente paso mínimo y la versión que continúa activa. Nunca marcar la sincronización como completada sin evidencia.
 No prometer ejecución desatendida ni actualización instantánea de sesiones/cache. Esta regla aplica a cualquier skill del repositorio y complementa las instrucciones generales del usuario.
 
+### Recuperación de la actualización local del marketplace de Codex
+Cuando la fuente y el plugin privado estén publicados pero Codex mantenga una versión anterior, reutilizar este procedimiento antes de improvisar reinstalaciones:
+1. Consultar primero, sin modificar, `codex plugin marketplace list` y `codex plugin list --marketplace <nombre> --available --json`; anotar fuente, versión, estado instalado/habilitado y ruta activa.
+2. Solicitar únicamente permisos de escritura sobre las rutas locales que el actualizador necesita —normalmente `.codex/.tmp`, el caché de ese marketplace y temporales de `.codex`— y comprobar el acceso con un archivo sonda que se elimine inmediatamente. Un permiso concedido no sustituye esta prueba real.
+3. Si Git falla en Windows con `schannel: AcquireCredentialsHandle failed` o `SEC_E_NO_CREDENTIALS`, no repetir la misma orden. Para esa invocación, y sin alterar la configuración global, establecer `GIT_CONFIG_COUNT=1`, `GIT_CONFIG_KEY_0=http.sslBackend` y `GIT_CONFIG_VALUE_0=openssl`; después ejecutar `codex plugin marketplace upgrade <nombre> --json`.
+4. Releer inmediatamente el marketplace y la lista de plugins. Si ya muestran la versión objetivo como instalada y habilitada y existe su directorio de caché, **no ejecutar `plugin add`**: el `marketplace upgrade` puede haber actualizado tanto la instantánea como el caché instalado. Instalar de nuevo solo si la verificación demuestra que sigue ausente o desactualizado.
+5. Verificar el commit de la instantánea, versión de marketplace y manifiesto, ruta de caché, número/nombres de skills y el contenido afectado. Una advertencia auxiliar —por ejemplo, limpieza fallida de temporales `arg0`— no invalida por sí sola una actualización cuyo resultado estructurado no contiene errores y cuya versión/contenido se han releído correctamente.
+6. Si una operación posterior falla pero la verificación ya acredita el objetivo, registrar ese intento como innecesario y detenerse; no convertirlo en falso pendiente. Las sesiones abiertas pueden conservar instrucciones anteriores hasta iniciar una conversación nueva.
+
+Este procedimiento no autoriza permisos amplios permanentes, cambios globales de Git, borrado manual de cachés ni crear otro marketplace o plugin. Ante otro síntoma, volver al diagnóstico por capas y permitir como máximo un reintento por hipótesis nueva.
+
 ## Flujo de coordinación y aprendizaje
 **A. Recuperar:** consultar `ESTADO_PROYECTO.md` o registro equivalente, decisiones y pruebas; resolver contradicciones.
 **B. Planificar:** objetivo medible, restricciones, fuentes necesarias, criterios de aceptación y bloques según dependencias. En recolectores auditar fuentes antes de programar: URL, método, cobertura, autenticación, evidencia, estado y limitaciones; no exigir resolver todas si la exclusión está justificada.
@@ -84,6 +95,7 @@ Cuando haya programación, fallos, pruebas o despliegues, consultar **`ingenieri
 Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit → GitHub Actions → log para localizar partes de JavaScript. Antes de repetir ese patrón: recuperar el APK/código y JS disponible, analizar estáticamente/localmente, agrupar hipótesis y pruebas, reservar GitHub Actions para verificar integración y funcionamiento diario. Considerar tiempo y clics del usuario como recurso; evitar optimizar minutos gratis a costa de esfuerzo humano.
 
 ## Historial
+- 0.2.7 (19 oct 2026): recuperación verificable de actualizaciones locales de marketplaces Codex: permisos específicos, fallback OpenSSL para Schannel y parada cuando `marketplace upgrade` ya actualizó instalación y caché.
 - 0.2.6 (19 oct 2026): reutilización prioritaria de procedimientos publicados ya verificados, con comprobación de identidad, versión, precondiciones y diferencias antes de repetirlos.
 - 0.2.5 (19 oct 2026): puerta reforzada para detectar alternativas disponibles antes de programar o repetir diagnósticos; integración metodológica con acceso_webs.
 - 0.1.0–0.1.5 (18 oct 2026): protocolo original en `vtsalamanca/Buscar-Curro`; continuidad, auditoría de fuentes, elección HTTP/API y descubrimiento de capacidades.
@@ -93,4 +105,5 @@ Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit �
 - 0.2.2 (19 oct 2026): la fuente canónica se integra en el paquete completo de GitHub y se distribuye mediante su marketplace.
 - 0.2.3 (19 oct 2026): publicación y verificación de plugin incorporadas como fase obligatoria de cambios en skills.
 - 0.2.4 (19 oct 2026): autocomprobación al iniciar trabajos, una vez por sesión, con actualización bajo demanda y límites antibucle.
+
 
