@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.4
+version: 0.2.5
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -20,6 +20,16 @@ Conseguir resultados fiables y verificables con el menor gasto razonable de tiem
 4. En proyectos de software, estudiar si una inspección o prueba local resuelve la duda antes de crear workflow. **No usar GitHub Actions como laboratorio iterativo** cuando pruebas locales o análisis en lote den la misma evidencia.
 5. Definir entregable, criterios de aceptación, dependencias, seguridad, plan de pruebas y reversión; agrupar las comprobaciones que responden a una misma hipótesis. No generar un commit, workflow y ejecución por una búsqueda simple de texto.
 6. Preguntar al usuario solo por autorizaciones o decisiones realmente imprescindibles; evitar ciclos ceremoniales «ya / vale» cuando haya trabajo independiente realizable. Continuar hasta objetivo logrado o bloqueo real.
+
+## Puerta reforzada de descubrimiento y comparación de herramientas (lección Firecrawl)
+Antes de implementar una solución nueva, cambiar de herramienta o realizar otra serie de pruebas ante un bloqueo:
+1. Consultar **una vez por bloque de trabajo** el inventario actual de skills, plugins, conectores, código, repositorios y herramientas del entorno real (Chat, Codex, Work o local); comprobar su disponibilidad y alcance. Reutilizar inventarios ya válidos, sin búsquedas redundantes.
+2. Comparar al menos la solución ya existente y alternativas pertinentes de bajo consumo: API/feed oficial gratuito, HTTP HTML/JSON, librería o conector propio, análisis local, navegador, Firecrawl u otra herramienta especializada *solo como candidata*. Comprobar antes límites, mantenimiento, privacidad, licencia, permisos, tarifas, saldo, estimación de consumo y cobertura.
+3. Seleccionar el método por **coste total efectivo** (dinero, créditos, CPU, memoria, ancho de banda, minutos de GitHub Actions, mantenimiento, fiabilidad y tiempo/intervención del usuario), no por comodidad ni popularidad. Herramienta de investigación puede ser distinta del conector de producción; priorizar producción ligera y autónoma.
+4. Si una serie de fallos no converge, **detener el procedimiento repetitivo** y revisar la capa afectada, la hipótesis y las alternativas que aún no se evaluaron; agrupar experimentos discriminantes y comparar antes de otra ejecución.
+5. Registrar de modo compacto `problema | herramientas disponibles y evaluadas | opción seleccionada | opciones descartadas y motivo | prueba | coste/cuota estimada o medida | nuevo conocimiento reutilizable`. No dar por evaluado algo solo porque figura instalado.
+6. Para acceso a webs, autenticación, scraping y desarrollo de conectores, consultar `acceso_webs` cuando esté disponible; sus patrones genéricos prevalecen sobre repetir experiencias específicas de proyectos. Si no está cargada, consultar la fuente canónica o seguir las pautas de esta skill.
+**Límite:** descubrir/comparar no implica autorización para ejecutar servicios con tarifas por uso; presupuesto adicional 0 € hasta permiso concreto.
 
 ## Distribución de trabajo
 - **Chat:** coordinación, contexto, investigación, análisis, decisiones, documentación y consultas mediante conectores disponibles; opción inicial.
@@ -73,6 +83,7 @@ Cuando haya programación, fallos, pruebas o despliegues, consultar **`ingenieri
 Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit → GitHub Actions → log para localizar partes de JavaScript. Antes de repetir ese patrón: recuperar el APK/código y JS disponible, analizar estáticamente/localmente, agrupar hipótesis y pruebas, reservar GitHub Actions para verificar integración y funcionamiento diario. Considerar tiempo y clics del usuario como recurso; evitar optimizar minutos gratis a costa de esfuerzo humano.
 
 ## Historial
+- 0.2.5 (19 oct 2026): puerta reforzada para detectar alternativas disponibles antes de programar o repetir diagnósticos; integración metodológica con acceso_webs.
 - 0.1.0–0.1.5 (18 oct 2026): protocolo original en `vtsalamanca/Buscar-Curro`; continuidad, auditoría de fuentes, elección HTTP/API y descubrimiento de capacidades.
 - 0.1.6 (19 oct 2026): desarrollo y pruebas locales primero; validación remota selectiva y medición del coste total.
 - 0.2.0 (19 oct 2026): integración en Gestor de Skills; activación proactiva donde sea posible, puerta obligatoria de eficiencia, preferencia local, caso Educamos y enlace a ingenieria-fiable.
