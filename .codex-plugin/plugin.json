@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.5 coordina eficiencia, herramientas y continuidad; acceso_webs 0.3.0 desarrolla estrategias de acceso y extracción y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
+    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.6 coordina eficiencia, reutilización de procedimientos verificados y continuidad; acceso_webs 0.3.0 desarrolla estrategias de acceso y extracción y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
     "category": "Productivity",
     "developerName": "Pavón Serrano",
     "capabilities": [
@@ -18,3 +18,4 @@
     ]
   }
 }
+
