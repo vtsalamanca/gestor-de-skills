@@ -96,6 +96,22 @@ class PackagePluginTests(unittest.TestCase):
         }
 
 
+class RepositoryReleaseTests(unittest.TestCase):
+    def test_release_metadata_and_codex_update_recovery_are_synchronized(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        plugin = json.loads((root / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        marketplace = json.loads((root / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
+        procedure = (root / "skills" / "organizaciondeltrabajo" / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertEqual(plugin["version"], "0.4.9")
+        self.assertEqual(marketplace["plugins"][0]["version"], plugin["version"])
+        self.assertIn("version: 0.2.7", procedure)
+        self.assertIn("http.sslBackend", procedure)
+        self.assertIn("codex plugin marketplace upgrade", procedure)
+        self.assertIn("no ejecutar `plugin add`", procedure)
+
+
 if __name__ == "__main__":
     unittest.main()
+
 
