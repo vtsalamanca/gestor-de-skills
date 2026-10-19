@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.8
+# Gestor de Skills 0.4.9
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -27,11 +27,11 @@ El empaquetador obtiene un commit exacto, valida los dos manifiestos y las ocho 
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.8.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.9.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.8.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.9.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -44,3 +44,4 @@ También se crea `dist/gestor-de-skills-0.4.8.zip.sha256.json`, que registra el 
 ### Recuperación
 
 Conservar fuera de Git el ZIP y el informe de hashes de la versión anterior. Si una publicación falla, no se cambia la release activa. Si una release ya publicada debe deshacerse, se vuelve a empaquetar el contenido del commit anterior con una versión nueva superior, se publica sobre el mismo plugin privado y se repiten las verificaciones; no se fuerza una regresión de versión ni se crea una identidad distinta.
+
