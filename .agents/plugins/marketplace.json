@@ -7,7 +7,7 @@
     {
       "name": "gestor-de-skills",
       "description": "Descubre, audita, crea e integra skills; incorpora organizaciondeltrabajo e ingenieria-fiable con desarrollo eficiente, evidencia y presupuesto cero.",
-      "version": "0.4.5",
+      "version": "0.4.6",
       "source": {
         "source": "local",
         "path": "."
