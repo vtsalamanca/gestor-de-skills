@@ -1,12 +1,12 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.1.1
+version: 0.2.0
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
 ## Propósito
-Skill evolutiva que incorpora el conocimiento previamente trabajado bajo el concepto «autenticarse», ampliándolo a investigación de fuentes web, formas de acceso, extracción, diseño de conectores, autenticación y reutilización documentada. El archivo original «autenticarse» no ha sido localizado y **no se afirma haber migrado su contenido íntegro**. Recuperarlo cuando aparezca, comparar y fusionar sin sobrescribir hallazgos.
+Metodología transversal de investigación de fuentes web, autenticación autorizada, extracción y diseño de conectores. Generaliza el aprendizaje acumulado en proyectos anteriores sin incorporar dependencias, rutas o supuestos exclusivos de una web. La habilidad original «autenticarse» no fue localizada; no se afirma una migración íntegra.
 
 ## Activación
 Aplicar cuando haya que investigar un portal, comprender cómo obtener datos, iniciar o mantener acceso legítimo, diseñar un conector, corregir scraping/paginación o mejorar un recolector existente. Coordinar con `organizaciondeltrabajo` e `ingenieria-fiable`.
@@ -29,44 +29,32 @@ Documentar URL de origen, dominio, rutas, estructura, enlaces, mapa de sitio, fi
 
 Separar las capas: descubrimiento de URLs, obtención, autenticación/sesión, parseo, normalización, deduplicación, persistencia, informes y alertas. Diagnosticar cada fallo en su capa y no repetir pruebas sin hipótesis nueva.
 
-## Autenticación y sesiones — conocimiento recuperado de Educamos
-- En Educamos Puente se trabajó con WebView Android y sesiones autenticadas de EducamosCLM; conservar y reutilizar **una sesión válida dentro de su contexto autorizado** puede reducir accesos repetidos.
-- Antes de automatizar, verificar duración de sesión, expiración, cambios de dispositivo, redirecciones, CSRF y renovación ordinaria de credenciales.
-- Distinguir lo que el usuario comunicó o se investigó de lo efectivamente probado. No afirmar que el procedimiento WebView funciona universalmente.
-- Priorizar OAuth, interfaces oficiales y autorización interactiva del titular cuando existan; evitar guardar secretos o copiar sesiones entre usuarios/dispositivos sin garantías.
+## Estrategia universal para portales, sesiones y aplicaciones web
 
-## Caso de referencia prioritario: pasarela Educamos Puente / EducamosCLM (octubre de 2026)
+**Principio:** generalizar mecanismos, no rutas, nombres de botones, códigos de error ni peculiaridades de una plataforma. No asumir que lo observado en un proyecto funcionará en otros: plantear hipótesis y validarlas con una prueba mínima.
 
-**Objetivo de conservación:** no repetir el coste en tiempo humano, ejecuciones de GitHub Actions, inspecciones de JavaScript y experimentos de navegación que exigió el proyecto. Esta sección conserva evidencia histórica resumida, sin credenciales ni datos escolares identificativos. Antes de cambiar el método, recuperar código, APK, resultados y diagnósticos ya existentes.
+### Árbol de diagnóstico reutilizable
+1. **Recuperación:** identificar evidencias, capturas, versión de código, rutas ya examinadas, errores y resultados anteriores. Reutilizar y sanear los datos; no repetir búsquedas o ejecuciones.
+2. **Contexto de acceso:** distinguir sesión existente de inicio de sesión, pestaña de navegador, WebView, navegador remoto, cliente HTTP y runner. Verificar continuidad de la sesión autorizada antes de reiniciarla. Conectividad de red, sesión autenticada y autorización de datos son propiedades diferentes.
+3. **Interfaz adaptativa:** ante controles aparentemente ausentes, comparar viewport, modo móvil/escritorio, DOM accesible, scripts y navegación responsiva, sin concluir de inmediato que falla la autenticación.
+4. **Identidad y redirecciones:** verificar el circuito permitido de login/federación, renovación de sesión, expiración, redirecciones y restricciones CSRF. Usar acceso interactivo del titular y mecanismos oficiales; no exportar cookies ni tokens a entornos de terceros.
+5. **Transporte y contenido:** distinguir DNS/red, HTTP, redirecciones, documento HTML, carga JavaScript, peticiones autorizadas y extracción del dato final. HTTP 200 verifica una respuesta, no la presencia del dato ni que una API esté habilitada.
+6. **Extracción:** comprobar el dato objetivo, campos, paginación y cobertura, formatos de archivo, MIME, tamaño, apertura, duplicados y errores parciales. Validar cada formato y acción por separado; no generalizar éxitos.
+7. **Pruebas con hipótesis:** aislar la capa que falla; conservar un conjunto mínimo de evidencias saneadas y crear fixtures locales sin datos reales. Agrupar pruebas y ejecutar una sola validación remota cuando realmente haga falta; repetir únicamente con hipótesis nueva.
+8. **Operación eficiente:** una vez demostrado el método, construir un conector mínimo, incremental, con caché, límites y métricas. Preferir las vías más ligeras, estables y autorizadas que recuperen la información completa.
 
-### Evidencias históricas comunicadas como comprobadas
-- **Navegación dentro de una misma pestaña autenticada:** EducamosCLM → Seguimiento Educativo → Mensajería → «Todos» permitió leer cinco mensajes completos y marcar su lectura, con confirmación desde el portal. Fallar al enumerar pestañas **no significa** necesariamente perder acceso; la continuidad de pestaña/contexto fue una clave.
-- **WebView Android con vista de escritorio:** configurar ancho de escritorio de aproximadamente 1280 px reveló secciones que la vista móvil de aproximadamente 373 px ocultaba, incluida navegación hacia mensajería. La presencia de enlaces o botones **no confirma por sí sola** la apertura o extracción de mensajes.
-- **Pasarela Android:** se comunicaron recuperaciones de texto y detección de adjuntos en una versión 0.16, así como la descarga de un PDF de 133278 bytes. La descarga de un DOC falló. No extrapolar un éxito parcial a otros formatos ni al funcionamiento extremo a extremo.
-- **Prueba de conectividad desde GitHub a Cerbero:** una petición HTTP devolvió 200 y contenido HTML sin formularios; esto acredita conectividad, **no** que funcione un inicio de sesión por HTTP, una API interna o un endpoint de mensajes.
+### Patrón de elección por coste total
+- **Primera elección:** reutilización de resultados/sesiones autorizadas, exportaciones oficiales, feeds y API documentadas.
+- **Segunda:** HTTP directo permitido a HTML/JSON/XML, con consultas incrementales, caché y paginación controlada.
+- **Tercera:** inspección puntual de DOM/JavaScript/tráfico mediante herramientas de diagnóstico, sin transformar una API interna no documentada en contrato.
+- **Cuarta:** navegador o WebView automatizado cuando la interacción o el JavaScript sean imprescindibles; mantener contexto y evitar reiniciar cada consulta.
+- **Quinta:** agentes visuales, servicios especializados o plataformas remotas solo si la alternativa más ligera no basta, con consumo y autorización verificados.
 
-### Incidencias y explicaciones alternativas que no debemos volver a pasar por alto
-- En vista móvil pueden quedar ocultos controles; comprobar diseño responsivo, estado del DOM, cambios JavaScript y diferencias entre interfaces antes de atribuirlo a permisos.
-- Errores JavaScript (por ejemplo TypeError relacionado con `filter`), respuestas 404 y fallos de consola no prueban por sí solos que el usuario no esté autenticado: correlacionar URL, estado de sesión y contexto de ejecución.
-- Distinguir: navegador/sesión ya autorizados, WebView con su propio almacén de sesión, conectividad de GitHub Actions y endpoints internos. **No asumir que compartir red equivale a compartir autenticación**.
-- Rutas observadas históricamente como `/s/home`, `/back/...` y redirecciones de Cerbero son **pistas incompletas**, no contratos de API ni recomendaciones para invocar endpoints no verificados.
+### Criterios verificables de finalización
+No aceptar «se abre la página», «el botón es visible», «HTTP 200» o «workflow verde» como prueba del objetivo final. Confirmar registros esperados, integridad, cobertura real, tratamiento de adjuntos, resultados de las acciones y trazabilidad de errores. Distinguir evidencia comprobada de conjetura. Documentar mecanismo, coste por consulta, número de iteraciones, límites, fallos conocidos y forma de recuperación.
 
-### Procedimiento mínimo reutilizable
-1. **Recuperar evidencia existente:** versión exacta del APK/código, estado de navegación, logs depurados y pruebas; verificar antes de volver a instrumentar. No ejecutar un APK no auditado ni extraer secretos.
-2. **Probar primero continuidad de contexto:** dentro de la pestaña/sesión autorizada, localizar ruta visible a mensajería y confirmar contenido real; evitar reiniciar acceso cuando la sesión sigue válida.
-3. **Si faltan controles:** contrastar modo móvil/escritorio y anchura del WebView; documentar una captura y estructura DOM saneadas. No repetir muchos experimentos sin hipótesis concreta.
-4. **Diferenciar las capas:** acceso inicial y federado, persistencia de sesión, redirección, carga dinámica, visualización, lectura, descarga de adjunto y marcado; validar cada una por separado.
-5. **Para automatización:** priorizar UI/WebView autorizado que ya funciona o interfaz oficial estable; evaluar HTTP solo con evidencia de que recupera datos reales dentro de un mecanismo permitido. No convertir un 200 de login en «API validada».
-6. **Para archivos:** verificar contenido, tamaño, tipo MIME, nombre y apertura; probar PDF/DOC por separado y no atribuir éxito a todos los adjuntos.
-7. **Para diagnóstico:** recopilar una sola vez la evidencia mínima sanitizada (URL sin parámetros sensibles, códigos, tipo de contenido, contador de elementos y trazas reducidas); después analizar localmente y en lote, sin ciclos repetitivos commit → runner → log.
-8. **Para integración:** crear pruebas locales con fixtures falsos, probar bajo condiciones controladas y reservar una validación remota única para incertidumbres propias de red, sesión o entorno. Repetir solo ante nueva hipótesis.
-9. **Para cerrar:** exigir recuperación de mensajes correctos, cobertura verificable, metadatos/adjuntos procesados según requisito, y evidencia real de las acciones de lectura; publicar solo resultados necesarios, nunca datos personales.
-
-### Pendientes no demostrados
-No constan como verificados un API HTTP directa de mensajería, la recuperación de cookies entre dispositivos, el endpoint final reutilizable, el funcionamiento general de un extractor externo ni un diagnóstico técnico completo del APK `Educamos_Puente_16.apk`. Investigar solo cuando sea necesario, con una prueba concreta y coste contrastado.
-
-### Registro de coste y aprendizaje
-En cada alternativa anotar **peticiones, minutos de ejecución, iteraciones, intervención humana, tasa de éxito y coste monetario/cuota**; si no hay cifras fiables, marcar «no medido». Registrar siempre qué estrategia quedó descartada y por qué, para impedir que futuras sesiones repitan la misma investigación.
+### Transferencia de aprendizaje
+Tras resolver cualquier sitio: convertir las observaciones en reglas neutrales, registrar antipatrón → causa → diagnóstico mínimo → corrección → prueba → coste; guardar los detalles específicos en documentación del proyecto, no en esta skill. Se conserva el antecedente que motivó esta política (una pasarela educativa basada en WebView, con navegación de sesión, diferencias móvil/escritorio, fallos de formatos y exceso de iteraciones remotas), **sin imponer su arquitectura a portales distintos**.
 
 ## Construcción de conectores reutilizables
 Definir contrato de entrada/salida, esquema de campos, procedencia/fecha, errores tipificados, reintentos, checkpoints e idempotencia. Aislar adaptadores por portal y compartir transporte HTTP, validación, normalización y observabilidad. Incluir tests con fixtures sin secretos, ejemplos sintéticos, condiciones de suspensión y alternativa manual autorizada.
@@ -78,7 +66,7 @@ Estados obligatorios: HIPÓTESIS, DOCUMENTADO, PROBADO LOCALMENTE, VALIDADO EN O
 
 ## Ejemplos y lecciones
 - **Buscar-Curro:** evaluar extracción HTTP y paginación con pruebas controladas antes de probar navegador o Firecrawl; para Eurofirms/Randstad y portales con paginación desconocida conservar expresamente el nivel de cobertura demostrado. Comparar Firecrawl como herramienta *candidata*, nunca asumir acceso, gratuidad ni capacidad de API interna.
-- **Educamos:** investigar WebView y conservación de sesiones existentes con consentimiento, evitando almacenar secretos y evitando iteraciones de GitHub Actions como laboratorio.
+- **Aplicaciones con autenticación federada:** distinguir sesión, interfaz responsiva y extracción de contenido; reutilizar contexto autorizado y evitar pruebas remotas repetitivas.
 - **Subastas:** favorecer datos públicos oficiales estructurados y trazabilidad de anuncios/documentos frente a navegación intensiva.
 
 ## Aprendizaje y distribución
