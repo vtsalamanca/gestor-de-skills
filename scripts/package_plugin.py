@@ -20,6 +20,7 @@ import zipfile
 
 OFFICIAL_REPOSITORY = "https://github.com/vtsalamanca/gestor-de-skills.git"
 EXPECTED_SKILLS = {
+    "acceso_webs",
     "auditar-skills",
     "crear-skills",
     "descubrir-skills",
@@ -236,3 +237,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
