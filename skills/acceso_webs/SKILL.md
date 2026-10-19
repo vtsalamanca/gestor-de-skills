@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.1.0
+version: 0.1.1
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -34,6 +34,39 @@ Separar las capas: descubrimiento de URLs, obtención, autenticación/sesión, p
 - Antes de automatizar, verificar duración de sesión, expiración, cambios de dispositivo, redirecciones, CSRF y renovación ordinaria de credenciales.
 - Distinguir lo que el usuario comunicó o se investigó de lo efectivamente probado. No afirmar que el procedimiento WebView funciona universalmente.
 - Priorizar OAuth, interfaces oficiales y autorización interactiva del titular cuando existan; evitar guardar secretos o copiar sesiones entre usuarios/dispositivos sin garantías.
+
+## Caso de referencia prioritario: pasarela Educamos Puente / EducamosCLM (octubre de 2026)
+
+**Objetivo de conservación:** no repetir el coste en tiempo humano, ejecuciones de GitHub Actions, inspecciones de JavaScript y experimentos de navegación que exigió el proyecto. Esta sección conserva evidencia histórica resumida, sin credenciales ni datos escolares identificativos. Antes de cambiar el método, recuperar código, APK, resultados y diagnósticos ya existentes.
+
+### Evidencias históricas comunicadas como comprobadas
+- **Navegación dentro de una misma pestaña autenticada:** EducamosCLM → Seguimiento Educativo → Mensajería → «Todos» permitió leer cinco mensajes completos y marcar su lectura, con confirmación desde el portal. Fallar al enumerar pestañas **no significa** necesariamente perder acceso; la continuidad de pestaña/contexto fue una clave.
+- **WebView Android con vista de escritorio:** configurar ancho de escritorio de aproximadamente 1280 px reveló secciones que la vista móvil de aproximadamente 373 px ocultaba, incluida navegación hacia mensajería. La presencia de enlaces o botones **no confirma por sí sola** la apertura o extracción de mensajes.
+- **Pasarela Android:** se comunicaron recuperaciones de texto y detección de adjuntos en una versión 0.16, así como la descarga de un PDF de 133278 bytes. La descarga de un DOC falló. No extrapolar un éxito parcial a otros formatos ni al funcionamiento extremo a extremo.
+- **Prueba de conectividad desde GitHub a Cerbero:** una petición HTTP devolvió 200 y contenido HTML sin formularios; esto acredita conectividad, **no** que funcione un inicio de sesión por HTTP, una API interna o un endpoint de mensajes.
+
+### Incidencias y explicaciones alternativas que no debemos volver a pasar por alto
+- En vista móvil pueden quedar ocultos controles; comprobar diseño responsivo, estado del DOM, cambios JavaScript y diferencias entre interfaces antes de atribuirlo a permisos.
+- Errores JavaScript (por ejemplo TypeError relacionado con `filter`), respuestas 404 y fallos de consola no prueban por sí solos que el usuario no esté autenticado: correlacionar URL, estado de sesión y contexto de ejecución.
+- Distinguir: navegador/sesión ya autorizados, WebView con su propio almacén de sesión, conectividad de GitHub Actions y endpoints internos. **No asumir que compartir red equivale a compartir autenticación**.
+- Rutas observadas históricamente como `/s/home`, `/back/...` y redirecciones de Cerbero son **pistas incompletas**, no contratos de API ni recomendaciones para invocar endpoints no verificados.
+
+### Procedimiento mínimo reutilizable
+1. **Recuperar evidencia existente:** versión exacta del APK/código, estado de navegación, logs depurados y pruebas; verificar antes de volver a instrumentar. No ejecutar un APK no auditado ni extraer secretos.
+2. **Probar primero continuidad de contexto:** dentro de la pestaña/sesión autorizada, localizar ruta visible a mensajería y confirmar contenido real; evitar reiniciar acceso cuando la sesión sigue válida.
+3. **Si faltan controles:** contrastar modo móvil/escritorio y anchura del WebView; documentar una captura y estructura DOM saneadas. No repetir muchos experimentos sin hipótesis concreta.
+4. **Diferenciar las capas:** acceso inicial y federado, persistencia de sesión, redirección, carga dinámica, visualización, lectura, descarga de adjunto y marcado; validar cada una por separado.
+5. **Para automatización:** priorizar UI/WebView autorizado que ya funciona o interfaz oficial estable; evaluar HTTP solo con evidencia de que recupera datos reales dentro de un mecanismo permitido. No convertir un 200 de login en «API validada».
+6. **Para archivos:** verificar contenido, tamaño, tipo MIME, nombre y apertura; probar PDF/DOC por separado y no atribuir éxito a todos los adjuntos.
+7. **Para diagnóstico:** recopilar una sola vez la evidencia mínima sanitizada (URL sin parámetros sensibles, códigos, tipo de contenido, contador de elementos y trazas reducidas); después analizar localmente y en lote, sin ciclos repetitivos commit → runner → log.
+8. **Para integración:** crear pruebas locales con fixtures falsos, probar bajo condiciones controladas y reservar una validación remota única para incertidumbres propias de red, sesión o entorno. Repetir solo ante nueva hipótesis.
+9. **Para cerrar:** exigir recuperación de mensajes correctos, cobertura verificable, metadatos/adjuntos procesados según requisito, y evidencia real de las acciones de lectura; publicar solo resultados necesarios, nunca datos personales.
+
+### Pendientes no demostrados
+No constan como verificados un API HTTP directa de mensajería, la recuperación de cookies entre dispositivos, el endpoint final reutilizable, el funcionamiento general de un extractor externo ni un diagnóstico técnico completo del APK `Educamos_Puente_16.apk`. Investigar solo cuando sea necesario, con una prueba concreta y coste contrastado.
+
+### Registro de coste y aprendizaje
+En cada alternativa anotar **peticiones, minutos de ejecución, iteraciones, intervención humana, tasa de éxito y coste monetario/cuota**; si no hay cifras fiables, marcar «no medido». Registrar siempre qué estrategia quedó descartada y por qué, para impedir que futuras sesiones repitan la misma investigación.
 
 ## Construcción de conectores reutilizables
 Definir contrato de entrada/salida, esquema de campos, procedencia/fecha, errores tipificados, reintentos, checkpoints e idempotencia. Aislar adaptadores por portal y compartir transporte HTTP, validación, normalización y observabilidad. Incluir tests con fixtures sin secretos, ejemplos sintéticos, condiciones de suspensión y alternativa manual autorizada.
