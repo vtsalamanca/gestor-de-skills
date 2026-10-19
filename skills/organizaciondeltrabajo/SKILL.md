@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.2
+version: 0.2.3
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -30,6 +30,15 @@ Conseguir resultados fiables y verificables con el menor gasto razonable de tiem
 
 ## Desarrollo local primero y validación remota selectiva
 Cuando exista acceso local autorizado, inspeccionar estado de Git, rama y commit antes de editar; no sobrescribir cambios locales y preferir una única copia enlazada al repositorio. Implementar y probar primero localmente con linters, tests, fixtures, mocks y simulaciones reutilizables. Reservar GitHub Actions u otros runners para evidencia que no pueda obtenerse localmente —entorno, red, permisos, persistencia o integración— y evitar reejecuciones idénticas sin una hipótesis nueva. Registrar qué verificó cada prueba local y remota. La operación diaria definitiva puede seguir en un runner incluido si ése es el diseño acordado; no introducir llamadas a modelos, credenciales, cron ni gasto sin autorización. El trabajo local reduce iteraciones y minutos remotos, pero no implica por sí mismo menor cuota de Codex.
+
+## Publicación y sincronización obligatoria de skills
+Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/gestor-de-skills`, incluir en el mismo trabajo la distribución y verificación sin necesitar una segunda solicitud:
+1. Comparar `main` con la release del plugin privado ChatGPT/Work y con el marketplace de Codex; identificar diferencias por contenido, no solo por número de versión.
+2. Validar estructura, seguridad, cambios, reversibilidad y coste adicional (por defecto 0 €). Incrementar versiones de skill y paquete de forma coherente cuando corresponda.
+3. Si las herramientas y permisos disponibles lo permiten, preparar el paquete desde GitHub y actualizar el **mismo plugin privado**, conservando su identidad, con control de concurrencia por ID de release; nunca afirmar que un commit de GitHub actualiza por sí solo ChatGPT/Work.
+4. Verificar publicación y contenido de los archivos distribuidos; cuando sea posible comprobar la carga en una sesión nueva y el marketplace Codex. Distinguir `FUENTE_ACTUALIZADA`, `PLUGIN_PUBLICADO`, `CARGA_VERIFICADA` y `PENDIENTE`.
+5. Si publicar o comprobar exige otra herramienta, permiso, tarifa desconocida o servicio de pago, no ejecutarlo; comunicar el bloqueo concreto, el siguiente paso mínimo y la versión que continúa activa. Nunca marcar la sincronización como completada sin evidencia.
+No prometer ejecución desatendida ni actualización instantánea de sesiones/cache. Esta regla aplica a cualquier skill del repositorio y complementa las instrucciones generales del usuario.
 
 ## Flujo de coordinación y aprendizaje
 **A. Recuperar:** consultar `ESTADO_PROYECTO.md` o registro equivalente, decisiones y pruebas; resolver contradicciones.
@@ -60,3 +69,4 @@ Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit �
 - 0.2.0 (19 oct 2026): integración en Gestor de Skills; activación proactiva donde sea posible, puerta obligatoria de eficiencia, preferencia local, caso Educamos y enlace a ingenieria-fiable.
 - 0.2.1 (19 oct 2026): unificación de 0.1.6 y 0.2.0; GitHub pasa a ser la fuente única de verdad y las copias empaquetadas deben reproducirla.
 - 0.2.2 (19 oct 2026): la fuente canónica se integra en el paquete completo de GitHub y se distribuye mediante su marketplace.
+- 0.2.3 (19 oct 2026): publicación y verificación de plugin incorporadas como fase obligatoria de cambios en skills.
