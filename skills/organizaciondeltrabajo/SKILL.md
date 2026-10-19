@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.3
+version: 0.2.4
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -30,6 +30,15 @@ Conseguir resultados fiables y verificables con el menor gasto razonable de tiem
 
 ## Desarrollo local primero y validación remota selectiva
 Cuando exista acceso local autorizado, inspeccionar estado de Git, rama y commit antes de editar; no sobrescribir cambios locales y preferir una única copia enlazada al repositorio. Implementar y probar primero localmente con linters, tests, fixtures, mocks y simulaciones reutilizables. Reservar GitHub Actions u otros runners para evidencia que no pueda obtenerse localmente —entorno, red, permisos, persistencia o integración— y evitar reejecuciones idénticas sin una hipótesis nueva. Registrar qué verificó cada prueba local y remota. La operación diaria definitiva puede seguir en un runner incluido si ése es el diseño acordado; no introducir llamadas a modelos, credenciales, cron ni gasto sin autorización. El trabajo local reduce iteraciones y minutos remotos, pero no implica por sí mismo menor cuota de Codex.
+
+## Autocomprobación de versión al iniciar trabajos
+Al comenzar cada **sesión o bloque de trabajo no trivial** en que se utilicen las skills de este repositorio, comprobar **como máximo una vez por sesión de trabajo**, cuando GitHub y la metadata del plugin sean accesibles sin coste adicional, si la fuente canónica en `main` y la release privada instalada coinciden. Priorizar comparar manifiestos/versiones; si difieren o existe incertidumbre material, comparar también contenido/hash antes de publicar. Reutilizar el resultado durante la sesión y no consultar en cada mensaje.
+- Si están alineadas, continuar con el trabajo sin interrumpir al usuario.
+- Si GitHub es más reciente, intentar en el mismo flujo la publicación bajo demanda mediante la herramienta oficial Plugin Creator, conservando identidad, permisos y control de release; pedir una intervención únicamente si es realmente imprescindible.
+- Si falta acceso, el coste no está acreditado, la publicación falla o las sesiones requieren recarga, continuar con la versión disponible cuando sea seguro y comunicar claramente el estado pendiente.
+- No actualizar a ciegas ni entrar en bucles autorreferenciales: tras publicar, **una sola verificación** de la release; si falla, detener reintentos hasta obtener una hipótesis nueva.
+- No hacer una comprobación remota en tareas triviales ni cuando el usuario prohíba consultas externas. No activar tareas programadas, GitHub Actions ni gastar créditos de Work/Codex para esta revisión.
+Esta regla es una instrucción para el asistente que **carga** la skill: no constituye un servicio en segundo plano, no garantiza ejecución en chats donde la skill no esté disponible y no puede hacer que una caché se actualice por sí sola.
 
 ## Publicación y sincronización obligatoria de skills
 Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/gestor-de-skills`, incluir en el mismo trabajo la distribución y verificación sin necesitar una segunda solicitud:
@@ -70,3 +79,4 @@ Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit �
 - 0.2.1 (19 oct 2026): unificación de 0.1.6 y 0.2.0; GitHub pasa a ser la fuente única de verdad y las copias empaquetadas deben reproducirla.
 - 0.2.2 (19 oct 2026): la fuente canónica se integra en el paquete completo de GitHub y se distribuye mediante su marketplace.
 - 0.2.3 (19 oct 2026): publicación y verificación de plugin incorporadas como fase obligatoria de cambios en skills.
+- 0.2.4 (19 oct 2026): autocomprobación al iniciar trabajos, una vez por sesión, con actualización bajo demanda y límites antibucle.
