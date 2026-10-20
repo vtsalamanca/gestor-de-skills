@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.9
+# Gestor de Skills 0.4.10
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -9,7 +9,7 @@ Complemento privado con ocho skills especializadas:
 - `inventariar-skills`: versiones, inventario y detección de duplicados.
 - `crear-skills`: diseño y validación de skills propias.
 - `organizaciondeltrabajo`: coordinación general, continuidad y coste total.
-- `acceso_webs`: estrategias genéricas de acceso web, sesiones y creación de conectores de bajo consumo.
+- `acceso_webs`: estrategias de acceso web y conectores eficientes, incluida la integración MCP y patrones aprendidos con Golon.
 - `ingenieria-fiable`: adaptación práctica para planificar, diagnosticar, probar y verificar software, agentes y automatizaciones.
 
 ## Nueva metodología
@@ -27,11 +27,11 @@ El empaquetador obtiene un commit exacto, valida los dos manifiestos y las ocho 
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.9.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.10.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.9.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.10.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
