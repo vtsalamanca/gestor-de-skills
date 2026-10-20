@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.8
+version: 0.2.9
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -47,8 +47,8 @@ Antes de implementar una solución nueva, cambiar de herramienta o realizar otra
 ## Desarrollo local primero y validación remota selectiva
 Cuando exista acceso local autorizado, inspeccionar estado de Git, rama y commit antes de editar; no sobrescribir cambios locales y preferir una única copia enlazada al repositorio. Implementar y probar primero localmente con linters, tests, fixtures, mocks y simulaciones reutilizables. Reservar GitHub Actions u otros runners para evidencia que no pueda obtenerse localmente —entorno, red, permisos, persistencia o integración— y evitar reejecuciones idénticas sin una hipótesis nueva. Registrar qué verificó cada prueba local y remota. La operación diaria definitiva puede seguir en un runner incluido si ése es el diseño acordado; no introducir llamadas a modelos, credenciales, cron ni gasto sin autorización. El trabajo local reduce iteraciones y minutos remotos, pero no implica por sí mismo menor cuota de Codex.
 
-## Autocomprobación de versión al iniciar trabajos
-Al comenzar cada **sesión o bloque de trabajo no trivial** en que se utilicen las skills de este repositorio, comprobar **como máximo una vez por sesión de trabajo**, cuando GitHub y la metadata del plugin sean accesibles sin coste adicional, si la fuente canónica en `main` y la release privada instalada coinciden. Priorizar comparar manifiestos/versiones; si difieren o existe incertidumbre material, comparar también contenido/hash antes de publicar. Reutilizar el resultado durante la sesión y no consultar en cada mensaje.
+## Actualización bajo demanda al modificar una skill
+**Único disparador ordinario:** una modificación autorizada de alguna skill del Gestor de Skills. No consultar versiones, GitHub o metadata del plugin al abrir cada conversación ni en consultas que simplemente usen las skills. Al modificar una habilidad, verificar en ese mismo trabajo fuente canónica, manifestos, release privada y, si procede, marketplace Codex, sin consultas repetitivas. Usar MCP local autorizado para edición, pruebas y empaquetado; la publicación se hará sobre el complemento existente mediante Plugin Creator cuando el ZIP pueda transferirse por una vía admitida, preservando release ID y presupuesto cero.
 - Si están alineadas, continuar con el trabajo sin interrumpir al usuario.
 - Si GitHub es más reciente, intentar en el mismo flujo la publicación bajo demanda mediante la herramienta oficial Plugin Creator, conservando identidad, permisos y control de release; pedir una intervención únicamente si es realmente imprescindible.
 - Si falta acceso, el coste no está acreditado, la publicación falla o las sesiones requieren recarga, continuar con la versión disponible cuando sea seguro y comunicar claramente el estado pendiente.
