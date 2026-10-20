@@ -22,6 +22,11 @@ Conseguir resultados fiables y verificables con el menor gasto razonable de tiem
 5. Definir entregable, criterios de aceptación, dependencias, seguridad, plan de pruebas y reversión; agrupar las comprobaciones que responden a una misma hipótesis. No generar un commit, workflow y ejecución por una búsqueda simple de texto.
 6. Preguntar al usuario solo por autorizaciones o decisiones realmente imprescindibles; evitar ciclos ceremoniales «ya / vale» cuando haya trabajo independiente realizable. Continuar hasta objetivo logrado o bloqueo real.
 
+## MCP local: alternativa prioritaria cuando exista acceso autorizado
+En proyectos de programación, antes de emplear Codex, Work o GitHub Actions para pruebas repetitivas, comprobar si existe un MCP de acceso al equipo propio (p. ej., Desktop Commander) **realmente conectado** y si su coste y permisos son aceptables. Priorizar lectura y pruebas locales reproducibles con datos sintéticos, sin servicios facturables. No conectar dispositivos, ampliar permisos, instalar dependencias, ejecutar código ajeno ni automatizar el inicio sin autorización.
+
+Una skill no proporciona acceso al PC por sí sola: comprobar dispositivo en línea, ruta permitida, terminal disponible, repositorio canónico, estado Git y límites de seguridad. No confundir allowedDirectories (operaciones de archivos) con aislamiento efectivo de PowerShell; la terminal requiere controles independientes. Mantener la sesión local activa y verificar resultados, hashes y estado Git antes y después; detener ante divergencias, cambios inesperados o costes desconocidos. Consultar `ingenieria-fiable/references/mcp-local.md` para procedimiento técnico y evidencias.
+
 ## Puerta reforzada de descubrimiento y comparación de herramientas (lección Firecrawl)
 Antes de implementar una solución nueva, cambiar de herramienta o realizar otra serie de pruebas ante un bloqueo:
 1. Consultar **una vez por bloque de trabajo** el inventario actual de skills, plugins, conectores, código, repositorios y herramientas del entorno real (Chat, Codex, Work o local); comprobar su disponibilidad y alcance. Reutilizar inventarios ya válidos, sin búsquedas redundantes.

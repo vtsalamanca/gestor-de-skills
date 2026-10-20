@@ -12,6 +12,9 @@ Esta es una **adaptación propia** inspirada conceptualmente en el proyecto abie
 ## Regla previa obligatoria de eficiencia
 Antes de cada acción técnica, consultar `references/eficiencia-desarrollo.md` y comparar alternativas en coste monetario, créditos, tiempo humano, fiabilidad y número de operaciones. Priorizar análisis y pruebas locales, agrupar diagnósticos y reservar GitHub Actions para integración o ejecución remota justificada. Detener los bucles improductivos y no trasladar al usuario ediciones y ejecuciones repetitivas evitables.
 
+## Desarrollo local mediante MCP
+Cuando el usuario autorice acceso a su ordenador por MCP, usar el protocolo técnico de `references/mcp-local.md` antes de escribir, ejecutar pruebas, sincronizar o publicar. Separar permisos de archivos y terminal, exigir diagnósticos verificables y no prometer aislamiento ni ejecución sin PC conectado.
+
 ## Selección proporcional del flujo
 1. **Planificar**: si hay función nueva o cambio estructural, definir objetivo, restricciones, evidencia previa, entregables y criterios comprobables. Leer `references/planificar.md`.
 2. **Diagnosticar**: ante error o resultado extraño, precisar síntomas y buscar causa antes de modificar. Leer `references/diagnosticar.md`.
