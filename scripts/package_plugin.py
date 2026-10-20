@@ -33,6 +33,7 @@ PACKAGE_ROOT_FILES = {"README.md", ".codex-plugin/plugin.json"}
 IGNORED_NAMES = {".DS_Store", "Thumbs.db", "__pycache__"}
 SUSPICIOUS_SUFFIXES = {".key", ".pem", ".p12", ".pfx"}
 SUSPICIOUS_NAMES = {".env", "credentials.json", "secrets.json"}
+MAX_PACKAGE_FILE_BYTES = 5 * 1024 * 1024  # 5 MiB por archivo; evitar paquetes accidentales enormes
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 SKILL_NAME_RE = re.compile(r"^name:\s*([^\s#]+)\s*$", re.MULTILINE)
 
@@ -69,6 +70,12 @@ def remove_tree(path: Path) -> None:
         shutil.rmtree(path, onexc=make_writable)
 
 
+def validate_archive_member(name: str) -> None:
+    path = PurePosixPath(name)
+    if path.is_absolute() or ".." in path.parts or "\\" in name or re.match(r"^[a-zA-Z]:", name):
+        raise PackageError(f"Ruta insegura en el commit: {name}")
+
+
 def export_commit(repository: str, commit: str, destination: Path) -> str:
     """Fetch only the requested commit and export its tracked bytes without .git."""
     local_repository = Path(repository).resolve()
@@ -89,9 +96,7 @@ def export_commit(repository: str, commit: str, destination: Path) -> str:
         destination.mkdir(parents=True)
         with tarfile.open(archive_path, "r") as archive:
             for member in archive.getmembers():
-                path = PurePosixPath(member.name)
-                if path.is_absolute() or ".." in path.parts:
-                    raise PackageError(f"Ruta insegura en el commit: {member.name}")
+                validate_archive_member(member.name)
             archive.extractall(destination, filter="data")
     finally:
         archive_path.unlink(missing_ok=True)
@@ -160,6 +165,11 @@ def validate_snapshot(root: Path) -> tuple[str, list[Path]]:
             files.append(path)
 
     unique_files = sorted(set(files), key=lambda p: p.relative_to(root).as_posix())
+    for path in unique_files:
+        if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+            raise PackageError(f"Ruta insegura o enlace simbólico: {path}")
+        if path.stat().st_size > MAX_PACKAGE_FILE_BYTES:
+            raise PackageError(f"Archivo demasiado grande: {path.relative_to(root)}")
     return version, unique_files
 
 

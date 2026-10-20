@@ -8,7 +8,7 @@ import unittest
 import uuid
 import zipfile
 
-from scripts.package_plugin import EXPECTED_SKILLS, PackageError, build_archive, export_commit, remove_tree, validate_snapshot
+from scripts.package_plugin import EXPECTED_SKILLS, PackageError, build_archive, export_commit, remove_tree, validate_snapshot, validate_archive_member
 
 
 class PackagePluginTests(unittest.TestCase):
@@ -88,6 +88,56 @@ class PackagePluginTests(unittest.TestCase):
         final_status = subprocess.run(["git", "status", "--porcelain"], cwd=self.root, check=True, capture_output=True, text=True).stdout
         self.assertEqual(original_status, final_status)
 
+    def test_sensitive_files_are_rejected(self) -> None:
+        skill_dir = self.root / "skills" / "auditar-skills"
+        for name in (".env", "private.pem", "credentials.json"):
+            with self.subTest(name=name):
+                target = skill_dir / name
+                target.write_text("fixture only", encoding="utf-8")
+                try:
+                    with self.assertRaisesRegex(PackageError, "potencialmente sensible"):
+                        validate_snapshot(self.root)
+                finally:
+                    target.unlink()
+
+    def test_unexpected_root_files_are_not_packaged(self) -> None:
+        (self.root / "unexpected.txt").write_text("EXCLUDED", encoding="utf-8")
+        archive_path = self.temporary / "safe.zip"
+        build_archive(self.root, archive_path, "a" * 40)
+        with zipfile.ZipFile(archive_path) as archive:
+            self.assertNotIn("unexpected.txt", archive.namelist())
+
+    def test_skill_declared_name_must_match_folder(self) -> None:
+        skill_file = self.root / "skills" / "auditar-skills" / "SKILL.md"
+        skill_file.write_text("---\\nname: incorrecto\\ndescription: test\\n---\\n", encoding="utf-8")
+        with self.assertRaisesRegex(PackageError, "no coincide"):
+            validate_snapshot(self.root)
+
+    def test_archive_paths_reject_traversal_and_windows_forms(self) -> None:
+        for name in ("../escape", "skills/../../escape", "/absolute", "C:/Windows/escape", "skills\\..\\escape"):
+            with self.subTest(name=name), self.assertRaisesRegex(PackageError, "Ruta insegura"):
+                validate_archive_member(name)
+        validate_archive_member("skills/auditar-skills/SKILL.md")
+
+    def test_large_file_is_rejected(self) -> None:
+        large = self.root / "skills" / "auditar-skills" / "references" / "large.txt"
+        with large.open("wb") as file:
+            file.truncate(5 * 1024 * 1024 + 1)
+        with self.assertRaisesRegex(PackageError, "demasiado grande"):
+            validate_snapshot(self.root)
+
+    def test_root_symlink_is_rejected_when_supported(self) -> None:
+        path = self.root / "README.md"
+        path.unlink()
+        target = self.temporary / "elsewhere.txt"
+        target.write_text("OUTSIDE", encoding="utf-8")
+        try:
+            path.symlink_to(target)
+        except (OSError, NotImplementedError):
+            self.skipTest("Windows no permite enlaces simbolicos en esta cuenta")
+        with self.assertRaisesRegex(PackageError, "Ruta insegura"):
+            validate_snapshot(self.root)
+
     def _tree_hashes(self) -> dict[str, str]:
         return {
             path.relative_to(self.root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
@@ -103,7 +153,7 @@ class RepositoryReleaseTests(unittest.TestCase):
         marketplace = json.loads((root / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         procedure = (root / "skills" / "organizaciondeltrabajo" / "SKILL.md").read_text(encoding="utf-8")
 
-        self.assertEqual(plugin["version"], "0.4.9")
+        self.assertEqual(plugin["version"], "0.4.10")
         self.assertEqual(marketplace["plugins"][0]["version"], plugin["version"])
         self.assertIn("version: 0.2.7", procedure)
         self.assertIn("http.sslBackend", procedure)
