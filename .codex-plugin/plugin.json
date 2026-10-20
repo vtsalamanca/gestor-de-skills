@@ -1,6 +1,6 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "Descubre, audita, crea e integra skills; incluye organizaciondeltrabajo, ingenieria-fiable y acceso_webs para conectores eficientes con presupuesto cero.",
   "author": {
     "name": "Pavón Serrano",
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.7 coordina eficiencia, reutilización y recuperación verificable de actualizaciones locales; acceso_webs 0.3.0 desarrolla estrategias de acceso y extracción y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
+    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.7 coordina eficiencia, reutilización y recuperación verificable de actualizaciones locales; acceso_webs 0.4.0 desarrolla estrategias de acceso y extracción y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
     "category": "Productivity",
     "developerName": "Pavón Serrano",
     "capabilities": [
