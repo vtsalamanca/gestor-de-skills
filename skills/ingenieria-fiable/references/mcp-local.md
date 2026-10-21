@@ -32,3 +32,23 @@
 
 ## Limitaciones y mejoras futuras
 Pendientes: aislar terminal en VM/contenedor sin acceso a credenciales, comprobar symlinks con permisos apropiados, asegurar compatibilidad de scripts, y estudiar inicio opcional del agente local sin ampliación innecesaria de acceso.
+
+
+## Laboratorio Debian aislado mediante MCP → Windows → SSH (validado 2026-10-21)
+**Arquitectura comprobada en un entorno concreto:** herramienta Remote Desktop Commander autorizada en ChatGPT → terminal Windows → OpenSSH con clave de usuario → Debian 13 XFCE en VirtualBox mediante red host-only. El puente de comandos se encapsuló en un lanzador `.cmd` (evita depender de políticas de PowerShell para `.ps1`); se comprobó ejecución SSH y copia SCP sin contraseña. No incluir direcciones privadas, identificadores de dispositivos, claves ni rutas personales en la skill universal: conservarlos solo en documentación local protegida y verificar en cada sesión.
+
+**GUI sin dependencias nuevas:** mediante Python 3 `ctypes` con `libX11.so.6` y `libXtst.so.6`, conexión a `DISPLAY=:0`, extensión XTEST y emisión de movimiento, clic y teclas. Se verificaron eventos y apertura de Mousepad en XFCE. Este mecanismo depende de X11; no presuponer Wayland, sesiones sin DISPLAY ni control de aplicaciones protegidas. Evitar simular credenciales o escribir contraseñas por herramientas.
+
+**Privilegios por autorización presencial:** lanzar desde SSH una terminal gráfica XFCE con un script de alcance mínimo; el usuario introduce la contraseña `sudo` *directamente en Debian*. El script deja un marcador de estado no sensible; ChatGPT comprueba el resultado por SSH. Validado con `sudo -v` y `sudo id -u` (UID 0), resultado `ADMIN_OK`. Revocar caché con `sudo -k`. No guardar contraseñas, usar `sudo -S`, instalar servicios de privilegio permanente ni configurar `NOPASSWD` para evitar la intervención humana.
+
+**Auditoría de red y endurecimiento ejecutados:** VirtualBox con adaptadores host-only, sin NAT ni puente; rutas a destinos IPv4 e IPv6 externos devolvieron `Network is unreachable`. En el anfitrión se observó reenvío IPv4/IPv6 deshabilitado en el adaptador host-only. Portapapeles, drag-and-drop, USB y VRDE deshabilitados; instantánea de recuperación existente. `ss` y `systemctl` revelaron SSH en todas las interfaces, Avahi y CUPS. Se desactivaron servicio y socket de Avahi; CUPS permaneció escuchando solo en localhost. Se aplicó configuración de SSH con `ListenAddress` en la IP host-only, `PasswordAuthentication no`, `KbdInteractiveAuthentication no`, `PermitRootLogin no`, `PubkeyAuthentication yes`, `AllowUsers` restringido y reenvíos X11/TCP/agente/Unix/túnel desactivados. Validar con `sshd -t` antes de recargar y **comprobar un nuevo acceso SSH después**; ambas pruebas se completaron.
+
+**Secuencia reutilizable segura:**
+1. Verificar conexión MCP, identidad del equipo y VM, estado de snapshot, interfaz host-only y acceso SSH por clave. No confundir MCP con permiso para acciones ilimitadas.
+2. Para tareas ordinarias, usar SSH/SCP con rutas y argumentos controlados; para GUI X11, comprobar DISPLAY y XTEST y verificar la ventana real, no solo la ausencia de error.
+3. Para tareas root, preparar script idempotente, acotado y auditable; ejecutar en terminal gráfica; solicitar exclusivamente contraseña en la VM; leer marcador, salida y estado real; invalidar sudo.
+4. Antes de tocar SSH/red, preparar reversión y evitar bloquear la única vía de acceso. Comprobar configuración efectiva, validar sintaxis, recargar (no reiniciar innecesariamente) y abrir una nueva conexión.
+5. Para aislamiento, contrastar configuración VirtualBox, rutas del invitado, servicios escuchando, reenvío del anfitrión y mecanismos de integración. No confundir ausencia de ruta con aislamiento absoluto; el anfitrión puede actuar como intermediario.
+6. Documentar `VERIFICADO`, `PENDIENTE` y riesgos residuales. No afirmar auditoría de firewall/ICS/NAT o captura de paquetes sin pruebas; en el caso de referencia esas verificaciones exhaustivas quedaron pendientes.
+
+**Coste y alcance:** sin servicios de pago adicionales; requiere Windows encendido, VM arrancada y Desktop Commander conectado. No supone control remoto autónomo si faltan esas condiciones. No exponer claves SSH, direcciones de red internas ni identificadores personales en repositorios públicos.
