@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.9
+version: 0.2.10
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -112,3 +112,13 @@ Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit �
 - 0.2.4 (19 oct 2026): autocomprobación al iniciar trabajos, una vez por sesión, con actualización bajo demanda y límites antibucle.
 
 
+
+
+## Ejecución local en Debian aislado por MCP (octubre 2026)
+Cuando exista un laboratorio Linux autorizado accesible mediante Desktop Commander en Windows y SSH por clave, considerarlo **antes** de consumir iteraciones de Codex, Work o GitHub Actions en pruebas repetitivas. Seleccionar entre Windows y Debian por dependencias, seguridad, reproducibilidad y coste total; no desplazar automáticamente todo el trabajo a la VM.
+
+**Procedimiento:** verificar dispositivo MCP en línea, máquina virtual encendida, conexión SSH, directorio autorizado, estado de Git, rutas y ausencia de gastos adicionales. Ejecutar inspección, programación y pruebas localmente; comprobar salida real y registrar evidencia. Si se necesita GUI, validar X11/XTEST y ventana; si se necesita `sudo`, preparar la operación y solicitar al usuario únicamente que introduzca la contraseña en la terminal gráfica de Debian. No pedirle que copie comandos si el agente puede realizarlos. Nunca capturar ni guardar contraseñas ni otorgar privilegios permanentes.
+
+**Aislamiento no absoluto:** host-only sin ruta a Internet es una medida verificada de configuración, no una garantía contra reenvío desde Windows o cambios posteriores. Mantener SSH por clave y restringido a la red privada, sin reenvíos innecesarios; no cambiar red ni seguridad sin prueba de reversión y autorización. Conservar instantánea de recuperación y registros sin secretos. Si una tarea requiere Internet, estudiar la obtención autorizada de recursos en Windows y su traslado controlado a Debian, sin abrir NAT ni puente por defecto.
+
+**Evidencia de referencia:** ejecución de SSH/SCP, GUI XFCE mediante XTEST, autorización sudo presencial, desactivación de Avahi y endurecimiento SSH comprobados en laboratorio Debian 13 (2026-10-21). La revisión del firewall/ICS/NAT de Windows y la captura de paquetes no se demostraron exhaustivamente; no presentarlas como certificadas. Consultar `ingenieria-fiable/references/mcp-local.md` para el protocolo técnico. Una skill no instala ni activa el puente por sí misma.
