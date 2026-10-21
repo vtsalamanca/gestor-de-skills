@@ -12,6 +12,13 @@ description: Planifica cómo incorporar una skill en ChatGPT, Codex, Claude, un 
 5. Antes de cambiar archivos, publicar, instalar, habilitar tareas, crear tokens, conectar cuentas o ejecutar instaladores, solicita aprobación explícita. Si la autorización ya está clara en el contexto, reutilízala solo dentro del alcance concedido.
 6. Tras un cambio autorizado, verifica presencia de archivos, identificación de versión, capacidad de lectura, prueba mínima inofensiva y comportamiento de retorno a versión anterior.
 
+## Publicación del Gestor de Skills: procedimiento obligatorio
+Cuando el objetivo sea actualizar nuestras skills en el plugin privado existente, **antes de generar, transferir o publicar un ZIP**, leer y seguir `skills/ingenieria-fiable/references/actualizar-skills.md` en GitHub (versión canónica). No reconstruir un procedimiento ad hoc ni trasladar el problema al usuario por defecto.
+
+Especialmente: (1) leer versión, commit y release activos; (2) ejecutar el empaquetador del **commit actual**, no una copia local obsoleta; (3) distinguir ruta de Windows vía Desktop Commander de archivo que realmente pueda cargar Plugin Creator; (4) usar una vía de transferencia soportada, comprobando hash; (5) `update_plugin` del **mismo** plugin con `expected_release_id` vigente; (6) verificar por lectura los archivos de la nueva release, Codex y la carga en sesiones nuevas por separado. No repetir intentos idénticos tras un error.
+
+No asumir que un error de transferencia indica que el empaquetador falla, ni que un plugin con versión igual ya contiene todos los cambios: cotejar archivos relevantes. Mantener la release anterior disponible para recuperación. Presupuesto adicional 0 €.
+
 ## Perfiles
 **ChatGPT:** si se tiene permiso para editar el plugin existente, conserva ID, nombre, estructura y controles, modifica solo lo necesario, actualiza versión y verifica con lectura de archivos. No afirmes que ejecutar `npx skills add` añade una habilidad al plugin de ChatGPT.
 
