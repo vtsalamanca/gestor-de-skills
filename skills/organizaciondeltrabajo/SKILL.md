@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.11
+version: 0.2.12
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -55,6 +55,8 @@ Cuando exista acceso local autorizado, inspeccionar estado de Git, rama y commit
 - No actualizar a ciegas ni entrar en bucles autorreferenciales: tras publicar, **una sola verificación** de la release; si falla, detener reintentos hasta obtener una hipótesis nueva.
 - No hacer una comprobación remota en tareas triviales ni cuando el usuario prohíba consultas externas. No activar tareas programadas, GitHub Actions ni gastar créditos de Work/Codex para esta revisión.
 Esta regla es una instrucción para el asistente que **carga** la skill: no constituye un servicio en segundo plano, no garantiza ejecución en chats donde la skill no esté disponible y no puede hacer que una caché se actualice por sí sola.
+
+**Antes de toda publicación, consultar el runbook canónico** `skills/ingenieria-fiable/references/actualizar-skills.md`, incluidos casos de ruta Windows ≠ host del publicador, empaquetador obsoleto, mecanismo de transferencia comprobado y control `expected_release_id`. No derivar a Work por inercia ni repetir intentos fallidos sin cambiar hipótesis. Conservar evidencia del método que realmente funcionó.
 
 ## Publicación y sincronización obligatoria de skills
 Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/gestor-de-skills`, incluir en el mismo trabajo la distribución y verificación sin necesitar una segunda solicitud:
