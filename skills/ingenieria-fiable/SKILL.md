@@ -15,6 +15,9 @@ Antes de cada acción técnica, consultar `references/eficiencia-desarrollo.md` 
 ## Desarrollo local mediante MCP
 Cuando el usuario autorice acceso a su ordenador por MCP, usar el protocolo técnico de `references/mcp-local.md` antes de escribir, ejecutar pruebas, sincronizar o publicar. Separar permisos de archivos y terminal, exigir diagnósticos verificables y no prometer aislamiento ni ejecución sin PC conectado.
 
+## Integraciones entre agentes y ordenadores
+Antes de diseñar puentes ChatGPT/Work/Codex/MCP, consultar `references/integraciones-agentes-locales.md`: comprobar por separado activación, ejecución, almacenamiento, notificación y entrega a la conversación; no equiparar una prueba parcial con automatización completa.
+
 ## Selección proporcional del flujo
 1. **Planificar**: si hay función nueva o cambio estructural, definir objetivo, restricciones, evidencia previa, entregables y criterios comprobables. Leer `references/planificar.md`.
 2. **Diagnosticar**: ante error o resultado extraño, precisar síntomas y buscar causa antes de modificar. Leer `references/diagnosticar.md`.
