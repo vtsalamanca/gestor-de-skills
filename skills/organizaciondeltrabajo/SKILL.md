@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.10
+version: 0.2.11
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -65,6 +65,14 @@ Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/g
 5. Si publicar o comprobar exige otra herramienta, permiso, tarifa desconocida o servicio de pago, no ejecutarlo; comunicar el bloqueo concreto, el siguiente paso mínimo y la versión que continúa activa. Nunca marcar la sincronización como completada sin evidencia.
 No prometer ejecución desatendida ni actualización instantánea de sesiones/cache. Esta regla aplica a cualquier skill del repositorio y complementa las instrucciones generales del usuario.
 
+### Publicacion de plugin sin transferir ZIP desde Windows
+Ante un fallo al entregar a Plugin Creator un ZIP ubicado en Windows, recuperar el procedimiento probado el 20 de octubre de 2026 (release 0.4.12). No pedir adjuntos al usuario ni recrear pasarelas descartadas.
+1. Leer el README, scripts/package_plugin.py y pruebas del repositorio canonico. Fijar commit SHA exacto, version y listado completo de archivos. Recuperar archivos del repositorio privado mediante el conector GitHub autorizado; no depender de un clon anonimo.
+2. Reconstruir el ZIP en el entorno de ejecucion accesible al publicador, con .codex-plugin/plugin.json, README.md y skills/ completas (ocho habilidades y referencias). Validar estructura, manifiestos y hashes SHA-256 de cada archivo. No usar una ruta Windows como si fuera local al publicador.
+3. Consultar el complemento privado existente mediante Plugin Creator; conservar plugin_id y current_release_id. Llamar update_plugin con la ruta absoluta del ZIP accesible al publicador y expected_release_id; no crear otro plugin y preservar la release anterior.
+4. Releer la release publicada y sus archivos, comparar version, ocho habilidades y hashes. Registrar por separado FUENTE_ACTUALIZADA, PAQUETE_VALIDADO, PLUGIN_PUBLICADO, CARGA_VERIFICADA o PENDIENTE.
+5. Si no existe capacidad real de crear el ZIP en el host del publicador, diagnosticar esa limitacion especifica y no inventar exito, rutas ni transferencias. No repetir intentos identicos sin una nueva hipotesis.
+Presupuesto adicional cero; sin credenciales, servicios de pago ni modificaciones de la pasarela descartada. La ruta funciono antes, pero se debe verificar su disponibilidad en la sesion actual.
 ### Recuperación de la actualización local del marketplace de Codex
 Cuando la fuente y el plugin privado estén publicados pero Codex mantenga una versión anterior, reutilizar este procedimiento antes de improvisar reinstalaciones:
 1. Consultar primero, sin modificar, `codex plugin marketplace list` y `codex plugin list --marketplace <nombre> --available --json`; anotar fuente, versión, estado instalado/habilitado y ruta activa.
