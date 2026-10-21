@@ -1,18 +1,18 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Descubre, audita, crea e integra skills; incluye organizaciondeltrabajo, ingenieria-fiable y acceso_webs para conectores eficientes con presupuesto cero.",
   "author": {
-    "name": "Pavón Serrano",
+    "name": "Pav├│n Serrano",
     "email": "vtsalamanca@gmail.com"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.9 coordina eficiencia, reutilización y recuperación verificable de actualizaciones locales; acceso_webs 0.4.0 desarrolla estrategias de acceso y extracción y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
+    "longDescription": "Complemento privado con ocho habilidades. Organizaciondeltrabajo 0.2.10 coordina eficiencia, reutilizaci├│n y recuperaci├│n verificable de actualizaciones locales; acceso_webs 0.4.1 desarrolla estrategias de acceso y extracci├│n y conectores de bajo consumo; ingenieria-fiable profundiza en pruebas.",
     "category": "Productivity",
-    "developerName": "Pavón Serrano",
+    "developerName": "Pav├│n Serrano",
     "capabilities": [
       "Read"
     ]

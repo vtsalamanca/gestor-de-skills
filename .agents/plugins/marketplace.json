@@ -1,27 +1,25 @@
 {
-  "name": "gestor-de-skills-github",
-  "owner": {
-    "name": "Pavón Serrano"
-  },
-  "plugins": [
-    {
-      "name": "gestor-de-skills",
-      "description": "Descubre, audita, crea e integra skills; incorpora organizaciondeltrabajo, acceso_webs e ingenieria-fiable con desarrollo eficiente, evidencia y presupuesto cero.",
-      "version": "0.4.12",
-      "source": {
-        "source": "local",
-        "path": "."
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity",
-      "interface": {
-        "displayName": "Gestor de Skills"
-      }
-    }
-  ]
+    "name":  "gestor-de-skills-github",
+    "owner":  {
+                  "name":  "Pavón Serrano"
+              },
+    "plugins":  [
+                    {
+                        "name":  "gestor-de-skills",
+                        "description":  "Descubre, audita, crea e integra skills; incorpora organizaciondeltrabajo, acceso_webs e ingenieria-fiable con desarrollo eficiente, evidencia y presupuesto cero.",
+                        "version":  "0.4.13",
+                        "source":  {
+                                       "source":  "local",
+                                       "path":  "."
+                                   },
+                        "policy":  {
+                                       "installation":  "AVAILABLE",
+                                       "authentication":  "ON_INSTALL"
+                                   },
+                        "category":  "Productivity",
+                        "interface":  {
+                                          "displayName":  "Gestor de Skills"
+                                      }
+                    }
+                ]
 }
-
-
