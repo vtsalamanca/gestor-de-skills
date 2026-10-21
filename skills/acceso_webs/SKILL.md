@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.4.0
+version: 0.4.1
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -127,3 +127,9 @@ Antes de incluir código ajeno: revisar licencia y compatibilidad, mantenedores 
 
 ## Aprendizaje y distribución
 Al resolver un problema, registrar estrategia validada y métricas, añadir un caso reproducible genérico y extraer patrones a la skill; evitar guardar detalles operativos sensibles del sitio o credenciales. Mantener este repositorio como fuente canónica. Después de cambios, validar, versionar y publicar en el mismo plugin privado y marketplace de Codex cuando existan herramientas/permisos, sin confundir commit con despliegue.
+
+
+## Red de laboratorio aislada y acceso web (lección MCP-Debian, 2026-10-21)
+En un entorno Debian host-only sin ruta externa, **no interpretar la falta de Internet como fallo de autenticación, DNS o scraping**. Comprobar primero `ip route`, `ip -6 route` y la ruta al destino, sin realizar reintentos web inútiles. Separar conectividad del anfitrión Windows y del invitado Debian. Si una investigación exige obtener información externa, preferir un conector web autorizado en ChatGPT o una descarga selectiva desde Windows con inspección de procedencia, licencia, tamaño y seguridad antes de trasladar archivos a Debian mediante SCP; no habilitar NAT, puente, proxy o reenvío sin autorización específica y nueva auditoría.
+
+El control local mediante MCP → Windows → SSH es una **vía de ejecución**, no un método de autenticación web ni una capacidad de red adicional. No transportar cookies, contraseñas, tokens ni sesiones del navegador hacia la VM. Distinguir siempre aislamiento de red observado, acceso a servicios locales y posibilidad de reenvío por el anfitrión. Protocolo técnico en `ingenieria-fiable/references/mcp-local.md`.
