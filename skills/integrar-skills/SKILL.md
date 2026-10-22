@@ -28,3 +28,6 @@ No asumir que un error de transferencia indica que el empaquetador falla, ni que
 
 ## Entregables
 Compatibilidad por entorno (confirmada / pendiente / incompatible), requisitos, arquitectura, pasos de instalación con aprobación pendiente, pruebas, coste marginal esperado y rollback. No repetir preguntas resueltas.
+
+## Ruta de publicación del plugin privado comprobada
+Tras modificar una skill del Gestor de Skills, aplicar el procedimiento de `ingenieria-fiable/references/actualizar-skills.md` **en el mismo encargo**. La ruta preferente demostrada el 22-10-2026 es ZIP reproducible → adjunto del chat montado en ruta verificada → `Plugin Creator.update_plugin` sobre ID existente con `expected_release_id` → relectura de archivos. No confundir archivo remoto de Windows/Debian con adjunto accesible al publicador. Preferir una carga directa solo si queda comprobada; si no, solicitar al usuario únicamente adjuntar el ZIP y continuar sin otra orden. Verificar la publicación, preservar privacidad y release anterior, y diferenciarla de la carga efectiva en otra conversación.
