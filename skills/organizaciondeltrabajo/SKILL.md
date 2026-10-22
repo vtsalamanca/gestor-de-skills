@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.12
+version: 0.2.13
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -132,3 +132,13 @@ Cuando exista un laboratorio Linux autorizado accesible mediante Desktop Command
 **Aislamiento no absoluto:** host-only sin ruta a Internet es una medida verificada de configuración, no una garantía contra reenvío desde Windows o cambios posteriores. Mantener SSH por clave y restringido a la red privada, sin reenvíos innecesarios; no cambiar red ni seguridad sin prueba de reversión y autorización. Conservar instantánea de recuperación y registros sin secretos. Si una tarea requiere Internet, estudiar la obtención autorizada de recursos en Windows y su traslado controlado a Debian, sin abrir NAT ni puente por defecto.
 
 **Evidencia de referencia:** ejecución de SSH/SCP, GUI XFCE mediante XTEST, autorización sudo presencial, desactivación de Avahi y endurecimiento SSH comprobados en laboratorio Debian 13 (2026-10-21). La revisión del firewall/ICS/NAT de Windows y la captura de paquetes no se demostraron exhaustivamente; no presentarlas como certificadas. Consultar `ingenieria-fiable/references/mcp-local.md` para el protocolo técnico. Una skill no instala ni activa el puente por sí misma.
+
+## Continuidad documental mediante almacenamiento autorizado (MCP)
+Cuando el usuario quiera dejar documentación, informes o traspasos recuperables desde otras conversaciones, **priorizar un almacén persistente ya autorizado** (por ejemplo, el laboratorio Debian accesible mediante Remote Desktop Commander) frente a obligarle a descargar y volver a subir archivos. Esta regla es transversal; no limita su aplicación al proyecto Golón.
+1. Comprobar que el conector existe, que el dispositivo correcto está **online**, que la ruta está autorizada y que su coste marginal es admisible. Una ruta mencionada en otro chat no demuestra conectividad actual. Preferir lecturas directas mediante `read_file` y escrituras seguras cuando estén disponibles.
+2. Antes de escribir, determinar documento, destino, clasificación y permisos. No sobrescribir sin comparar el contenido/versión; crear nombres únicos o usar control de concurrencia y copia de seguridad cuando proceda. Prohibido guardar secretos, credenciales o documentación privada en un lugar público.
+3. Tras escribir, **leer de vuelta** el archivo, comprobar completitud (líneas/tamaño; hash cuando proceda) y registrar ruta exacta, dispositivo lógico, fecha y estado `GUARDADO_VERIFICADO`. Una respuesta de escritura sin verificación solo acredita `ESCRITURA_COMUNICADA`.
+4. Para traspasar a otra conversación, facilitar un **encargo autocontenido de lectura**, con dispositivo y ruta verificados, y pedir a la otra conversación que confirme lectura completa. Evitar cargar y descargar ficheros si ambos chats tienen acceso autorizado; nunca afirmar que pueden leerlos antes de comprobar sus herramientas y permisos.
+5. Mantener separadas tres capacidades: **persistencia del archivo**, **lectura bajo demanda desde otro chat** y **entrega/notificación automática entre chats**. Las dos primeras no prueban la tercera. Ante conector ausente, dispositivo apagado, permisos faltantes o coste incierto, informar del bloqueo y usar una alternativa disponible (archivo adjunto, Library o texto copiable), sin inventar un acceso.
+6. Este método **no instala plugins ni activa skills en otras cuentas**, no comparte memoria entre chats y no hace que el asistente consulte Debian automáticamente en cada conversación. La activación depende de que esta skill/instrucción esté cargada, de la intención de la tarea y de la conexión real. En pilotos de evaluación (por ejemplo, ChatGPT Free), controlar qué documentación se entrega para no contaminar pruebas de aprendizaje.
+**Evidencia de origen (2026-10-22):** lectura completa de un documento Markdown de 72 líneas desde `debian-laboratorio` mediante Remote Desktop Commander en Chat normal. Queda por verificar como procedimiento genérico de extremo a extremo la escritura, relectura y recuperación desde otra conversación nueva; no presentar esa cadena como ya superada.
