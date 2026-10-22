@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.17
+version: 0.2.18
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -162,3 +162,6 @@ El 22-10-2026 se actualizó el plugin privado existente desde una **conversació
 
 ### Preferencia obligatoria del usuario: Debian como ejecutor
 Para empaquetado, pruebas, organización de archivos y procesos locales de este proyecto **utilizar directamente el dispositivo MCP `debian-laboratorio`, no Windows**. No elegir Windows por comodidad, por conservar una copia Git anterior ni para trasladar archivos, salvo autorización expresa posterior del usuario. Si Debian carece de Git u otra dependencia, intentar una alternativa segura allí mismo usando archivos canónicos obtenidos mediante el conector GitHub y verificar su integridad; si las garantías de reproducibilidad no son equivalentes, registrar esa limitación. No instalar dependencias ni alterar el aislamiento de red sin permiso. El almacenamiento temporal está en `/home/labgestor/intercambio-chatgpt/`. Para Plugin Creator, comprobar separadamente la transferencia del ZIP hasta el entorno del publicador; la existencia del ZIP en Debian no demuestra que el publicador lo reciba.
+
+### Arquitectura MCP ordinaria: Debian exclusivo, Windows excepcional
+La infraestructura ordinaria de escritorio remoto del usuario es **únicamente `debian-laboratorio`**. En cada sesión, consultar dispositivos y seleccionar Debian; la ausencia/desconexión del agente Windows es **normal y esperada**, no una incidencia a reparar. No usar herramientas contra Windows, no encender su agente, no abrir sesiones SSH a través de Windows ni pedir al usuario que reactive Windows por conveniencia. Si Debian no está disponible, informar del bloqueo real y ofrecer una alternativa sin Windows. **Cualquier acceso excepcional a Windows requiere autorización expresa para la operación concreta**, incluso cuando el dispositivo figure online. No apagar ni desinstalar Windows ni alterar SSH, proxy o red sin consentimiento y plan de recuperación. La disponibilidad futura de Debian debe verificarse de forma independiente del anfitrión: no suponer conexión autónoma si todavía depende del proxy Windows; documentar la dependencia y comprobarla antes de prometerla.
