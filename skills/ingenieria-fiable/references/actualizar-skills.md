@@ -2,6 +2,11 @@
 
 **Uso obligatorio:** cuando el usuario ordene modificar una skill, actualizar el plugin, publicar una versión o recuperar un fallo de distribución. Fuente única: `vtsalamanca/gestor-de-skills`. Aplicar con `organizaciondeltrabajo`, `integrar-skills` e `ingenieria-fiable`. **No activar comprobaciones por cada chat**, cron ni GitHub Actions por defecto. Presupuesto adicional 0 €.
 
+## Flujo indivisible al modificar cualquier skill (octubre de 2026)
+Toda petición de cambio de skill incluye, sin segunda orden del usuario, **edición de la fuente canónica + versión y manifiestos + pruebas + empaquetado + actualización del plugin privado existente + lectura de verificación y comprobación de carga si está disponible**. No cerrar la tarea diciendo únicamente que se actualizó GitHub; si la publicación está bloqueada, declarar `FUENTE_ACTUALIZADA / PUBLICACIÓN_BLOQUEADA` y concretar la causa comprobada. No prometer automatización autónoma fuera de la conversación ni eludir aprobación de la plataforma. No crear otro plugin ni sustituir por archivos para copiar y pegar. Presupuesto adicional cero.
+
+Cuando la modificación trate sobre traspasos de contexto o archivos, mantener como comportamiento preferido `almacenar en Debian mediante MCP → verificar relectura → comunicar dispositivo y ruta para recuperación desde otro chat`. Solo usar descargas, adjuntos o copiado manual si Debian no está accesible o el usuario los solicita expresamente. Esta preferencia no equivale a notificación automática de otra conversación.
+
 ## Regla principal: recuperar antes de improvisar
 Este flujo ya se ha ejecutado con éxito anteriormente. **No declarar imposible la transferencia de un ZIP ni derivar automáticamente a Work solo porque Plugin Creator rechace una ruta `C:\\...`**. Esa ruta pertenece al Windows remoto de Desktop Commander y **no es una ruta local al host de Plugin Creator**. Se debe comprobar primero el procedimiento de preparación de archivo admitido en el entorno de publicación y las herramientas disponibles; una ruta existente en Windows nunca demuestra accesibilidad desde el publicador.
 
