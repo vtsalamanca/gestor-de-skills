@@ -7,6 +7,30 @@ Toda petición de cambio de skill incluye, sin segunda orden del usuario, **edic
 
 Cuando la modificación trate sobre traspasos de contexto o archivos, mantener como comportamiento preferido `almacenar en Debian mediante MCP → verificar relectura → comunicar dispositivo y ruta para recuperación desde otro chat`. Solo usar descargas, adjuntos o copiado manual si Debian no está accesible o el usuario los solicita expresamente. Esta preferencia no equivale a notificación automática de otra conversación.
 
+## Procedimiento de publicación reproducible y puerta de cierre (versión 2026-10-22)
+
+**Contrato de finalización:** una petición de modificar una skill autoriza a intentar en el mismo trabajo fuente, pruebas, paquete, publicación y verificación. No se solicita una segunda orden para actualizar el plugin. Una actualización solo se declara **COMPLETADA** cuando el plugin privado existente contiene efectivamente la modificación. Si una condición bloquea la publicación, la respuesta indicará `PUBLICACIÓN_PENDIENTE` y el impedimento demostrado, sin dar por finalizada la distribución ni pedir órdenes repetidas.
+
+### Secuencia ejecutable y evidencias
+1. **Identidad fija:** comprobar el repositorio `vtsalamanca/gestor-de-skills` y el complemento privado `plugins_6ad40dbac6088191b25671203dfacfe3`; obtener su `current_release_id` y estado PRIVATE/USER mediante Plugin Creator. Rechazar un destino diferente, permisos ambiguos o cambios inesperados. Nunca crear otro complemento.
+2. **Cambio atómico de fuente:** modificar lo mínimo necesario en `main` o en rama de trabajo autorizada, comprobar los cambios ajenos, incrementar versión semántica de la skill si tiene campo de versión y del paquete, alinear `.codex-plugin/plugin.json` con `.agents/plugins/marketplace.json`, y fijar SHA completo de commit. Los README no deben prometer versiones no publicadas.
+3. **Construcción del commit exacto:** obtener `scripts/package_plugin.py` y `tests/test_package_plugin.py` de ese mismo SHA. Ejecutar sus tests y construir desde los bytes comprometidos, no desde directorios modificados sin confirmar. El ZIP debe contener `.codex-plugin/plugin.json`, README y las ocho skills completas; rechazar secretos, enlaces inseguros, omisiones y discrepancias de versión. Guardar SHA-256, tamaño, inventario, commit y registro de pruebas.
+4. **Frontera entre hosts, comprobada ANTES de publicar:** `update_plugin.archive` debe referir a un archivo **host-uploaded** localizable por Plugin Creator. Distinguir **(A)** archivo en Windows/Debian por MCP, **(B)** archivo del contenedor de análisis, **(C)** archivo subido al entorno del publicador. Ni una ruta `C:\...` ni `/home/labgestor/...` ni `/mnt/data/...` demuestran por sí solas C. Comprobar una vía autorizada de carga y que el archivo está presente para ese publicador. Reutilizar la vía que funcionó antes *solo cuando siga comprobada*. No transferir datos privados a un alojamiento público. Si no existe mecanismo accesible, registrar **BLOQUEO_TRANSFERENCIA** sin llamar a `update_plugin` con rutas inventadas; investigar una alternativa nueva una sola vez por hipótesis (por ejemplo, un runtime de Work autorizado con acceso confirmado al publicador).
+5. **Preflight de publicación:** releer `current_release_id` inmediatamente antes del cambio; si varió, contrastar los archivos y detenerse ante conflicto. Con archivo cargado y verificado, invocar una vez `Plugin Creator.update_plugin` con `plugin_id` fijo, `archive` válido y `expected_release_id` observado. No modificar visibilidad, credenciales, componentes ajenos o alcance.
+6. **Postflight obligatorio:** leer `get_plugin_metadata` y `get_plugin_files` de la nueva release; comprobar nuevo release ID, versión, los ocho `SKILL.md`, referencias relevantes y el texto realmente cambiado. Verificar PRIVATE/USER y capacidad de recuperar versión anterior si disponible. La coincidencia del número de versión SIN contenido no es evidencia suficiente.
+7. **Carga en nuevos chats:** comprobar, en conversación nueva con plugin instalado, que la skill accesible contiene el texto o versión recién publicados. Esta etapa requiere una sesión nueva real y puede quedar `CARGA_NO_PROBADA`; no declarar universalidad ni forzar recarga del chat presente.
+8. **Informe y continuidad:** registrar por separado `FUENTE_OK`, `TESTS_OK`, `ZIP_OK`, `TRANSFERENCIA_OK`, `PLUGIN_OK`, `CARGA_NUEVO_CHAT` y `CODEX`, cada uno con prueba/fecha. El cierre de entrega diferencia `PUBLICADO_VERIFICADO` de `FUENTE_ACTUALIZADA_PUBLICACIÓN_PENDIENTE`. Presupuesto adicional 0 €; detener cualquier servicio con tarifa por uso no comprobada.
+
+### Pruebas de fallo mínimas
+- Ruta visible únicamente en Debian/Windows: publicación detenida antes de enviar path inaccesible.
+- `expected_release_id` obsoleto: no sobrescribir.
+- ZIP parcial, versión distinta o skill omitida: no publicar.
+- Publicación aceptada pero el archivo de la habilidad no aparece: no declarar éxito.
+- Chat nuevo carga versión antigua: conservar estado `PLUGIN_OK / CARGA_NO_PROBADA` o `CARGA_FALLIDA`, según evidencia.
+- Autoridad o coste desconocidos: detener y conservar release previa.
+
+**Alcance real:** esta metodología reduce pasos manuales y solicitudes repetidas, pero no convierte la skill en un proceso autónomo ni habilita una ruta de transferencia que no exista. No programar acciones automáticas futuras ni publicar sin pruebas y permisos.
+
 ## Regla principal: recuperar antes de improvisar
 Este flujo ya se ha ejecutado con éxito anteriormente. **No declarar imposible la transferencia de un ZIP ni derivar automáticamente a Work solo porque Plugin Creator rechace una ruta `C:\\...`**. Esa ruta pertenece al Windows remoto de Desktop Commander y **no es una ruta local al host de Plugin Creator**. Se debe comprobar primero el procedimiento de preparación de archivo admitido en el entorno de publicación y las herramientas disponibles; una ruta existente en Windows nunca demuestra accesibilidad desde el publicador.
 
