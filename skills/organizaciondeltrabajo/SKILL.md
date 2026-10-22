@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.13
+version: 0.2.14
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -142,3 +142,13 @@ Cuando el usuario quiera dejar documentación, informes o traspasos recuperables
 5. Mantener separadas tres capacidades: **persistencia del archivo**, **lectura bajo demanda desde otro chat** y **entrega/notificación automática entre chats**. Las dos primeras no prueban la tercera. Ante conector ausente, dispositivo apagado, permisos faltantes o coste incierto, informar del bloqueo y usar una alternativa disponible (archivo adjunto, Library o texto copiable), sin inventar un acceso.
 6. Este método **no instala plugins ni activa skills en otras cuentas**, no comparte memoria entre chats y no hace que el asistente consulte Debian automáticamente en cada conversación. La activación depende de que esta skill/instrucción esté cargada, de la intención de la tarea y de la conexión real. En pilotos de evaluación (por ejemplo, ChatGPT Free), controlar qué documentación se entrega para no contaminar pruebas de aprendizaje.
 **Evidencia de origen (2026-10-22):** lectura completa de un documento Markdown de 72 líneas desde `debian-laboratorio` mediante Remote Desktop Commander en Chat normal. Queda por verificar como procedimiento genérico de extremo a extremo la escritura, relectura y recuperación desde otra conversación nueva; no presentar esa cadena como ya superada.
+
+### Directorios operativos y conservación en Debian (configuración del usuario)
+Para los traspasos temporales usar el dispositivo lógico `debian-laboratorio` y la base `/home/labgestor/intercambio-chatgpt/` **solo tras verificar conexión, ruta y permisos**. Directorios creados y verificados el 2026-10-22:
+- `descargas/`: archivos temporales de intercambio ya recuperados, cuando no sean la única copia.
+- `pendientes/`: archivos todavía no recuperados o cuya recepción no está verificada.
+- `/home/labgestor/proyectos/`: resultados y documentación permanente de los proyectos, fuera de la limpieza temporal.
+
+Al solicitar el usuario un resumen para abrir otro chat, un traspaso o el envío de un archivo sin formato de entrega alternativo explícito, **intentar por defecto guardar el contenido en Debian**, verificar la lectura y facilitar una instrucción breve con el dispositivo y la ruta exacta para que el chat destinatario lo recupere. No obligar a copiar grandes bloques, descargar o subir de nuevo. Si el chat destinatario no tiene Desktop Commander cargado, indicarlo y no prometer recuperación automática.
+
+**Limpieza segura:** revisión mensual recomendada; los 30 días constituyen un *umbral para inventariar candidatos*, no permiso de borrado. Nunca borrar automáticamente por antigüedad, ni borrar un pendiente, un documento único, un expediente activo o un archivo bajo `proyectos/`. Antes de toda eliminación, listar candidatos con fecha, tamaño, ruta y estado de recepción; comprobar que existe una copia permanente o recepción confirmada, solicitar aprobación específica para borrar y registrar el resultado. No instalar cron, timers, trabajos programados ni servicios persistentes para limpieza sin autorización separada. La limpieza no está activada.
