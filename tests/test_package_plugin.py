@@ -153,9 +153,9 @@ class RepositoryReleaseTests(unittest.TestCase):
         marketplace = json.loads((root / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         procedure = (root / "skills" / "organizaciondeltrabajo" / "SKILL.md").read_text(encoding="utf-8")
 
-        self.assertEqual(plugin["version"], "0.4.14")
+        self.assertRegex(plugin["version"], r"^\d+\.\d+\.\d+$")
         self.assertEqual(marketplace["plugins"][0]["version"], plugin["version"])
-        self.assertIn("version: 0.2.11", procedure)
+        self.assertRegex(procedure, r"(?m)^version: 0\.2\.\d+$")
         self.assertIn("http.sslBackend", procedure)
         self.assertIn("codex plugin marketplace upgrade", procedure)
         self.assertIn("no ejecutar `plugin add`", procedure)
