@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.18
+version: 0.2.19
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -165,3 +165,6 @@ Para empaquetado, pruebas, organización de archivos y procesos locales de este 
 
 ### Arquitectura MCP ordinaria: Debian exclusivo, Windows excepcional
 La infraestructura ordinaria de escritorio remoto del usuario es **únicamente `debian-laboratorio`**. En cada sesión, consultar dispositivos y seleccionar Debian; la ausencia/desconexión del agente Windows es **normal y esperada**, no una incidencia a reparar. No usar herramientas contra Windows, no encender su agente, no abrir sesiones SSH a través de Windows ni pedir al usuario que reactive Windows por conveniencia. Si Debian no está disponible, informar del bloqueo real y ofrecer una alternativa sin Windows. **Cualquier acceso excepcional a Windows requiere autorización expresa para la operación concreta**, incluso cuando el dispositivo figure online. No apagar ni desinstalar Windows ni alterar SSH, proxy o red sin consentimiento y plan de recuperación. La disponibilidad futura de Debian debe verificarse de forma independiente del anfitrión: no suponer conexión autónoma si todavía depende del proxy Windows; documentar la dependencia y comprobarla antes de prometerla.
+
+### Norma transversal: Debian principal, Drive auxiliar, Windows excepcional
+**Aplicación general a todos los proyectos, chats y tareas:** `debian-laboratorio` es el centro operativo habitual (archivos, scripts, pruebas y transferencia directa entre conversaciones). Utilizar Google Drive **solo como transporte privado y temporal** cuando la entrega/descarga de archivos no pueda realizarse directamente por Debian y se compruebe un beneficio real; no duplicar documentos innecesariamente ni hacerlos públicos. Verificar la capacidad real de subir ZIP a Drive: `upload_file` necesita una referencia de archivo compatible, **no acepta rutas locales**. No asegurar ni automatizar un puente Debian→Drive antes de probarlo. Aplicar retención con revisión, nunca borrar por antigüedad sin autorización. Windows: acceso remoto cerrado al terminar la migración, **uso excepcional solo con autorización expresa para operación concreta**, aunque aparezca conectado. **Puerta previa al cierre:** probar que Debian y su recuperación funcionan sin agente ni proxy de Windows; no cerrar prematuramente el acceso ni cambiar redes sin consentimiento. Si Debian falla, explicar el bloqueo, no activar Windows por iniciativa propia. Coste adicional 0 € salvo autorización.
