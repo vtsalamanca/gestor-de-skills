@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.14
+version: 0.2.15
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -152,3 +152,7 @@ Para los traspasos temporales usar el dispositivo lógico `debian-laboratorio` y
 Al solicitar el usuario un resumen para abrir otro chat, un traspaso o el envío de un archivo sin formato de entrega alternativo explícito, **intentar por defecto guardar el contenido en Debian**, verificar la lectura y facilitar una instrucción breve con el dispositivo y la ruta exacta para que el chat destinatario lo recupere. No obligar a copiar grandes bloques, descargar o subir de nuevo. Si el chat destinatario no tiene Desktop Commander cargado, indicarlo y no prometer recuperación automática.
 
 **Limpieza segura:** revisión mensual recomendada; los 30 días constituyen un *umbral para inventariar candidatos*, no permiso de borrado. Nunca borrar automáticamente por antigüedad, ni borrar un pendiente, un documento único, un expediente activo o un archivo bajo `proyectos/`. Antes de toda eliminación, listar candidatos con fecha, tamaño, ruta y estado de recepción; comprobar que existe una copia permanente o recepción confirmada, solicitar aprobación específica para borrar y registrar el resultado. No instalar cron, timers, trabajos programados ni servicios persistentes para limpieza sin autorización separada. La limpieza no está activada.
+
+### Publicación integrada como condición de cierre
+Cuando el usuario autoriza modificar una habilidad, esa misma autorización incluye **preparar y publicar la actualización en el plugin privado existente** y verificar los archivos publicados, siempre que herramientas, permisos y coste cero estén comprobados. Ejecutar el runbook `skills/ingenieria-fiable/references/actualizar-skills.md` en la misma tarea: fuente canónica y versión → tests → ZIP desde commit exacto → carga en host del publicador → `Plugin Creator.update_plugin` protegido por `expected_release_id` → relectura de release. No exigir una segunda solicitud de «actualiza el plugin».
+**Prohibición de cierre ambiguo:** si la transferencia al host de Plugin Creator o la publicación no se ha efectuado, registrar `FUENTE_ACTUALIZADA / PUBLICACIÓN_PENDIENTE`, no «actualización completada». No usar rutas de Debian o Windows como si fueran rutas locales del publicador, ni prometer carga en chats nuevos sin comprobarla. Mantener release anterior, plugin ID, privacidad y coste adicional cero; no habilitar automatizaciones ni inventar accesos.
