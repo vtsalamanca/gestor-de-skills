@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.15
+version: 0.2.16
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -156,3 +156,6 @@ Al solicitar el usuario un resumen para abrir otro chat, un traspaso o el envío
 ### Publicación integrada como condición de cierre
 Cuando el usuario autoriza modificar una habilidad, esa misma autorización incluye **preparar y publicar la actualización en el plugin privado existente** y verificar los archivos publicados, siempre que herramientas, permisos y coste cero estén comprobados. Ejecutar el runbook `skills/ingenieria-fiable/references/actualizar-skills.md` en la misma tarea: fuente canónica y versión → tests → ZIP desde commit exacto → carga en host del publicador → `Plugin Creator.update_plugin` protegido por `expected_release_id` → relectura de release. No exigir una segunda solicitud de «actualiza el plugin».
 **Prohibición de cierre ambiguo:** si la transferencia al host de Plugin Creator o la publicación no se ha efectuado, registrar `FUENTE_ACTUALIZADA / PUBLICACIÓN_PENDIENTE`, no «actualización completada». No usar rutas de Debian o Windows como si fueran rutas locales del publicador, ni prometer carga en chats nuevos sin comprobarla. Mantener release anterior, plugin ID, privacidad y coste adicional cero; no habilitar automatizaciones ni inventar accesos.
+
+### Transferencia probada al Plugin Creator
+El 22-10-2026 se actualizó el plugin privado existente desde una **conversación normal** con `Plugin Creator.update_plugin`, usando un ZIP que el usuario adjuntó y cuya ruta real `/mnt/data/...` fue verificada, con SHA-256 y release ID comprobados. El plugin 0.4.18 y las ocho skills se releyeron satisfactoriamente. **Esta es la ruta prioritaria verificada**, y debe intentarse antes de Work o de experimentar de nuevo con rutas remotas. Tras modificar cualquier skill, empaquetar, solicitar el adjunto únicamente si no existe transferencia directa verificada, publicar y comprobar la nueva release en el mismo trabajo. Leer el procedimiento canónico en `ingenieria-fiable/references/actualizar-skills.md`. La carga en un chat nuevo es una comprobación independiente.
