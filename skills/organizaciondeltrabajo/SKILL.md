@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.16
+version: 0.2.17
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -159,3 +159,6 @@ Cuando el usuario autoriza modificar una habilidad, esa misma autorización incl
 
 ### Transferencia probada al Plugin Creator
 El 22-10-2026 se actualizó el plugin privado existente desde una **conversación normal** con `Plugin Creator.update_plugin`, usando un ZIP que el usuario adjuntó y cuya ruta real `/mnt/data/...` fue verificada, con SHA-256 y release ID comprobados. El plugin 0.4.18 y las ocho skills se releyeron satisfactoriamente. **Esta es la ruta prioritaria verificada**, y debe intentarse antes de Work o de experimentar de nuevo con rutas remotas. Tras modificar cualquier skill, empaquetar, solicitar el adjunto únicamente si no existe transferencia directa verificada, publicar y comprobar la nueva release en el mismo trabajo. Leer el procedimiento canónico en `ingenieria-fiable/references/actualizar-skills.md`. La carga en un chat nuevo es una comprobación independiente.
+
+### Preferencia obligatoria del usuario: Debian como ejecutor
+Para empaquetado, pruebas, organización de archivos y procesos locales de este proyecto **utilizar directamente el dispositivo MCP `debian-laboratorio`, no Windows**. No elegir Windows por comodidad, por conservar una copia Git anterior ni para trasladar archivos, salvo autorización expresa posterior del usuario. Si Debian carece de Git u otra dependencia, intentar una alternativa segura allí mismo usando archivos canónicos obtenidos mediante el conector GitHub y verificar su integridad; si las garantías de reproducibilidad no son equivalentes, registrar esa limitación. No instalar dependencias ni alterar el aislamiento de red sin permiso. El almacenamiento temporal está en `/home/labgestor/intercambio-chatgpt/`. Para Plugin Creator, comprobar separadamente la transferencia del ZIP hasta el entorno del publicador; la existencia del ZIP en Debian no demuestra que el publicador lo reciba.
