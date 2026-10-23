@@ -1,0 +1,28 @@
+name: Prueba puente ZIP Plugin Creator
+on:
+  push:
+    paths:
+      - '.github/workflows/prueba-puente-plugin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  puente:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar empaquetador
+        run: python3 -m unittest discover -s tests -p test_package_plugin.py
+      - name: Construir paquete
+        run: python3 scripts/package_plugin.py --repository . --commit "$GITHUB_SHA" --output gestor-de-skills-0.4.22-oficial.zip
+      - name: Generar hash
+        run: sha256sum gestor-de-skills-0.4.22-oficial.zip
+      - name: Subir ZIP sin reempaquetar
+        uses: actions/upload-artifact@v7
+        with:
+          path: gestor-de-skills-0.4.22-oficial.zip
+          archive: false
+          retention-days: 1
