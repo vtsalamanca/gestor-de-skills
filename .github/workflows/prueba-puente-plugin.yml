@@ -1,28 +1,38 @@
-name: Prueba puente ZIP Plugin Creator
+name: Empaquetar skills verificadas
 on:
   push:
+    branches: [main]
     paths:
+      - 'skills/**'
+      - 'scripts/package_plugin.py'
+      - 'tests/**'
+      - '.codex-plugin/plugin.json'
       - '.github/workflows/prueba-puente-plugin.yml'
   workflow_dispatch:
-
 permissions:
   contents: read
-
+concurrency:
+  group: paquete-skills-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  puente:
+  paquete:
+    if: github.repository == 'vtsalamanca/gestor-de-skills'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Validar empaquetador
+      - name: Pruebas oficiales
         run: python3 -m unittest discover -s tests -p test_package_plugin.py
-      - name: Construir paquete
-        run: python3 scripts/package_plugin.py --repository . --commit "$GITHUB_SHA" --output gestor-de-skills-0.4.22-oficial.zip
-      - name: Generar hash
-        run: sha256sum gestor-de-skills-0.4.22-oficial.zip
-      - name: Subir ZIP sin reempaquetar
+      - name: Leer version y empaquetar
+        shell: bash
+        run: |
+          VERSION=$(python3 -c 'import json; print(json.load(open(".codex-plugin/plugin.json"))["version"])')
+          python3 scripts/package_plugin.py --repository . --commit "$GITHUB_SHA" --output "gestor-de-skills-${VERSION}-oficial.zip"
+          sha256sum "gestor-de-skills-${VERSION}-oficial.zip" | tee paquete.sha256
+      - name: Subir ZIP intacto
         uses: actions/upload-artifact@v7
         with:
-          path: gestor-de-skills-0.4.22-oficial.zip
+          name: gestor-de-skills-oficial
+          path: gestor-de-skills-*-oficial.zip
           archive: false
           retention-days: 1
