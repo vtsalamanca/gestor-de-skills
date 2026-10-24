@@ -1,6 +1,6 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.25",
+  "version": "0.4.26",
   "description": "Descubre, audita, crea e integra skills; incluye organizaciondeltrabajo, ingenieria-fiable, acceso_webs y bibliotecario-memoria.",
   "author": {
     "name": "Pav├│n Serrano",
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con nueve habilidades. Bibliotecario-memoria permite recuperar y guardar hitos de proyectos mediante Desktop Commander y SQLite local en Debian; no garantiza ejecución automática por turno o al cerrar un chat. Las ocho habilidades anteriores permanecen disponibles.",
+    "longDescription": "Complemento privado con nueve habilidades. Bibliotecario-memoria 0.3.1 recupera proyectos y orienta el guardado proactivo de hitos enlazados a documentos verificados en Debian; no garantiza hooks por turno. Las ocho habilidades anteriores permanecen.",
     "category": "Productivity",
     "developerName": "Pav├│n Serrano",
     "capabilities": [
