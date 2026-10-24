@@ -1,7 +1,7 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra proactivamente decisiones, pruebas y documentos importantes en SQLite de Debian mediante Remote Desktop Commander.
-version: 0.3.2
+version: 0.3.3
 ---
 # Bibliotecario — memoria y documentación
 
@@ -24,3 +24,14 @@ Ejemplo (sustituir ID, textos y rutas por datos reales):
 El programa crea sesión y revisión atómicamente y devuelve `write.status` y `context.latest_revision`. Confirmar `saved` o `duplicate` y la revisión obtenida; `duplicate` solo es correcto para reintento idéntico con el mismo `operation_id`. Ante errores no afirmar que se ha guardado.
 
 **Precauciones:** guardar solo hitos útiles, no conversaciones completas ni credenciales; verificar rutas antes de registrarlas; no borrar ni modificar proyectos ajenos. La habilidad es una directriz, no un hook de fin de turno: no puede asegurar activación en todos los mensajes ni guardar tras un cierre brusco. La selección espontánea y la ejecución de `record_and_brief` deben verificarse por separado.
+## Motor semántico contextual (ChatGPT durante la conversación, Free/Plus)
+ChatGPT actúa como intérprete de recuerdos al trabajar en un chat activo. No depende de APIs de pago, otro LLM ni de un proceso continuo. Aplicar a cualquier trabajo, no solo a un proyecto concreto.
+
+1. Recupera el trabajo mediante la interfaz habitual y contrasta los checkpoints originales. Los resúmenes extractivos sirven de índice; la detección de coincidencias léxicas de contexto_relaciones.py solo genera candidatos.
+2. Compara el significado del hito anterior y posterior: asunto exacto, condiciones de éxito, prueba real, alcance parcial y hechos pendientes. No equipares "se abrió manualmente" con "se abre automáticamente". Descarta relaciones sin contexto suficiente.
+3. Clasifica como related, resolved, superseded, contradicts, still_open, unrelated o insufficient_evidence, expresando una justificación concreta, límites y referencias a ID de checkpoint, revisión y ordinal. Prioriza insufficient_evidence ante la duda.
+4. Si procede registrar una hipótesis, ejecuta en Debian evaluacion_semantica.py: draft(work,(checkpoint_anterior,ordinal),(checkpoint_posterior,ordinal),relation,reason,uncertainties), verify y record. La salida es agent_hypothesis_unapproved y se guarda aparte. Los hashes comprueban citas, no demuestran la interpretación; reviewer=human no acredita identidad ni autoriza cambios.
+5. En la respuesta diferencia: hecho corroborado, interpretación fundamentada e hipótesis. Solo registra verified_result en la memoria principal si el hecho se comprobó realmente. Nunca declares cerrada una tarea basándote en similitud superficial.
+6. Conserva originales y procedencia, evita duplicados mediante claves estables. No borres, fusiones o sustituyas hitos automáticamente. Si falla la conexión, declara el límite en lugar de inventar verificaciones.
+
+La skill orienta conductas, NO garantiza ejecución espontánea en cada turno, recuperación tras cierre abrupto ni funcionamiento cuando ChatGPT no está activo. Observador de Debian y auditoría horaria son procesos distintos y no generan inferencia. Coste adicional objetivo: 0 €.
