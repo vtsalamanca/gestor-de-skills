@@ -7,7 +7,7 @@
     {
       "name": "gestor-de-skills",
       "description": "Descubre, audita, crea e integra nueve skills; incluye bibliotecario-memoria, organizaciondeltrabajo e ingenieria-fiable.",
-      "version": "0.4.31",
+      "version": "0.4.32",
       "source": {
         "source": "local",
         "path": "."
