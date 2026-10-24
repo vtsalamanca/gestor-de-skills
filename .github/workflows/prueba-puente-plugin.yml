@@ -22,13 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Pruebas oficiales
-        run: python3 -m unittest discover -s tests -p test_package_plugin.py
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Leer version y empaquetar
         shell: bash
         run: |
           VERSION=$(python3 -c 'import json; print(json.load(open(".codex-plugin/plugin.json"))["version"])')
           python3 scripts/package_plugin.py --repository . --commit "$GITHUB_SHA" --output "gestor-de-skills-${VERSION}-oficial.zip"
           sha256sum "gestor-de-skills-${VERSION}-oficial.zip" | tee paquete.sha256
+          python3 scripts/preflight_plugin_upload.py "gestor-de-skills-${VERSION}-oficial.zip"
       - name: Subir ZIP intacto
         uses: actions/upload-artifact@v7
         with:
