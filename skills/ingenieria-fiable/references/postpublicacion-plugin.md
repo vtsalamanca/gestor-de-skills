@@ -20,3 +20,17 @@
 - La herramienta uninstall_app no garantiza borrar un objeto de Plugin Creator; comprobar por separado.
 
 Este procedimiento evita errores controlables, no garantiza que OpenAI nunca falle. La verificación posterior depende de que Plugin Creator suministre contenido completo.
+
+
+## Método directo alternativo: comparación exhaustiva por conectores (verificado 25-10-2026)
+
+Cuando no sea posible exportar automáticamente todo el JSON de Plugin Creator a un archivo local, realizar la comprobación con el orquestador de herramientas, sin pasar por transferencias de archivos. **Este método se probó con 26/26 coincidencias sobre la release 0.4.32**.
+
+1. Leer una vez `Plugin_Creator.get_plugin_files` (sin read_paths) y fijar `plugin_id`, `current_release_id`, versión, estado PRIVATE y listado completo. Rechazar next_offset sin consumir y nombres repetidos.
+2. Tomar los paths del resultado, nunca inventarlos. Procesar subgrupos de **cuatro o cinco archivos** (el servicio rechaza peticiones de demasiados archivos).
+3. Para cada subgrupo leer contenido con `Plugin_Creator.get_plugin_files({plugin_id,read_paths:subgrupo})`. Rechazar missing_paths, size_limited_paths y content ausente. Comparar cada cadena `contents[path]` **exactamente** con el contenido UTF-8 de `GitHub.fetch_file` del mismo path y del SHA concreto usado para empaquetar, no de main móvil. Verificar las 26 rutas esperadas.
+4. Si todos los ficheros son UTF-8, una igualdad exacta con los bytes de GitHub equivale a igualdad de SHA-256 respecto del paquete canónico que conserva los bytes Git. No aplicar conversión de líneas ni normalización Unicode. Para archivos binarios esta técnica no sirve: usar descarga oficial y validador de hashes.
+5. Releer el release al finalizar. Si cambió el release_id durante la prueba, invalidar los resultados y repetir para una versión estable. Publicación verificada solo cuando nombre, privacidad, release, inventario, contenido completo y versión coinciden.
+6. Guardar un informe de comprobación en Debian con commit SHA, plugin_id, release_id, total, discrepancias y limitaciones. Este método compara directamente, pero **no constituye exportación JSON automática ni ejecución desatendida**. Si en el futuro el conector facilita volcado fiable, utilizar `postflight_plugin_release.py` sobre el JSON exportado.
+
+**Prueba real:** ID `plugins_6add39166308819193bc271cfa0af302`, release `pluginrel_6add3ad46ad8819185ecab3034fe1f8c` (0.4.32), commit `3b5b89f8e5f206c12abaca52e77bd98ff71df837`, 26 comparaciones de contenido contra GitHub, 0 diferencias, tres lotes de 8/8/10 archivos, subpeticiones de hasta cinco.
