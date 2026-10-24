@@ -13,7 +13,7 @@ def validate(path, expected_sha=None):
         if '.agents/plugins/marketplace.json' in names or any('marketplace.json' in n for n in names):raise ValueError('MARKETPLACE_IN_UPLOAD_PROHIBITED')
         if '.codex-plugin/plugin.json' not in names:raise ValueError('PLUGIN_MANIFEST_MISSING')
         manifest=json.loads(archive.read('.codex-plugin/plugin.json'))
-        if manifest.get('name')!='gestor-de-skills' or not re.fullmatch(r'\\d+\\.\\d+\\.\\d+',manifest.get('version','')):raise ValueError('INVALID_PLUGIN_IDENTITY_OR_VERSION')
+        if manifest.get('name')!='gestor-de-skills' or not re.fullmatch(r'\d+\.\d+\.\d+',manifest.get('version','')):raise ValueError('INVALID_PLUGIN_IDENTITY_OR_VERSION')
         skills={n.split('/')[1] for n in names if n.startswith('skills/') and n.endswith('/SKILL.md') and len(n.split('/'))==3}
         if len(skills)!=9 or 'bibliotecario-memoria' not in skills:raise ValueError('INCOMPLETE_SKILL_ARCHIVE')
         if not all(n=='README.md' or n=='.codex-plugin/plugin.json' or n.startswith('skills/') for n in names):raise ValueError('UNEXPECTED_ROOT_MEMBER')
