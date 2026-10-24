@@ -45,6 +45,16 @@ Cuando la modificación trate sobre traspasos de contexto o archivos, mantener c
 
 **Seguridad y límites:** no crear nuevos plugins ni cambiar privacidad; no asumir que un documento alojado en Debian equivale a un adjunto del chat; mantener release anterior y evitar costes no autorizados. La operación tiene pasos verificables, pero no es infalible: declarar bloqueos y pruebas pendientes con precisión.
 
+## Corrección permanente de fallos de Git y publicación (24-10-2026)
+
+**Fuente y credenciales están separados.** El checkout de Debian puede editar, probar y empaquetar sin disponer de autenticación HTTPS. No intentar `git push origin main` desde Desktop Commander si el remoto HTTPS no tiene gestor de credenciales autorizado; ese fallo no demuestra un bloqueo de publicación. Usar el **conector oficial GitHub conectado** para crear rama, actualizar ficheros, abrir PR y fusionarlo. Después, desde Debian, ejecutar `git fetch origin main` y sincronizar el checkout limpio con `git merge --ff-only origin/main`. Si existe un commit local no publicado, conservar primero una rama de respaldo, comparar con el commit publicado y reconciliar sin descartar cambios ajenos.
+
+**Identidad de autor:** configurar `user.name` y `user.email` únicamente en el repositorio local de Debian (email público noreply del titular confirmado), sin alterar el Git global ni almacenar contraseñas o tokens. Esa identidad corrige el error `Author identity unknown` pero **no** proporciona autenticación de publicación. Nunca usar credenciales inventadas.
+
+**Postpublicación obligatoria:** tras el merge y pruebas, actualizar mediante Plugin Creator el plugin privado existente y releer versión, contenido íntegro de la skill editada, número real de habilidades, privacidad y release ID. No inferir que el plugin está actualizado solo porque el repositorio lo esté. Mantener expresamente `CARGA_CHAT_NUEVO_PENDIENTE` hasta probarla en una conversación nueva.
+
+**Inventario:** obtener el número de skills del manifiesto/repositorio en cada entrega; actualmente son **nueve**, no las ocho citadas en instrucciones históricas de este documento. No rechazar automáticamente un paquete correcto por conteos obsoletos.
+
 ## Regla principal: recuperar antes de improvisar
 Este flujo ya se ha ejecutado con éxito anteriormente. **No declarar imposible la transferencia de un ZIP ni derivar automáticamente a Work solo porque Plugin Creator rechace una ruta `C:\\...`**. Esa ruta pertenece al Windows remoto de Desktop Commander y **no es una ruta local al host de Plugin Creator**. Se debe comprobar primero el procedimiento de preparación de archivo admitido en el entorno de publicación y las herramientas disponibles; una ruta existente en Windows nunca demuestra accesibilidad desde el publicador.
 
