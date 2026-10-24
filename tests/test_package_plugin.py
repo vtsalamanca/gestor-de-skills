@@ -52,7 +52,7 @@ class PackagePluginTests(unittest.TestCase):
                 if name.endswith("/SKILL.md")
             }
             self.assertEqual(packaged_skills, EXPECTED_SKILLS)
-            self.assertEqual(len(packaged_skills), 8)
+            self.assertEqual(len(packaged_skills), len(EXPECTED_SKILLS))
             self.assertIn("acceso_webs", packaged_skills)
             for name, digest in report_one["files"].items():
                 self.assertEqual(hashlib.sha256(archive.read(name)).hexdigest(), digest)
