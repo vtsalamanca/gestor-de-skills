@@ -7,7 +7,7 @@ class PreflightUpload(unittest.TestCase):
   with zipfile.ZipFile(p,'w') as z:
    z.writestr('.codex-plugin/plugin.json',json.dumps({'name':'gestor-de-skills','version':'0.4.29'}))
    for name in ['bibliotecario-memoria','acceso_webs','auditar-skills','crear-skills','descubrir-skills','ingenieria-fiable','integrar-skills','inventariar-skills','organizaciondeltrabajo']:
-    z.writestr('skills/'+name+'/SKILL.md','---\\nname: '+name+'\\n---')
+    z.writestr('skills/'+name+'/SKILL.md','---\nname: '+name+'\n---')
    if marketplace:z.writestr('.agents/plugins/marketplace.json','{}')
   return t,p
  def test_good(self):
