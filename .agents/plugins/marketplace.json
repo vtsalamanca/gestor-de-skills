@@ -6,8 +6,8 @@
   "plugins": [
     {
       "name": "gestor-de-skills",
-      "description": "Descubre, audita, crea e integra skills; incorpora organizaciondeltrabajo, acceso_webs e ingenieria-fiable con desarrollo eficiente, evidencia y presupuesto cero.",
-      "version": "0.4.23",
+      "description": "Descubre, audita, crea e integra nueve skills; incluye bibliotecario-memoria, organizaciondeltrabajo e ingenieria-fiable.",
+      "version": "0.4.25",
       "source": {
         "source": "local",
         "path": "."
