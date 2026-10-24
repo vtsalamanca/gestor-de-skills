@@ -126,3 +126,20 @@ Archivo original y procesos en Debian. Primero probar acceso directo entre sesio
 5. Leer `get_plugin_files` después: versión correcta, ocho skills, soporte y manifiesto; distinguir publicación verificada de recarga efectiva de otras sesiones. Anotar nuevo release ID y mantener rollback. Si falla, preservar release vigente e informar `PUBLICACION_BLOQUEADA`.
 6. Sin workflow concluido o sin referencia registrada, detener publicación, no probar rutas remotas repetidamente. No activar publicación automática sin control de cambios y de permisos.
 **Prueba real:** workflow run `39876898171`; artifact `12467699397`; hash `af8a2ef92e7d9a2e03bf057a69411550de1720b88166e77aa1f18d841b28bf09`; Plugin Creator confirmó release `pluginrel_6adaa70f636881918703ea77cc60d33f` versión 0.4.22, 23 ficheros. Se mantiene la publicación como acción explícitamente autorizada, mientras que la creación del artefacto queda automatizada.
+
+## Preflight bloqueante previo a Plugin Creator (incidente 24-10-2026)
+
+**Causa demostrada:** una publicación utilizó ZIP manual distinto del empaquetador oficial e incluyó el archivo .agents/plugins/marketplace.json. El servidor devolvió updated, pero get_plugin_files rechazó la release porque esperaba un solo plugin y no un marketplace. updated NO es suficiente.
+
+**Procedimiento único obligatorio:**
+1. Confirmar fuente GitHub SHA completo, checkout limpio y versiones sincronizadas.
+2. Empaquetar SOLAMENTE con python3 scripts/package_plugin.py --repository . --commit SHA --output /RUTA/plugin.zip.
+3. Antes de subir, verificar el ZIP mediante python3 scripts/preflight_plugin_upload.py /RUTA/plugin.zip --sha256 HASH_CANONICO. Si falla, prohibido publicar.
+4. Comprobar SHA-256 y bytes de la COPIA accesible al host de Plugin Creator. Nunca confundir rutas de Debian, Windows y host del publicador.
+5. Leer release actual y guardar su identificador. Actualizar con expected_release_id; nunca crear otro plugin.
+6. Leer get_plugin_files justo después de publicar y verificar las nueve habilidades, versión de Bibliotecario, privacidad e identidad. Si falla, detener publicación y declarar RELEASE_DEFECTUOSA.
+7. No intentar delete_paths a ciegas si la release corrupta falla al cargarse antes de aplicar el cambio. Buscar rollback oficialmente soportado o soporte; conservar las releases anteriores.
+
+**Preflight rechaza:** marketplaces, miembros ZIP duplicados, rutas inseguras, ficheros raíz inesperados, manifiestos erróneos, inventario incompleto y hash incorrecto. Las pruebas garantizan el control en nuestro flujo, no eliminan posibles errores futuros del servicio externo.
+
+**Estado histórico:** release 0.4.29 marcada defectuosa por get_plugin_files CONFLICT; el registro de versión no prueba que sea utilizable. Mantener constancia hasta que una API oficial permita repararla y se supere la postlectura.
