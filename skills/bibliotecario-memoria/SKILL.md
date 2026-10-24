@@ -1,16 +1,18 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra proactivamente decisiones, pruebas y documentos importantes en SQLite de Debian mediante Remote Desktop Commander.
-version: 0.3.1
+version: 0.3.2
 ---
 # Bibliotecario — memoria y documentación
 
 **Ejecución compatible con Free y Plus cuando Remote Desktop Commander esté disponible:** Python estándar + SQLite en `debian-laboratorio`. No requiere Codex, Work, API de pago ni GitHub para guardar.
 
 ## Comportamiento al recuperar
-1. Identifica el trabajo: busca por título en el Bibliotecario, nunca presupongas que el ID de otro proyecto sirve. Si falta, consulta el protocolo local antes de crear nada.
-2. Recupera con `{"action":"brief","work":"ID_REAL"}` o `resume` de `/home/labgestor/bibliotecario-piloto/interfaz_chat.py` (petición JSON por stdin).
-3. Reutiliza documentos y avances ya registrados sin afirmar que se han comprobado pasos que solo figuran como pendientes.
+1. Identifica el tema real de la conversación, sin suponer ningún proyecto preexistente. Busca con `{"action":"find","title":"TÍTULO"}` mediante `interfaz_chat.py` y comprueba el **título de cada coincidencia**: una mención incidental a un proyecto en otro trabajo no significa que ambos sean el mismo.
+2. Si ya existe el trabajo adecuado, reutiliza su ID. Si no existe, consulta el protocolo local y, cuando haya un hito real que guardar, crea el trabajo para **cualquier proyecto** con `python3 /home/labgestor/bibliotecario-piloto/bibliotecario.py create "TÍTULO"`. Utiliza el ID que devuelva. Evita duplicados comprobando primero el catálogo real.
+3. No crees registros prefabricados para una prueba de activación autónoma, no uses IDs fijos de ejemplo ni metas un proyecto en el trabajo de desarrollo del Bibliotecario por una simple coincidencia de palabras.
+4. Recupera con `{"action":"brief","work":"ID_REAL"}` o `resume` de `/home/labgestor/bibliotecario-piloto/interfaz_chat.py` (petición JSON por stdin).
+5. Reutiliza documentos y avances ya registrados sin afirmar que se han comprobado pasos que solo figuran como pendientes.
 
 ## Guardado proactivo: dos capas complementarias
 - **Documentos:** cuando produzcas un informe, script o material importante, guárdalo en la carpeta del proyecto en Debian y verifica que existe y se puede leer. El Observador indexa cambios de archivos, pero NO crea checkpoints por sí solo.
