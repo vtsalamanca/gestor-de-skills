@@ -29,3 +29,16 @@ Documentar hipótesis -> experimento -> evidencia -> corrección, el número de 
 
 ## Caso Educamos (octubre 2026)
 Se ejecutaron múltiples workflows de diagnóstico para inspeccionar un JS público, incluyendo búsquedas de cadenas y una expresión regular mal planteada. Esas operaciones podían agruparse y ensayarse localmente antes de consumir tiempo del usuario en ediciones/commits y runners. Los logs de acciones no acreditan una autenticación HTTP ni un endpoint de mensajería si la prueba no lo comprobó. Regla: analizar archivos públicos una vez, procesarlos localmente, llevar a Actions solo la comprobación específica de conectividad/integración.
+
+
+## Control del presupuesto de herramientas remotas (2026-10-28)
+
+Aplicar a Desktop Commander Remote y conectores con cuota. Consultar saldo una vez al empezar cada bloque importante, sin confundir el porcentaje remoto con contadores de ejecución locales. No inferir operaciones exactas ni fecha de reinicio.
+
+Umbrales operativos: más de 30 % restante: lotes normales; de 15 a 30 %: ahorro, agrupar diagnóstico, ejecución y verificación; 15 % o menos: reserva para seguridad, recuperación, entregables e hitos; 5 % o menos: detener exploraciones no esenciales. Son reglas internas conservadoras, no límites del proveedor.
+
+Antes de una llamada: recuperar resultados existentes, formular hipótesis, seleccionar el programa local revisado, fijar tiempos, número de páginas y reintentos máximos. Una llamada remota puede lanzar un lote local delimitado con salida breve; no usar la cuota para ejecutar cada búsqueda, regex o comprobación. Evitar sondeos repetitivos de procesos; leer salida una vez tras un intervalo razonable. Usar caché no sensible y deduplicar.
+
+Tras dos fallos equivalentes sin nueva evidencia: detener y diagnosticar. Diferenciar errores de red, herramienta, permisos, bloqueo de seguridad, autenticación y agotamiento de cuota. Nunca eludir protecciones, ampliar permisos ni activar procesos persistentes por ahorrar llamadas.
+
+Al cerrar: registrar cuota inicial/final cuando esté disponible, operaciones remotas por fase, resultado comprobado, bloqueos y siguiente acción. Reutilizar Debian para procesamiento intensivo local, MCP remoto para orquestación desde ChatGPT. Coste adicional por defecto 0 €: ninguna API, plugin o recurso facturable sin tarifa, estimación y autorización expresa.

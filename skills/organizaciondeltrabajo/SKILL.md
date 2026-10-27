@@ -179,3 +179,15 @@ La infraestructura ordinaria de escritorio remoto del usuario es **únicamente `
 5. Leer `get_plugin_files` después: versión correcta, ocho skills, soporte y manifiesto; distinguir publicación verificada de recarga efectiva de otras sesiones. Anotar nuevo release ID y mantener rollback. Si falla, preservar release vigente e informar `PUBLICACION_BLOQUEADA`.
 6. Sin workflow concluido o sin referencia registrada, detener publicación, no probar rutas remotas repetidamente. No activar publicación automática sin control de cambios y de permisos.
 **Prueba real:** workflow run `39876898171`; artifact `12467699397`; hash `af8a2ef92e7d9a2e03bf057a69411550de1720b88166e77aa1f18d841b28bf09`; Plugin Creator confirmó release `pluginrel_6adaa70f636881918703ea77cc60d33f` versión 0.4.22, 23 ficheros. Se mantiene la publicación como acción explícitamente autorizada, mientras que la creación del artefacto queda automatizada.
+
+## Control del presupuesto de herramientas remotas (2026-10-28)
+
+Aplicar a Desktop Commander Remote y conectores con cuota. Consultar saldo una vez al empezar cada bloque importante, sin confundir el porcentaje remoto con contadores de ejecución locales. No inferir operaciones exactas ni fecha de reinicio.
+
+Umbrales operativos: más de 30 % restante: lotes normales; de 15 a 30 %: ahorro, agrupar diagnóstico, ejecución y verificación; 15 % o menos: reserva para seguridad, recuperación, entregables e hitos; 5 % o menos: detener exploraciones no esenciales. Son reglas internas conservadoras, no límites del proveedor.
+
+Antes de una llamada: recuperar resultados existentes, formular hipótesis, seleccionar el programa local revisado, fijar tiempos, número de páginas y reintentos máximos. Una llamada remota puede lanzar un lote local delimitado con salida breve; no usar la cuota para ejecutar cada búsqueda, regex o comprobación. Evitar sondeos repetitivos de procesos; leer salida una vez tras un intervalo razonable. Usar caché no sensible y deduplicar.
+
+Tras dos fallos equivalentes sin nueva evidencia: detener y diagnosticar. Diferenciar errores de red, herramienta, permisos, bloqueo de seguridad, autenticación y agotamiento de cuota. Nunca eludir protecciones, ampliar permisos ni activar procesos persistentes por ahorrar llamadas.
+
+Al cerrar: registrar cuota inicial/final cuando esté disponible, operaciones remotas por fase, resultado comprobado, bloqueos y siguiente acción. Reutilizar Debian para procesamiento intensivo local, MCP remoto para orquestación desde ChatGPT. Coste adicional por defecto 0 €: ninguna API, plugin o recurso facturable sin tarifa, estimación y autorización expresa.
