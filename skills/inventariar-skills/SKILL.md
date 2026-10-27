@@ -15,3 +15,8 @@ description: Inventaría skills y plugins existentes, detecta duplicados, regist
 
 ## Salida
 Resumen de cobertura, duplicados, elementos a revisar y recomendación priorizada. Indica fechas de comprobación y **desconocido** cuando no pueda comprobarse mantenimiento/versión.
+
+
+## Registro específico de herramientas de acceso web (27/10/2026)
+
+Consultar [inventario de acceso web, navegador y llavero](references/inventario-acceso-web-2026-10-27.md) antes de crear un conector nuevo. Registrar método, equipo, permisos, fecha y estado comprobado; distinguir prueba de red, sesión, llavero, login y autorización oficial. Una herramienta diseñada o una cuenta autenticada en Firefox no demuestra acceso mediante su contraseña ni permisos API. Mantener el catálogo versionado en la fuente canónica y referencias locales sin secretos; actualizarlo con evidencias, no por mera presencia del programa.
