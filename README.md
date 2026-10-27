@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.33
+# Gestor de Skills 0.4.34
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -28,11 +28,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las nueve ski
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.33.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.34.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.33.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.34.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -49,3 +49,10 @@ Conservar fuera de Git el ZIP y el informe de hashes de la versión anterior. Si
 
 ## Publicación autenticada y recuperación
 Para actualizar el plugin privado con el empaquetador reproducible, seguir `skills/ingenieria-fiable/references/actualizar-skills.md`. Incluye transferencia correcta entre Desktop Commander, host del publicador, release ID y verificación real. No entregar una ruta de Windows directamente a Plugin Creator.
+
+
+## Inventario de herramientas de acceso web (27/10/2026)
+
+Catálogo verificable: [inventario de acceso web](skills/inventariar-skills/references/inventario-acceso-web-2026-10-27.md).
+Procedimiento técnico general: [navegadores, llavero y OAuth](skills/acceso_webs/references/sesiones-navegador-llavero-oauth.md).
+Son instrucciones y resultados observados, no claves ni permisos de acceso. Publicar una skill no instala las herramientas en otro equipo ni convierte un login pendiente en una autenticación verificada.

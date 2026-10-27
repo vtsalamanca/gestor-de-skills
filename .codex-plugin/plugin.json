@@ -1,6 +1,6 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.33",
+  "version": "0.4.34",
   "description": "Descubre, audita, crea e integra skills; incluye organizaciondeltrabajo, ingenieria-fiable, acceso_webs y bibliotecario-memoria.",
   "author": {
     "name": "Pav├│n Serrano",
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con nueve habilidades. Bibliotecario-memoria 0.3.3 recupera proyectos y orienta el guardado proactivo de hitos enlazados a documentos verificados en Debian; no garantiza hooks por turno. Las ocho habilidades anteriores permanecen.",
+    "longDescription": "Complemento privado con nueve habilidades. Bibliotecario-memoria 0.3.3 recupera proyectos y orienta el guardado proactivo de hitos enlazados a documentos verificados en Debian; no garantiza hooks por turno. Las ocho habilidades anteriores permanecen. Acceso_webs amplía patrones de navegador local, llavero y OAuth con inventario de herramientas verificado.",
     "category": "Productivity",
     "developerName": "Pav├│n Serrano",
     "capabilities": [
