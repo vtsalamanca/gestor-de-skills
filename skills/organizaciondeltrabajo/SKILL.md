@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.20
+version: 0.2.21
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -50,7 +50,7 @@ Cuando exista acceso local autorizado, inspeccionar estado de Git, rama y commit
 ## Actualización bajo demanda al modificar una skill
 **Único disparador ordinario:** una modificación autorizada de alguna skill del Gestor de Skills. No consultar versiones, GitHub o metadata del plugin al abrir cada conversación ni en consultas que simplemente usen las skills. Al modificar una habilidad, verificar en ese mismo trabajo fuente canónica, manifestos, release privada y, si procede, marketplace Codex, sin consultas repetitivas. Usar MCP local autorizado para edición, pruebas y empaquetado; la publicación se hará sobre el complemento existente mediante Plugin Creator cuando el ZIP pueda transferirse por una vía admitida, preservando release ID y presupuesto cero.
 - Si están alineadas, continuar con el trabajo sin interrumpir al usuario.
-- Si GitHub es más reciente, intentar en el mismo flujo la publicación bajo demanda mediante la herramienta oficial Plugin Creator, conservando identidad, permisos y control de release; pedir una intervención únicamente si es realmente imprescindible.
+- Si GitHub es más reciente, **proponer** la sincronización y, cuando afecte a catalogación, resguardo o difusión de esos registros, pedir autorización previa específica antes de publicar. Tras recibirla, emplear Plugin Creator conservando identidad, permisos y control de release.
 - Si falta acceso, el coste no está acreditado, la publicación falla o las sesiones requieren recarga, continuar con la versión disponible cuando sea seguro y comunicar claramente el estado pendiente.
 - No actualizar a ciegas ni entrar en bucles autorreferenciales: tras publicar, **una sola verificación** de la release; si falla, detener reintentos hasta obtener una hipótesis nueva.
 - No hacer una comprobación remota en tareas triviales ni cuando el usuario prohíba consultas externas. No activar tareas programadas, GitHub Actions ni gastar créditos de Work/Codex para esta revisión.
@@ -59,10 +59,10 @@ Esta regla es una instrucción para el asistente que **carga** la skill: no cons
 **Antes de toda publicación, consultar el runbook canónico** `skills/ingenieria-fiable/references/actualizar-skills.md`, incluidos casos de ruta Windows ≠ host del publicador, empaquetador obsoleto, mecanismo de transferencia comprobado y control `expected_release_id`. No derivar a Work por inercia ni repetir intentos fallidos sin cambiar hipótesis. Conservar evidencia del método que realmente funcionó.
 
 ## Publicación y sincronización obligatoria de skills
-Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/gestor-de-skills`, incluir en el mismo trabajo la distribución y verificación sin necesitar una segunda solicitud:
+Tras cualquier modificación autorizada de una skill canónica en `vtsalamanca/gestor-de-skills`, detectar las necesidades de sincronización y verificación. **Antes de catalogar, respaldar o distribuir los registros y la versión, solicitar autorización explícita para ese lote**: el permiso de desarrollo por sí solo no es permiso de publicación o resguardo. Una vez autorizado, realizarlo en el mismo trabajo sin pedir confirmaciones repetidas:
 1. Comparar `main` con la release del plugin privado ChatGPT/Work y con el marketplace de Codex; identificar diferencias por contenido, no solo por número de versión.
 2. Validar estructura, seguridad, cambios, reversibilidad y coste adicional (por defecto 0 €). Incrementar versiones de skill y paquete de forma coherente cuando corresponda.
-3. Si las herramientas y permisos disponibles lo permiten, preparar el paquete desde GitHub y actualizar el **mismo plugin privado**, conservando su identidad, con control de concurrencia por ID de release; nunca afirmar que un commit de GitHub actualiza por sí solo ChatGPT/Work.
+3. **Solo con aprobación explícita de empaquetado/publicación** y herramientas y permisos suficientes, preparar el paquete desde GitHub y actualizar el **mismo plugin privado**, conservando su identidad, con control de concurrencia por ID de release. Un commit de GitHub no actualiza por sí solo ChatGPT/Work.
 4. Verificar publicación y contenido de los archivos distribuidos; cuando sea posible comprobar la carga en una sesión nueva y el marketplace Codex. Distinguir `FUENTE_ACTUALIZADA`, `PLUGIN_PUBLICADO`, `CARGA_VERIFICADA` y `PENDIENTE`.
 5. Si publicar o comprobar exige otra herramienta, permiso, tarifa desconocida o servicio de pago, no ejecutarlo; comunicar el bloqueo concreto, el siguiente paso mínimo y la versión que continúa activa. Nunca marcar la sincronización como completada sin evidencia.
 No prometer ejecución desatendida ni actualización instantánea de sesiones/cache. Esta regla aplica a cualquier skill del repositorio y complementa las instrucciones generales del usuario.
@@ -86,10 +86,14 @@ Cuando la fuente y el plugin privado estén publicados pero Codex mantenga una v
 
 Este procedimiento no autoriza permisos amplios permanentes, cambios globales de Git, borrado manual de cachés ni crear otro marketplace o plugin. Ante otro síntoma, volver al diagnóstico por capas y permitir como máximo un reintento por hipótesis nueva.
 
-## Puerta de catalogación obligatoria al cerrar una implementación (29/10/2026)
-**No esperar a que el usuario lo recuerde.** Si esta tarea ha instalado, actualizado, desactivado o validado materialmente una herramienta, MCP, skill, servicio, pasarela, modelo ejecutor o automatización, comprobar antes de concluir si cambiaron el inventario de habilidades o el catálogo de utilidades del laboratorio. Actualizar ambos donde corresponda **en el mismo trabajo**: nombre, versión, ubicación, permiso, equipo, comprobación local/E2E, coste monetario **y cuota consumida**, seguridad y pendientes; releer el resultado y enlazarlo desde los índices habituales. La catalogación no requiere abrir otro chat, crear otra skill ni activar cron/Actions. Para el control de Debian consultar `inventariar-skills/references/inventario-control-debian-2026-10-29.md` y el índice de `/home/labgestor/utilidades/`.
+## Puerta de detección y autorización previa para catalogación y resguardo (29/10/2026)
+**Mantener los mismos disparadores que antes, pero detener la escritura hasta obtener permiso.** Si se ha instalado, creado, cambiado, sustituido, retirado o verificado materialmente una habilidad, herramienta, MCP, servicio, pasarela, agente o automatización, detectar proactivamente la necesidad de catalogación y resguardo **sin esperar un recordatorio**. Identificar qué catálogos, Bibliotecario, copias, ZIP, repositorios, publicaciones o índices se actualizarían.
 
-**Economía del nuevo puente:** GitHub Actions con runner autohospedado es transporte de eventos, no sustituto de la cuota Codex. Para consultas deterministas (lista de aplicaciones/páginas) considerar ejecutar MCP directamente sin modelo **solo después de implementarlo y probarlo**; no afirmar que ya existe. Conserva versiones de catálogo, fuentes y plugin separadas; una modificación local de SKILL.md no actualiza por sí sola el plugin de ChatGPT.
+**Preguntar ANTES de hacerlo**: presentar en una sola pregunta los elementos, cambios, destinos y posibles costes/cuotas y solicitar autorización expresa específica para catalogarlos, respaldarlos y distribuir esos registros. La autorización para el desarrollo técnico no cubre automáticamente el inventario, el resguardo ni su publicación. Si el usuario los ha pedido explícitamente con ese alcance, no repetir la pregunta. Con permiso, ejecutarlo en el mismo flujo y verificar relectura; sin permiso, dejar `CATALOGACION_PENDIENTE_AUTORIZACION` y/o `RESGUARDO_PENDIENTE_AUTORIZACION` en la respuesta, **sin guardar esos estados en otra base por anticipado**. Continuar el resto del trabajo permitido. Si un respaldo es condición de seguridad de un cambio irreversible, no realizar ese cambio sin autorización de la copia.
+
+Aplicar íntegramente [protocolo de autorización de catalogación y resguardo](../inventariar-skills/references/autorizacion_catalogacion_y_resguardo.md), y contrastar el inventario de control de Debian `inventariar-skills/references/inventario-control-debian-2026-10-29.md` y el índice de utilidades de Debian. En las tareas concretas autorizadas registrar nombre, versión, equipo, permisos, evidencia local/E2E, dinero y cuota, riesgos y pendientes. No activar temporizadores ni otro complemento por esta tarea.
+
+**Economía:** el runner de GitHub solo transporta eventos y la cuota Codex se consume si se invoca Codex. Las operaciones deterministas ya acreditadas pueden usar el ejecutor local sin modelo. No confundir fuente, catálogo y plugin distribuido.
 
 ## Flujo de coordinación y aprendizaje
 **A. Recuperar:** consultar `ESTADO_PROYECTO.md` o registro equivalente, decisiones y pruebas; resolver contradicciones.
@@ -115,6 +119,7 @@ Cuando haya programación, fallos, pruebas o despliegues, consultar **`ingenieri
 Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit → GitHub Actions → log para localizar partes de JavaScript. Antes de repetir ese patrón: recuperar el APK/código y JS disponible, analizar estáticamente/localmente, agrupar hipótesis y pruebas, reservar GitHub Actions para verificar integración y funcionamiento diario. Considerar tiempo y clics del usuario como recurso; evitar optimizar minutos gratis a costa de esfuerzo humano.
 
 ## Historial
+- 0.2.21 (29 oct 2026): detección proactiva conservada, con **autorización previa imprescindible** para catalogar, respaldar y distribuir registros de habilidades/herramientas; aprobación agrupada por lote, negativa pendiente sin escrituras.
 - 0.2.20 (29 oct 2026): obligación de actualizar los catálogos de habilidades y herramientas en el mismo cierre de cada implementación material; registro diferenciado de cuota y coste monetario, pruebas E2E y límites de los MCP/CDC.
 - 0.2.7 (19 oct 2026): recuperación verificable de actualizaciones locales de marketplaces Codex: permisos específicos, fallback OpenSSL para Schannel y parada cuando `marketplace upgrade` ya actualizó instalación y caché.
 - 0.2.6 (19 oct 2026): reutilización prioritaria de procedimientos publicados ya verificados, con comprobación de identidad, versión, precondiciones y diferencias antes de repetirlos.
