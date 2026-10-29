@@ -28,20 +28,21 @@
 | Codex CLI | 0.165.0 | Conservado como herramienta optativa de programación compleja; historial #8 y #9 acreditado | Ya no participa en peticiones ordinarias #10 y #11; consume cuota al invocarlo | Cuota ChatGPT, API aparte no contratada |
 | GitHub CLI | 2.103.2 | Autenticación de repositorio privado, issues, comentarios y registro del runner | Credenciales privadas, rotación y control de acceso | Servicio GitHub sujeto a condiciones |
 | GitHub Actions self-hosted runner | 2.338.2 | `debian-cdc-demanda` online; activó E2E directo #10 y #11 | No es sandbox. Solo el repositorio privado autoriza cambios en workflows | Sin coste de minutos autohospedados observado; servicio externo GitHub |
-| Puente GitHub→CDC→MCP local | versión piloto 29/10 | `github_cdc_bridge.py`: autor/título/JSON y leases de SQLite; llama a `local_mcp_executor.py`, nunca a Codex; publica `executor: local_mcp` | **E2E #10 y #11**; lista cerrada de dos operaciones, salida minimizada, no comandos arbitrarios | GitHub sin cuota de modelo para esas tareas |
+| Puente GitHub→CDC→ejecutor local | versión piloto 29/10 | Validación estricta y CDC con idempotencia, resultados privados, cuatro operaciones fijas | **E2E** issues #10, #11, #13, #14; sin comandos arbitrarios ni accesos a perfiles/secretos | GitHub sin cuota Codex en esas tareas |
 | CDC 1.0 | producción local | `cdc_v1_doctor.py`: `ok:true`, integridad `ok`; pruebas de coordinación anteriores | No despierta conversaciones nativas de ChatGPT cerradas | SQLite local sin tarifa |
 | Bridge Piper/PulseAudio y extensión | configuración local | Audio audible confirmado por el usuario tras recuperación de PulseAudio; activación de botón lectora | Lectura real de mensajes nuevos en Firefox no acreditada; complemento temporal no persiste | Síntesis local sin tarifa |
 | Desktop Commander | plugin actual | Control de archivos y terminal en Debian; usado para la instalación | Cuota de llamadas; teclado gráfico limitado por controles; no forma parte de la ejecución a demanda | Consultar cuotas |
-| Ejecutor MCP directo sin Codex | **IMPLEMENTADO** 29/10 | `local_mcp_executor.py` llama a `ocu call list_apps` y a `mcp_firefox_pages.mjs` (SDK Firefox MCP); peticiones #10 y #11 `ok:true` | **E2E_VERIFICADO**; lectura únicamente, en Firefox aislado; pruebas de rechazo, no exposición de títulos ni claves API | **0 llamadas Codex en el camino de ejecución** |
+| Ejecutor local sin Codex | **AMPLIADO** 29/10 | Dos operaciones MCP (`list_apps`, `list_firefox_pages`) y dos diagnósticos Python (`status_services`, `status_cdc`) | **E2E #10, #11, #13, #14**; solo lectura; cuatro acciones de lista cerrada | Sin cuota de Codex ni API OpenAI |
+| Diagnósticos Debian y SQLite | `local_diagnostics.py` | `systemctl --user is-active` en tres unidades fijas; `sqlite3` con `mode=ro`, `quick_check` y `foreign_key_check` | Casos reales #13 y #14 `ok:true`; pruebas de salida arbitraria, DB ausente/rota y ausencia de credenciales | Solo CPU local |
 
 ## Decisiones de ingeniería reutilizables
 
 1. **Eventos en lugar de sondeo:** workflow `issues.opened` en repositorio GitHub privado, receptor `github-actions-cdc-ondemand.service`, sin abrir puertos; el temporizador `github-cdc-codex.timer` se desactivó.
-2. **Separación del transporte y razonamiento:** GitHub solamente avisa; CDC valida el número, recupera la solicitud y registra idempotencia; Codex se reserva para razonamiento complejo; las dos consultas actuales se resuelven ya directamente por MCP en los issues #10 y #11, sin modelo.
+2. **Separación del transporte y razonamiento:** GitHub solamente avisa; CDC valida el número, recupera la solicitud y registra idempotencia; Codex se reserva para razonamiento complejo; las dos consultas MCP actuales y dos diagnósticos Python se resuelven sin modelo (issues #10, #11, #13, #14).
 3. **Resultados exactos:** las peticiones #5 y #6 llegaron pero terminaron `ok:false` por `node` ausente en PATH del servicio; se corrigió. Las peticiones #7, #8 y #9 dieron `ok:true` usando Codex; #10 y #11 dieron `ok:true` usando `executor: local_mcp` sin Codex. Todas las #8–#11 fueron activadas por evento sin temporizador.
 4. **Reinicio:** runner habilitado en `systemd --user` y `Linger=yes`, pero la prueba posterior a un reinicio real sigue **pendiente**.
 5. **Superficie de seguridad:** no permitir prompts de issues, scripts arbitrarios, clics, compras, cambios de contraseñas o acciones privilegiadas por el simple hecho de que el emisor controla el repositorio. Limitar workflow y perfiles, mantener repositorio privado.
-6. **Tarifas reales:** distinguir cero euros incrementales de **cuota de Codex consumida en otros trabajos**; las tareas MCP directas no usan dicha cuota, pero siguen dependiendo de GitHub y de sus condiciones y posibilidad de cambios de tarifa; no etiquetar «gratis» a todo el recorrido.
+6. **Tarifas reales:** distinguir cero euros incrementales de **cuota de Codex consumida en otros trabajos**; las cuatro tareas directas no usan dicha cuota, pero siguen dependiendo de GitHub y de sus condiciones y posibilidad de cambios de tarifa; no etiquetar «gratis» a todo el recorrido.
 
 ## Evidencia E2E del ejecutor sin Codex (29/10/2026)
 
@@ -50,6 +51,15 @@
 - Python `local_mcp_executor.py`, Node `mcp_firefox_pages.mjs`, pruebas `test_local_mcp_executor.py`, `test_github_cdc_bridge.py`, `github_cdc_bridge.py selftest`.
 - `cdc_v1_doctor.py` informa `ok:true`, integridad de base `ok`, sin issues; el timer permanece desactivado.
 - **Seguridad:** salida de Open Computer Use restringida a nombres de aplicaciones (sin títulos de ventana ni PID); Firefox solo permite URL de la página pública fija en perfil separado. No aceptar texto arbitrario del issue como comando.
+
+## Ampliación E2E a salud del laboratorio (29/10/2026)
+
+- **#13 `status_services`**: `executor:local_mcp`, `ok:true`; receptor de GitHub activo, Piper activo, timer anterior inactivo.
+- **#14 `status_cdc`**: `executor:local_mcp`, `ok:true`; integridad y claves foráneas de la base correctas.
+- Las dos operaciones nuevas son **Python determinista**, no llamadas MCP; se ejecutan por el mismo validador local y sin Codex.
+- La comprobación `systemctl` usa unidades inmutables y entorno restringido. SQLite se abre en modo solo lectura; no se consultan ni publican mensajes privados.
+- `test_local_mcp_executor.py` + `test_local_diagnostics.py`: **9 pruebas** correctas, más `github_cdc_bridge.py selftest` y prueba de idempotencia previa. No se han habilitado escrituras ni ejecución shell de remitentes.
+- Workflow del repo privado actualizado para los dos títulos de evento adicionales. **Prueba tras reinicio de Debian sigue pendiente.**
 
 ## Ubicaciones operativas, sin credenciales
 
