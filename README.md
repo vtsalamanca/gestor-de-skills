@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.37
+# Gestor de Skills 0.4.38
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -36,6 +36,8 @@ También se crea `dist/gestor-de-skills-0.4.37.zip.sha256.json`, que registra el
 
 ### Publicación y verificación
 
+**Antes de iniciar los pasos de catalogación, respaldo, empaquetado o publicación, obtener la autorización específica que exige el protocolo de inventario y resguardo.** No se deduce del permiso de desarrollo. La solicitud actual de instalar esta norma constituye aprobación de esa instalación inicial, no de futuras actualizaciones.
+
 1. Confirmar que el commit está publicado en `vtsalamanca/gestor-de-skills` y ejecutar las pruebas sobre ese SHA completo.
 2. Leer el plugin privado existente en Plugin Creator y anotar su identificador y `release_id` actual.
 3. Actualizar ese mismo plugin con el ZIP y el `release_id` esperado; no crear otro plugin.
@@ -57,7 +59,7 @@ Nueve skills canónicas, sin crear otra duplicada. [Inventario ampliado del cont
 
 En el equipo Debian, el catálogo humano de herramientas ejecutables está en `/home/labgestor/utilidades/CATALOGO - Herramientas del laboratorio.md`, dentro de «Documentos → Centro de recursos → 02 - Caja de utilidades».
 
-**Regla de cierre:** después de implantar o verificar una herramienta, pasarela o habilidad nueva, actualizar en esa misma tarea los catálogos afectados y releer los cambios; no esperar recordatorios ni crear automatizaciones adicionales. La skill `organizaciondeltrabajo` 0.2.20 incorpora esta puerta de catalogación.
+**Regla de cierre (29/10/2026):** después de implantar o verificar una herramienta, pasarela o habilidad nueva, **detectar proactivamente la necesidad de catalogación y resguardo en las mismas situaciones que antes, pero pedir autorización expresa antes de escribir, copiar o publicar**. Agrupar la solicitud por lote (elementos, destinos, costes/cuotas); con aprobación, ejecutar y verificar en el mismo flujo, y sin ella dejar pendiente en el chat sin modificar ningún registro. No esperar recordatorios de detección ni crear automatizaciones adicionales. `organizaciondeltrabajo` 0.2.21, `bibliotecario-memoria` 0.3.4 y el [protocolo canónico](skills/inventariar-skills/references/autorizacion_catalogacion_y_resguardo.md) regulan esta autorización.
 
 ## Inventario de herramientas de acceso web (27/10/2026)
 
