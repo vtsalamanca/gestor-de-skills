@@ -16,6 +16,11 @@ description: Inventaría skills y plugins existentes, detecta duplicados, regist
 ## Salida
 Resumen de cobertura, duplicados, elementos a revisar y recomendación priorizada. Indica fechas de comprobación y **desconocido** cuando no pueda comprobarse mantenimiento/versión.
 
+## Obligación de actualización al introducir herramientas (29/10/2026)
+Cuando se instale, configure, sustituya, desactive o acredite una **nueva capacidad material** (MCP, navegador, agente, pasarela, servicio, runner o skill), actualizar **en el mismo trabajo** el catálogo existente del entorno operativo y este inventario si el cambio repercute en las skills. No esperar otra solicitud del usuario ni crear una décima skill por duplicación. Registrar versión, ubicación real, prueba local o extremo a extremo, autorización, cuota/dinero, límites, reversión y fecha. Leer los documentos actualizados para verificar persistencia; distinguir información meramente diseñada de herramientas realmente disponibles. No crear un temporizador de inventario sin necesidad ni autorización.
+
+Consultar [inventario de control de Debian, CDC y MCP a demanda (29/10/2026)](references/inventario-control-debian-2026-10-29.md). El catálogo humano de utilidades está en `/home/labgestor/utilidades/CATALOGO - Herramientas del laboratorio.md`. Una edición local de skills **no** implica la publicación en el complemento privado: seguir el runbook de actualización y declarar esa fase por separado.
+
 
 ## Registro específico de herramientas de acceso web (27/10/2026)
 

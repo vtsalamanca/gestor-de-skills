@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.34
+# Gestor de Skills 0.4.35
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -28,11 +28,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las nueve ski
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.34.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.35.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.34.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.35.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -50,6 +50,14 @@ Conservar fuera de Git el ZIP y el informe de hashes de la versión anterior. Si
 ## Publicación autenticada y recuperación
 Para actualizar el plugin privado con el empaquetador reproducible, seguir `skills/ingenieria-fiable/references/actualizar-skills.md`. Incluye transferencia correcta entre Desktop Commander, host del publicador, release ID y verificación real. No entregar una ruta de Windows directamente a Plugin Creator.
 
+
+## Inventario de habilidades, MCP y control de Debian (29/10/2026)
+
+Nueve skills canónicas, sin crear otra duplicada. [Inventario ampliado del control de Debian](skills/inventariar-skills/references/inventario-control-debian-2026-10-29.md): Open Computer Use, Firefox DevTools MCP/Marionette, Codex CLI, CDC, GitHub Actions a demanda y Piper. Contiene versiones, diferencias entre instalado/validado, límites de permisos y **cuota de Codex frente a coste monetario**.
+
+En el equipo Debian, el catálogo humano de herramientas ejecutables está en `/home/labgestor/utilidades/CATALOGO - Herramientas del laboratorio.md`, dentro de «Documentos → Centro de recursos → 02 - Caja de utilidades».
+
+**Regla de cierre:** después de implantar o verificar una herramienta, pasarela o habilidad nueva, actualizar en esa misma tarea los catálogos afectados y releer los cambios; no esperar recordatorios ni crear automatizaciones adicionales. La skill `organizaciondeltrabajo` 0.2.20 incorpora esta puerta de catalogación.
 
 ## Inventario de herramientas de acceso web (27/10/2026)
 

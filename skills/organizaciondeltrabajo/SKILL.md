@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.19
+version: 0.2.20
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -86,6 +86,11 @@ Cuando la fuente y el plugin privado estén publicados pero Codex mantenga una v
 
 Este procedimiento no autoriza permisos amplios permanentes, cambios globales de Git, borrado manual de cachés ni crear otro marketplace o plugin. Ante otro síntoma, volver al diagnóstico por capas y permitir como máximo un reintento por hipótesis nueva.
 
+## Puerta de catalogación obligatoria al cerrar una implementación (29/10/2026)
+**No esperar a que el usuario lo recuerde.** Si esta tarea ha instalado, actualizado, desactivado o validado materialmente una herramienta, MCP, skill, servicio, pasarela, modelo ejecutor o automatización, comprobar antes de concluir si cambiaron el inventario de habilidades o el catálogo de utilidades del laboratorio. Actualizar ambos donde corresponda **en el mismo trabajo**: nombre, versión, ubicación, permiso, equipo, comprobación local/E2E, coste monetario **y cuota consumida**, seguridad y pendientes; releer el resultado y enlazarlo desde los índices habituales. La catalogación no requiere abrir otro chat, crear otra skill ni activar cron/Actions. Para el control de Debian consultar `inventariar-skills/references/inventario-control-debian-2026-10-29.md` y el índice de `/home/labgestor/utilidades/`.
+
+**Economía del nuevo puente:** GitHub Actions con runner autohospedado es transporte de eventos, no sustituto de la cuota Codex. Para consultas deterministas (lista de aplicaciones/páginas) considerar ejecutar MCP directamente sin modelo **solo después de implementarlo y probarlo**; no afirmar que ya existe. Conserva versiones de catálogo, fuentes y plugin separadas; una modificación local de SKILL.md no actualiza por sí sola el plugin de ChatGPT.
+
 ## Flujo de coordinación y aprendizaje
 **A. Recuperar:** consultar `ESTADO_PROYECTO.md` o registro equivalente, decisiones y pruebas; resolver contradicciones.
 **B. Planificar:** objetivo medible, restricciones, fuentes necesarias, criterios de aceptación y bloques según dependencias. En recolectores auditar fuentes antes de programar: URL, método, cobertura, autenticación, evidencia, estado y limitaciones; no exigir resolver todas si la exclusión está justificada.
@@ -110,6 +115,7 @@ Cuando haya programación, fallos, pruebas o despliegues, consultar **`ingenieri
 Se realizaron demasiados ciclos manuales de editar Python en GitHub → commit → GitHub Actions → log para localizar partes de JavaScript. Antes de repetir ese patrón: recuperar el APK/código y JS disponible, analizar estáticamente/localmente, agrupar hipótesis y pruebas, reservar GitHub Actions para verificar integración y funcionamiento diario. Considerar tiempo y clics del usuario como recurso; evitar optimizar minutos gratis a costa de esfuerzo humano.
 
 ## Historial
+- 0.2.20 (29 oct 2026): obligación de actualizar los catálogos de habilidades y herramientas en el mismo cierre de cada implementación material; registro diferenciado de cuota y coste monetario, pruebas E2E y límites de los MCP/CDC.
 - 0.2.7 (19 oct 2026): recuperación verificable de actualizaciones locales de marketplaces Codex: permisos específicos, fallback OpenSSL para Schannel y parada cuando `marketplace upgrade` ya actualizó instalación y caché.
 - 0.2.6 (19 oct 2026): reutilización prioritaria de procedimientos publicados ya verificados, con comprobación de identidad, versión, precondiciones y diferencias antes de repetirlos.
 - 0.2.5 (19 oct 2026): puerta reforzada para detectar alternativas disponibles antes de programar o repetir diagnósticos; integración metodológica con acceso_webs.

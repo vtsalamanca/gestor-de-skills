@@ -16,7 +16,9 @@ class KnowledgeInventoryTests(unittest.TestCase):
         plugin=json.loads((ROOT/".codex-plugin/plugin.json").read_text())
         marketplace=json.loads((ROOT/".agents/plugins/marketplace.json").read_text())
         self.assertEqual(plugin["version"],marketplace["plugins"][0]["version"])
-        self.assertEqual(plugin["version"],"0.4.34")
+        self.assertEqual(len(plugin["version"].split(".")),3)
+        self.assertTrue(all(piece.isdigit() for piece in plugin["version"].split(".")))
+        self.assertIn(plugin["version"],(ROOT/"README.md").read_text(encoding="utf-8").splitlines()[0])
 
     def test_access_skills_refers_to_real_reference(self):
         src=(ACCESS/"SKILL.md").read_text()
@@ -31,6 +33,18 @@ class KnowledgeInventoryTests(unittest.TestCase):
         data=TABLE.read_text()
         for expected in ("WebDriver BiDi","GNOME Keyring","Wallapop","InfoJobs Developers","Plugin Creator"):
             self.assertIn(expected,data)
+
+    def test_control_debian_inventory_is_registered_and_versioned(self):
+        inv=INVENT/"references/inventario-control-debian-2026-10-29.md"
+        self.assertTrue(inv.is_file())
+        skills=(INVENT/"SKILL.md").read_text()
+        self.assertIn("references/inventario-control-debian-2026-10-29.md",skills)
+        text=inv.read_text(encoding="utf-8")
+        for term in ("Open Computer Use","Firefox DevTools MCP","Codex CLI",
+                     "GitHub Actions", "PENDIENTE", "cuota", "CDC"):
+            self.assertIn(term.lower(),text.lower())
+        org=(ROOT/"skills/organizaciondeltrabajo/SKILL.md").read_text()
+        self.assertIn("Puerta de catalogación obligatoria",org)
 
     def test_clearly_separates_evidence(self):
         text=TECH.read_text()+"\n"+TABLE.read_text()

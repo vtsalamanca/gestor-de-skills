@@ -19,6 +19,9 @@ Nunca incluir contraseñas, cookies, tokens, IDs de usuario, capturas privadas.
 | HTTP Python (urllib) + acceso directo desde Debian | Páginas públicas, cabeceras y respuesta | GET InfoJobs/Developers 200; endpoint API privado sin token 401; HEAD o POST pueden variar | No confundir 200 con datos ni 405 con contraseña inválida | 0 € |
 | GitHub + Actions + Plugin Creator | Versionar skills, empaquetado y release privado | HISTÓRICAMENTE VERIFICADO puente ZIP Action→Plugin Creator; por revalidar en cada release | GitHub ≠ complemento publicado ≠ habilidad cargada en chat; no incluir secretos | Cuotas por confirmar; no activar pago |
 
+## Actualización de alcance (29/10/2026)
+Este inventario conserva las observaciones del 27 de octubre. Las capacidades acreditadas desde entonces —Open Computer Use, Mozilla Firefox DevTools MCP, GeckoDriver, Codex CLI, CDC, GitHub Actions por eventos, Piper y la ausencia de ejecutor sin Codex— están documentadas con versión, cuota, riesgo y prueba real en [inventario del control de Debian (29/10/2026)](inventario-control-debian-2026-10-29.md). No confundir la cuota consumida de Codex con el coste marginal de ejecutar el runner autohospedado.
+
 ## Registro de decisiones y límites
 1. Reutilizar acceso_webs y su referencia técnica; NO crear skill duplicada control-navegador sin necesidad funcional distinta.
 2. Distinguir «colección presente», «entrada presente», «lectura local correcta», «sesión existente», «login nuevo» y «OAuth autorizado». Las pruebas del primer conjunto NO validan las últimas.
