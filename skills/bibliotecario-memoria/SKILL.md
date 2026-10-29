@@ -1,7 +1,7 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra proactivamente decisiones, pruebas y documentos importantes en SQLite de Debian mediante Remote Desktop Commander.
-version: 0.3.3
+version: 0.3.4
 ---
 # Bibliotecario — memoria y documentación
 
@@ -13,6 +13,11 @@ version: 0.3.3
 3. No crees registros prefabricados para una prueba de activación autónoma, no uses IDs fijos de ejemplo ni metas un proyecto en el trabajo de desarrollo del Bibliotecario por una simple coincidencia de palabras.
 4. Recupera con `{"action":"brief","work":"ID_REAL"}` o `resume` de `/home/labgestor/bibliotecario-piloto/interfaz_chat.py` (petición JSON por stdin).
 5. Reutiliza documentos y avances ya registrados sin afirmar que se han comprobado pasos que solo figuran como pendientes.
+
+## Excepción: autorización previa para resguardo de habilidades y herramientas (29/10/2026)
+La recuperación y lectura del Bibliotecario siguen permitidas. **Cuando el hito, documento, checkpoint, inventario o copia trate de habilidades o herramientas**, la detección de su importancia es proactiva, pero **se debe preguntar antes de crear el trabajo, guardar un documento, registrar `record_and_brief`, hacer backup o publicar**. Presentar qué se guardaría, dónde y sus costes/cuotas; pedir una autorización expresa específica. La autorización para desarrollar una habilidad o herramienta no sirve automáticamente para resguardarla o catalogarla. Si ese resguardo concreto ya fue solicitado explícitamente por el usuario, no volver a preguntar. Con aprobación, registrar y verificar en el mismo flujo. Si no la hay, informar en el chat `RESGUARDO_PENDIENTE_AUTORIZACION` sin escribirlo en SQLite ni crear archivos, y continuar el resto del trabajo permitido.
+
+**Esta excepción se aplica solo a la catalogación y el resguardo de habilidades y herramientas.** Para otros proyectos e hitos conserva el comportamiento anterior, sujeto a las demás autorizaciones de seguridad. Seguir [protocolo de autorización previa](../inventariar-skills/references/autorizacion_catalogacion_y_resguardo.md).
 
 ## Guardado proactivo: dos capas complementarias
 - **Documentos:** cuando produzcas un informe, script o material importante, guárdalo en la carpeta del proyecto en Debian y verifica que existe y se puede leer. El Observador indexa cambios de archivos, pero NO crea checkpoints por sí solo.
