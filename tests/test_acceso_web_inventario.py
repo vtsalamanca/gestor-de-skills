@@ -46,6 +46,22 @@ class KnowledgeInventoryTests(unittest.TestCase):
         org=(ROOT/"skills/organizaciondeltrabajo/SKILL.md").read_text()
         self.assertIn("Puerta de catalogación obligatoria",org)
 
+    def test_prior_consent_for_catalog_and_backup(self):
+        protocol=(INVENT/"references/autorizacion_catalogacion_y_resguardo.md")
+        self.assertTrue(protocol.is_file())
+        text=protocol.read_text(encoding="utf-8")
+        for phrase in ("autorización", "resguardo", "CATALOGACION_PENDIENTE_AUTORIZACION",
+                       "RESGUARDO_PENDIENTE_AUTORIZACION", "misma", "no crear"):
+            self.assertIn(phrase.lower(), text.lower())
+        for folder in ("inventariar-skills", "organizaciondeltrabajo",
+                       "ingenieria-fiable", "bibliotecario-memoria"):
+            skill=(ROOT/"skills"/folder/"SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("autorización", skill.lower())
+            self.assertIn("autorizacion_catalogacion_y_resguardo.md", skill)
+        runbook=(ROOT/"skills/ingenieria-fiable/references/actualizar-skills.md").read_text()
+        self.assertIn("Regla vigente de autorización",runbook)
+        self.assertIn("prioridad sobre las instrucciones históricas",runbook)
+
     def test_clearly_separates_evidence(self):
         text=TECH.read_text()+"\n"+TABLE.read_text()
         for required in ("NO se demostró","no se ha demostrado","BLOQUEADO","VERIFICADO","NO_PROBADO"):
