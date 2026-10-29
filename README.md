@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.35
+# Gestor de Skills 0.4.36
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -28,11 +28,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las nueve ski
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.35.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.36.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.35.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.36.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -64,3 +64,7 @@ En el equipo Debian, el catálogo humano de herramientas ejecutables está en `/
 Catálogo verificable: [inventario de acceso web](skills/inventariar-skills/references/inventario-acceso-web-2026-10-27.md).
 Procedimiento técnico general: [navegadores, llavero y OAuth](skills/acceso_webs/references/sesiones-navegador-llavero-oauth.md).
 Son instrucciones y resultados observados, no claves ni permisos de acceso. Publicar una skill no instala las herramientas en otro equipo ni convierte un login pendiente en una autenticación verificada.
+
+### Ejecutor local sin Codex (29/10/2026)
+
+El puente privado GitHub→CDC mantiene el disparo por eventos, pero los diagnósticos conocidos `list_apps` y `list_firefox_pages` pasan por Open Computer Use y Firefox DevTools MCP directamente, **sin llamadas a Codex ni a la API OpenAI**. El resultado real de issues privados #10 y #11 indica `executor: local_mcp`, `ok:true`; el CDC está íntegro y el temporizador desactivado. El servicio externo GitHub sigue siendo necesario para enviar trabajos desde ChatGPT. Inventario técnico: `skills/inventariar-skills/references/inventario-control-debian-2026-10-29.md`. No atribuir a este piloto escrituras ni control del Firefox personal.
