@@ -44,7 +44,7 @@ class KnowledgeInventoryTests(unittest.TestCase):
                      "GitHub Actions", "PENDIENTE", "cuota", "CDC"):
             self.assertIn(term.lower(),text.lower())
         org=(ROOT/"skills/organizaciondeltrabajo/SKILL.md").read_text()
-        self.assertIn("Puerta de catalogación obligatoria",org)
+        self.assertIn("Puerta de detección y autorización previa",org)
 
     def test_prior_consent_for_catalog_and_backup(self):
         protocol=(INVENT/"references/autorizacion_catalogacion_y_resguardo.md")
