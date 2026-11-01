@@ -1,11 +1,21 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra hitos autorizados en SQLite de Debian por el acceso realmente disponible, priorizando Control Debian cuando exponga la operación.
-version: 0.3.5
+version: 0.3.6
 ---
 # Bibliotecario — memoria y documentación
 
-**Ejecución en Debian:** Python estándar + SQLite, sin API de pago. Verificar qué conector está realmente disponible antes de recuperar o guardar. Preferir Control Debian MCP privado si expone de forma autorizada una operación específica de Bibliotecario; el catálogo v7 de 38 herramientas no la expone todavía. El puente GitHub→Issues→runner conserva funciones `bibliotecario_brief`/`bibliotecario_record` solo para trabajos expresamente permitidos por su código; **no** autoriza a escribir en cualquier expediente. Remote Desktop Commander puede utilizarse excepcionalmente en Debian cuando esté conectado y exista autorización y cuota, sin convertirlo en dependencia cotidiana. Nunca suplantar permisos o mezclar un expediente narrativo con otro técnico.
+**Ejecución en Debian:** Python estándar + SQLite, sin API de pago. Primero comprobar las herramientas realmente expuestas por el chat. El puente privado `stdio-v83` de Control Debian anuncia 43 herramientas; entre ellas `debian_bibliotecario_buscar`, `debian_bibliotecario_resumen` y `debian_bibliotecario_registrar`. Su disponibilidad en una conversación nueva y la operación de registro deben probarse realmente. Si no aparecen, utilizar un canal alternativo autorizado sin simular acceso. GitHub→Issues→runner sigue como alternativa aprobada, con alcance restringido; Remote Desktop Commander queda para excepciones justificadas, solo en Debian. Nunca mezclar expedientes ni exponer credenciales.
+
+## Protocolo exigible de registro verificado y continuación (01/11/2026)
+
+1. **Identificar, no adivinar:** si están disponibles, ejecutar `debian_bibliotecario_buscar({title})`; contrastar título exacto y contexto, usar su ID de trabajo devuelto. A continuación `debian_bibliotecario_resumen({work})` para recuperar la revisión y los pendientes. No copiar identificadores reales a skills públicas.
+2. **Decidir el hito:** registrar al completar una fase sustancial, al cambiar de fase y antes de cerrar una tarea duradera. Evitar duplicados, secretos y registros vacíos. Para habilidades y herramientas, cumplir la autorización previa específica para catalogación y resguardo; una autorización expresa de lote ya concedida no debe repetirse.
+3. **Escribir con confirmación:** `debian_bibliotecario_registrar({work,operation_id,label,entries})`, con ID de operación estable e idempotente y tipos permitidos `decision|constraint|verified_result|next_action|note`. Exigir `status=saved` o `duplicate`, `revision` entero y `readback_confirmed=true`. Si la herramienta no devuelve estas pruebas, consultar nuevamente el resumen y confirmar que la revisión incorpora el resultado; si sigue dudoso, marcar `REGISTRO_NO_VERIFICADO`.
+4. **Continuidad de la tarea:** el registro no sustituye completar fases pendientes en el mismo turno. Solo interrumpir cuando no quede trabajo autorizado y viable, haya impedimento técnico real o sea indispensable la intervención humana. Si el turno finaliza con trabajo pendiente, registrar su estado y siguiente acción cuando sea posible, sin prometer trabajo autónomo futuro.
+5. **Diagnóstico sin fingir:** una skill no ejecuta hooks por sí sola y los conectores pueden no estar instalados en otro chat o en Free. Diferenciar herramienta anunciada, herramienta cargada, escritura real y lectura posterior. Si falta acceso, no atribuir al Bibliotecario un guardado que solo consta en la conversación.
+
+**Control de calidad en proyectos con ejecutor:** cuando el ejecutor emita eventos identificables, comparar cada hito sustancial con la revisión y el identificador de operación en SQLite; reportar pérdidas, conflictos y demoras. Esta comparación no rastrea automáticamente todas las conversaciones ni instala servicios de vigilancia.
 
 ## Comportamiento al recuperar
 1. Identifica el tema real de la conversación, sin suponer ningún proyecto preexistente. Busca con `{"action":"find","title":"TÍTULO"}` mediante `interfaz_chat.py` y comprueba el **título de cada coincidencia**: una mención incidental a un proyecto en otro trabajo no significa que ambos sean el mismo.
@@ -43,6 +53,6 @@ La skill orienta conductas, NO garantiza ejecución espontánea en cada turno, r
 
 ## Continuidad de Control Debian y del puente alternativo (01/11/2026)
 - Localizar primero los trabajos existentes por título exacto (homologación de Control Debian, Gestor de Skills y CDC). Recuperar identificadores reales del Bibliotecario local; nunca incluir IDs privados en skills públicas ni reutilizarlos como autorización.
-- El canal cotidiano de archivos/GUI/terminal limitada es ChatGPT → Control Debian → Secure MCP Tunnel → Debian. GitHub→Issues/Actions→runner→CDC/ejecutor local sigue disponible como **alternativa de recuperación y mantenimiento**; no desinstalarlo ni deshabilitarlo por completar la vía directa.
+- El canal cotidiano de archivos/GUI/terminal limitada y registro es ChatGPT → Control Debian → Secure MCP Tunnel → Debian, cuando las herramientas de Bibliotecario están efectivamente cargadas en el chat. GitHub→Issues/Actions→runner→CDC/ejecutor local sigue disponible como **alternativa de recuperación y mantenimiento**; no desinstalarlo ni deshabilitarlo por completar la vía directa.
 - Conservar los originales del Bibliotecario, `operation_id` estable y comprobación de revisión; no leer credenciales ni usar GitHub para datos personales. No inferir que el canal MCP permite registrar memoria hasta probar una operación propia y autorizada.
 - Evidencia y riesgos: consultar inventario fechado 01/11/2026 de `inventariar-skills`; presupuesto marginal 0 € y catalogación/resguardo solo tras permiso específico.

@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.22
+version: 0.2.23
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -9,6 +9,18 @@ version: 0.2.22
 Aplicar proactivamente al iniciar, retomar o cambiar de fase de tareas no triviales, si el entorno permite descubrir esta skill. Esta declaración NO garantiza invocación automática desde todos los chats o proyectos: se complementa con instrucciones personalizadas y de proyecto. Para cuestiones triviales, omitir ceremonia.
 
 **Fuente única de verdad:** `vtsalamanca/gestor-de-skills/skills/organizaciondeltrabajo/SKILL.md`. Esta versión consolida la línea 0.1.0–0.1.6 del repositorio y las mejoras 0.2.0 del plugin. ChatGPT y Codex pueden usar copias empaquetadas o cacheadas, pero deben reproducir este archivo canónico; un Markdown en GitHub no se instala ni se actualiza automáticamente.
+
+## Contrato de continuidad y puerta de cierre (01/11/2026)
+
+**Defecto que corrige:** indicar «continúa» en una skill no crea una ejecución autónoma ni garantiza que se registre un checkpoint. Ante una tarea autorizada de varias fases, el asistente debe ejecutar en el **mismo turno** todos los pasos independientes viables, sin cerrar tras un informe parcial, una primera prueba o un aviso de progreso. No solicitar confirmaciones rituales («sigue», «ya», «¿continúo?»), ni reiterar autorizaciones otorgadas. Los mensajes de progreso no sustituyen la ejecución.
+
+**Puerta de cierre comprobable:** antes de finalizar un trabajo no trivial, contrastar el objetivo inicial y sus criterios de aceptación con (a) fases ejecutadas y evidencia, (b) fases restantes con acceso/permisos disponibles, (c) bloqueos reales y alternativas, (d) estado del registro de hitos. Si queda una fase factible, realizarla ahora; ante bloqueo parcial, continuar con las demás. No declarar «terminado» si solo se diseñó, desarrolló, probó localmente o publicó una parte. Detenerse por límite de herramienta, seguridad, autorización indispensable o contexto de ejecución realmente agotado, documentando el mínimo paso restante. **Nunca prometer trabajo futuro en segundo plano** sin un mecanismo de automatización creado y comprobado.
+
+**Hitos persistentes:** identificar al comienzo el proyecto existente por título y recuperar su último estado. Tras una fase sustancial, una decisión o antes del cierre, aplicar el procedimiento de `bibliotecario-memoria`: registro idempotente por operación, revisión devuelta y **relectura**. Distinguir guardado confirmado de mensaje de intención. Si no hay herramienta real o el permiso de registro falta, escribir en la respuesta `REGISTRO_PENDIENTE` con la causa, no inventar una revisión; conservar un traspaso legible cuando exista destino permitido. No guardar saludos, pasos ínfimos ni datos sensibles.
+
+**Compatibilidad con autorizaciones:** la autorización expresa para un lote concreto de catalogación, respaldo y publicación abarca sus fases aprobadas y no exige otra pregunta en el mismo lote; no se infieren permisos para nuevos proyectos ni futuras publicaciones. No desplazar al usuario operaciones que ya puede ejecutar el asistente con los conectores autorizados.
+
+**Auditoría:** para trabajos con ejecutor local, emitir eventos de fase con identificador estable y comparar el último hito del Bibliotecario con el progreso del ejecutor, sin crear un programador, hook o servicio nuevo por simple regla textual. Un verificador externo solo puede auditar los eventos que recibe: no observa pensamientos ni todos los mensajes del chat.
 
 ## Misión y garantías
 Conseguir resultados fiables y verificables con el menor gasto razonable de tiempo del usuario, operaciones manuales, créditos, cuotas y dinero. Presupuesto adicional por defecto **0 €**. Nunca utilizar servicio/API/plugin/ejecutor de pago por uso, aun con saldo promocional, sin comprobar tarifa, saldo y coste estimado y obtener autorización expresa por operación. Si coste desconocido, bloquear. No comprometer calidad, seguridad, legalidad ni verificabilidad por ahorrar.
@@ -204,5 +216,5 @@ Tras dos fallos equivalentes sin nueva evidencia: detener y diagnosticar. Difere
 Al cerrar: registrar cuota inicial/final cuando esté disponible, operaciones remotas por fase, resultado comprobado, bloqueos y siguiente acción. Reutilizar Debian para procesamiento intensivo local, MCP remoto para orquestación desde ChatGPT. Coste adicional por defecto 0 €: ninguna API, plugin o recurso facturable sin tarifa, estimación y autorización expresa.
 
 ## Prioridad del puente Control Debian y preservación de GitHub (01/11/2026)
-Para operaciones ordinarias del laboratorio, descubrir y probar primero el complemento **Control Debian - Túnel privado** desde ChatGPT Plus; la ruta verificada pasa por Secure MCP Tunnel y servicio `systemd --user` en Debian. Distinguir herramientas anunciadas del catálogo realmente cargado y de ejecuciones E2E: el servidor stdio-v7 anunció 38 herramientas, pero chats previos conservaban 37. La terminal Bubblewrap no es terminal libre del anfitrión.
+Para operaciones ordinarias del laboratorio, descubrir y probar primero el complemento **Control Debian - Túnel privado** desde ChatGPT Plus; la ruta verificada pasa por Secure MCP Tunnel y servicio `systemd --user` en Debian. El 01/11/2026 se comprobó el servidor `stdio-v83` con 43 herramientas anunciadas, incluidas las operaciones explícitas de Bibliotecario; la carga efectiva en cada conversación y la escritura E2E se verifican por separado. Un chat ya abierto puede conservar un catálogo anterior. La terminal Bubblewrap no es terminal libre del anfitrión.
 **Nunca retirar por sustitución aparente** el mecanismo histórico GitHub privado → Issues/Actions → runner Debian → CDC/ejecutor local ni sus pruebas, eventos, idempotencia y procedimiento de recuperación. Usarlo como respaldo y mantenimiento cuando corresponda, evitando convertirlo de nuevo en dependencia del MCP directo. Remote Desktop Commander se reserva para tareas excepcionales autorizadas, con control de cuota; no acceder al Windows anfitrión sin autorización específica. Para estado comprobado, resguardos y matriz de equivalencia consultar `skills/inventariar-skills/references/inventario-control-debian-2026-11-01.md`.
