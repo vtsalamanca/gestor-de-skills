@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.38
+# Gestor de Skills 0.4.39
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -28,11 +28,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las nueve ski
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.37.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.39.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.37.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.39.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 

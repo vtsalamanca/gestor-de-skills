@@ -1,11 +1,11 @@
 ---
 name: bibliotecario-memoria
-description: Recupera trabajos y registra proactivamente decisiones, pruebas y documentos importantes en SQLite de Debian mediante Remote Desktop Commander.
-version: 0.3.4
+description: Recupera trabajos y registra hitos autorizados en SQLite de Debian por el acceso realmente disponible, priorizando Control Debian cuando exponga la operación.
+version: 0.3.5
 ---
 # Bibliotecario — memoria y documentación
 
-**Ejecución compatible con Free y Plus cuando Remote Desktop Commander esté disponible:** Python estándar + SQLite en `debian-laboratorio`. No requiere Codex, Work, API de pago ni GitHub para guardar.
+**Ejecución en Debian:** Python estándar + SQLite, sin API de pago. Verificar qué conector está realmente disponible antes de recuperar o guardar. Preferir Control Debian MCP privado si expone de forma autorizada una operación específica de Bibliotecario; el catálogo v7 de 38 herramientas no la expone todavía. El puente GitHub→Issues→runner conserva funciones `bibliotecario_brief`/`bibliotecario_record` solo para trabajos expresamente permitidos por su código; **no** autoriza a escribir en cualquier expediente. Remote Desktop Commander puede utilizarse excepcionalmente en Debian cuando esté conectado y exista autorización y cuota, sin convertirlo en dependencia cotidiana. Nunca suplantar permisos o mezclar un expediente narrativo con otro técnico.
 
 ## Comportamiento al recuperar
 1. Identifica el tema real de la conversación, sin suponer ningún proyecto preexistente. Busca con `{"action":"find","title":"TÍTULO"}` mediante `interfaz_chat.py` y comprueba el **título de cada coincidencia**: una mención incidental a un proyecto en otro trabajo no significa que ambos sean el mismo.
@@ -40,3 +40,9 @@ ChatGPT actúa como intérprete de recuerdos al trabajar en un chat activo. No d
 6. Conserva originales y procedencia, evita duplicados mediante claves estables. No borres, fusiones o sustituyas hitos automáticamente. Si falla la conexión, declara el límite en lugar de inventar verificaciones.
 
 La skill orienta conductas, NO garantiza ejecución espontánea en cada turno, recuperación tras cierre abrupto ni funcionamiento cuando ChatGPT no está activo. Observador de Debian y auditoría horaria son procesos distintos y no generan inferencia. Coste adicional objetivo: 0 €.
+
+## Continuidad de Control Debian y del puente alternativo (01/11/2026)
+- Localizar primero los trabajos existentes por título exacto (homologación de Control Debian, Gestor de Skills y CDC). Recuperar identificadores reales del Bibliotecario local; nunca incluir IDs privados en skills públicas ni reutilizarlos como autorización.
+- El canal cotidiano de archivos/GUI/terminal limitada es ChatGPT → Control Debian → Secure MCP Tunnel → Debian. GitHub→Issues/Actions→runner→CDC/ejecutor local sigue disponible como **alternativa de recuperación y mantenimiento**; no desinstalarlo ni deshabilitarlo por completar la vía directa.
+- Conservar los originales del Bibliotecario, `operation_id` estable y comprobación de revisión; no leer credenciales ni usar GitHub para datos personales. No inferir que el canal MCP permite registrar memoria hasta probar una operación propia y autorizada.
+- Evidencia y riesgos: consultar inventario fechado 01/11/2026 de `inventariar-skills`; presupuesto marginal 0 € y catalogación/resguardo solo tras permiso específico.
