@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.21
+version: 0.2.22
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -202,3 +202,7 @@ Antes de una llamada: recuperar resultados existentes, formular hipótesis, sele
 Tras dos fallos equivalentes sin nueva evidencia: detener y diagnosticar. Diferenciar errores de red, herramienta, permisos, bloqueo de seguridad, autenticación y agotamiento de cuota. Nunca eludir protecciones, ampliar permisos ni activar procesos persistentes por ahorrar llamadas.
 
 Al cerrar: registrar cuota inicial/final cuando esté disponible, operaciones remotas por fase, resultado comprobado, bloqueos y siguiente acción. Reutilizar Debian para procesamiento intensivo local, MCP remoto para orquestación desde ChatGPT. Coste adicional por defecto 0 €: ninguna API, plugin o recurso facturable sin tarifa, estimación y autorización expresa.
+
+## Prioridad del puente Control Debian y preservación de GitHub (01/11/2026)
+Para operaciones ordinarias del laboratorio, descubrir y probar primero el complemento **Control Debian - Túnel privado** desde ChatGPT Plus; la ruta verificada pasa por Secure MCP Tunnel y servicio `systemd --user` en Debian. Distinguir herramientas anunciadas del catálogo realmente cargado y de ejecuciones E2E: el servidor stdio-v7 anunció 38 herramientas, pero chats previos conservaban 37. La terminal Bubblewrap no es terminal libre del anfitrión.
+**Nunca retirar por sustitución aparente** el mecanismo histórico GitHub privado → Issues/Actions → runner Debian → CDC/ejecutor local ni sus pruebas, eventos, idempotencia y procedimiento de recuperación. Usarlo como respaldo y mantenimiento cuando corresponda, evitando convertirlo de nuevo en dependencia del MCP directo. Remote Desktop Commander se reserva para tareas excepcionales autorizadas, con control de cuota; no acceder al Windows anfitrión sin autorización específica. Para estado comprobado, resguardos y matriz de equivalencia consultar `skills/inventariar-skills/references/inventario-control-debian-2026-11-01.md`.
