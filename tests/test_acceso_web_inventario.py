@@ -24,6 +24,8 @@ class KnowledgeInventoryTests(unittest.TestCase):
         src=(ACCESS/"SKILL.md").read_text()
         self.assertRegex(src,r"(?m)^version: 0\.4\.[0-9]+$")
         self.assertIn("references/recuperacion-visual.md",src)
+        self.assertIn("references/lab-auth.md",src)
+        self.assertTrue((ACCESS/"references/lab-auth.md").is_file())
         self.assertTrue((ACCESS/"references/recuperacion-visual.md").is_file())
         self.assertIn("references/sesiones-navegador-llavero-oauth.md",src)
         self.assertTrue(TECH.is_file())
@@ -33,6 +35,14 @@ class KnowledgeInventoryTests(unittest.TestCase):
         text=(ACCESS/"references/recuperacion-visual.md").read_text(encoding="utf-8")
         for marker in ("403", "429", "Firefox", "XTestFakeMotionEvent", "CAPTCHA", "MFA", "cesta anónima", "no equivale"):
             self.assertIn(marker.lower(),text.lower())
+
+    def test_lab_auth_explicit_bridge(self):
+        text=(ACCESS/"references/lab-auth.md").read_text(encoding="utf-8")
+        for marker in ("LAB-AUTH 0.1.0", "lab-auth list", "lab-auth status",
+                       "lab-auth probe", "lab-auth login", "JCCM",
+                       "EducamosCLM", "InfoJobs", "GNOME Keyring",
+                       "CAPTCHA", "MFA", "autorización", "no garantiza"):
+            self.assertIn(marker.lower(), text.lower())
 
     def test_inventory_is_registered(self):
         src=(INVENT/"SKILL.md").read_text()

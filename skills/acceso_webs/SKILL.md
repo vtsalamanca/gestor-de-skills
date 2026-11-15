@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.4.4
+version: 0.4.5
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -49,6 +49,9 @@ Separar las capas: descubrimiento de URLs, obtención, autenticación/sesión, p
 - **Tercera:** inspección puntual de DOM/JavaScript/tráfico mediante herramientas de diagnóstico, sin transformar una API interna no documentada en contrato.
 - **Cuarta:** navegador o WebView automatizado cuando la interacción o el JavaScript sean imprescindibles; mantener contexto y evitar reiniciar cada consulta.
 - **Quinta:** agentes visuales, servicios especializados o plataformas remotas solo si la alternativa más ligera no basta, con consumo y autorización verificados.
+
+### Autenticación con LAB-AUTH (cuando exista en Debian)
+Si la web exige inicio de sesión, comprobar antes si ya hay sesión autorizada o conector oficial. Con petición del titular y LAB-AUTH disponible, recuperar su expediente y manuales, verificar el adaptador del portal y ejecutar sólo las pruebas necesarias; hacer login únicamente con aprobación para ese portal. No transferir secretos al chat ni confundir sondeo de formulario con autenticación real. Seguir la [ruta LAB-AUTH](references/lab-auth.md) y coordinarla con la recuperación visual si el acceso público está bloqueado.
 
 ### Recuperación visual autorizada
 Si HTTP 403 con desafío o WebDriver sin contenido, probar el navegador convencional visible y autorizado, comprobando ventana, foco y evidencia. Nunca eludir protecciones. Seguir el [protocolo reutilizable](references/recuperacion-visual.md) antes de declarar acceso o disponibilidad.
