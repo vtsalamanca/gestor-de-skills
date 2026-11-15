@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.4.3
+version: 0.4.4
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -49,6 +49,9 @@ Separar las capas: descubrimiento de URLs, obtención, autenticación/sesión, p
 - **Tercera:** inspección puntual de DOM/JavaScript/tráfico mediante herramientas de diagnóstico, sin transformar una API interna no documentada en contrato.
 - **Cuarta:** navegador o WebView automatizado cuando la interacción o el JavaScript sean imprescindibles; mantener contexto y evitar reiniciar cada consulta.
 - **Quinta:** agentes visuales, servicios especializados o plataformas remotas solo si la alternativa más ligera no basta, con consumo y autorización verificados.
+
+### Recuperación visual autorizada
+Si HTTP 403 con desafío o WebDriver sin contenido, probar el navegador convencional visible y autorizado, comprobando ventana, foco y evidencia. Nunca eludir protecciones. Seguir el [protocolo reutilizable](references/recuperacion-visual.md) antes de declarar acceso o disponibilidad.
 
 ### Criterios verificables de finalización
 No aceptar «se abre la página», «el botón es visible», «HTTP 200» o «workflow verde» como prueba del objetivo final. Confirmar registros esperados, integridad, cobertura real, tratamiento de adjuntos, resultados de las acciones y trazabilidad de errores. Distinguir evidencia comprobada de conjetura. Documentar mecanismo, coste por consulta, número de iteraciones, límites, fallos conocidos y forma de recuperación.

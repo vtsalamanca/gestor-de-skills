@@ -22,10 +22,17 @@ class KnowledgeInventoryTests(unittest.TestCase):
 
     def test_access_skills_refers_to_real_reference(self):
         src=(ACCESS/"SKILL.md").read_text()
-        self.assertIn("version: 0.4.3",src)
+        self.assertRegex(src,r"(?m)^version: 0\.4\.[0-9]+$")
+        self.assertIn("references/recuperacion-visual.md",src)
+        self.assertTrue((ACCESS/"references/recuperacion-visual.md").is_file())
         self.assertIn("references/sesiones-navegador-llavero-oauth.md",src)
         self.assertTrue(TECH.is_file())
         self.assertGreater(len(TECH.read_text().splitlines()),40)
+
+    def test_visual_fallback_safety_and_evidence(self):
+        text=(ACCESS/"references/recuperacion-visual.md").read_text(encoding="utf-8")
+        for marker in ("403", "429", "Firefox", "XTestFakeMotionEvent", "CAPTCHA", "MFA", "cesta anónima", "no equivale"):
+            self.assertIn(marker.lower(),text.lower())
 
     def test_inventory_is_registered(self):
         src=(INVENT/"SKILL.md").read_text()
