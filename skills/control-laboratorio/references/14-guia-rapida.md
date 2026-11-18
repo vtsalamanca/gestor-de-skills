@@ -19,7 +19,7 @@
 | «Educamos adjuntos» | colector y prueba del fichero, leído/no leído | contador agregado |
 | «Busca curro» | servicio diario, ATE privado, fuentes parciales | repetir scrape sin motivo |
 | «Envía informe diario» | estado del colector y Automations por separado | run_now inline |
-| «Publica nuestras skills» | crear/auditar/integrar, Git SHA, ZIP, Plugin Creator | push = plugin cargado |
+| «Publica nuestras skills» | GitHub y crear/auditar/integrar, Git SHA, ZIP, Plugin Creator | push = plugin cargado |
 | «Ordena el escritorio» | ventanas propiedad de la prueba y estado usuario | cerrar todas |
 | «Elimina backups» | inventario, hash, recuperación y autorización explícita | limpieza automática |
 | «Recupera lo que hicimos» | buscar expediente → brief → documento → readback | memoria del chat como base única |
