@@ -13,7 +13,7 @@ Ejemplo conceptual, nunca con IDs inventados:
 - Buscar expediente y confirmar título.
 - Leer brief y revisión N.
 - Registrar operation_id estable, solo si procede: entries tipo verified_result, decision, constraint, next_action o note, con descripción no sensible, fechas, comandos relevantes, hashes y rutas de documentos.
-- Confirmar write.status saved/duplicate y revisión; releer brief; comprobar que el hito aparece en N+1, no declarar guardado por el mero envío.
+- Confirmar write.status saved/duplicate y revisión; efectuar readback (relectura del brief); comprobar que el hito aparece en N+1, no declarar guardado por el mero envío.
 
 No copiar código OTP, cookies, contraseñas, mensajes de menores, NIF, currículum ni claves en texto de los hitos. Los resúmenes son índices semánticos, no volcados de sesiones.
 
