@@ -17,6 +17,10 @@ Esta referencia complementa la metodología general de `acceso_webs` y la [recup
 
 Actualmente se conocen los adaptadores `jccm`, `educamos` e `infojobs`. **Al 15/11/2026**, el motor LAB-AUTH tiene E2E de login comprobado en **JCCM**; EducamosCLM e InfoJobs tienen sondeos reales de formulario, pero NO un nuevo login completo homologado en este motor. Las pruebas históricas de scripts independientes no convierten el estado del motor en E2E.
 
+## Continuidad programada
+
+Consultar [autenticación y entrega](automatizacion-lab-auth.md). Un login por procedimiento local no acredita E2E del adaptador LAB-AUTH ni lectura MCP sin intervención. Verificar Thunderbird fuera de PATH y evitar perfiles Firefox duplicados.
+
 ## Para incorporar un portal nuevo
 Definir un adaptador explícito y revisado, con dominio oficial permitido, campos/selectores específicos, redirecciones admitidas, autenticación verificable y pruebas sintéticas sin credenciales. No reutilizar por adivinación un adaptador de otra web. Si exige CAPTCHA, MFA, verificación de identidad o consentimiento, detener el login automático y utilizar las opciones oficiales con intervención del titular. No modificar almacenes de secretos, instalar un servicio persistente ni crear automatizaciones sin autorización.
 

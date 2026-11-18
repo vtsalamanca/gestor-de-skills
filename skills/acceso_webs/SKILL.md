@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.5.2
+version: 0.5.3
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -70,6 +70,10 @@ Aplicar la tabla M00–M90 y `tools/selector_metodos.py`; validar disponibilidad
 
 ### Autenticación con LAB-AUTH (cuando exista en Debian)
 Si la web exige inicio de sesión, comprobar antes si ya hay sesión autorizada o conector oficial. Con petición del titular y LAB-AUTH disponible, recuperar su expediente y manuales, verificar el adaptador del portal y ejecutar sólo las pruebas necesarias; hacer login únicamente con aprobación para ese portal. No transferir secretos al chat ni confundir sondeo de formulario con autenticación real. Seguir la [ruta LAB-AUTH](references/lab-auth.md) y coordinarla con la recuperación visual si el acceso público está bloqueado.
+
+### Ejecución programada con sesión autenticada
+
+Para tareas desatendidas, aplicar el [protocolo de autenticación, ejecución y entrega](references/automatizacion-lab-auth.md). Distinguir recogida local, lectura MCP y notificación; nunca confundir autorización interactiva con ejecución programada verificada.
 
 ### Recuperación visual autorizada
 Si HTTP 403 con desafío o WebDriver sin contenido, **activar la recuperación visual integrada**, no anotar simplemente "bloqueado". En Debian, el módulo reutilizable `tools/navegador_visual.py` abre Firefox ESR normal, verifica origen, ventana, propietario y foco; recupera el HTML renderizado mediante la selección de página de X11 sin usar cookies fuera del navegador. Consumir su resultado con el adaptador de cada web y comprobar las fichas; nunca equiparar contenido copiado a stock o entrega confirmados. Si no hay X11/consentimiento o la web exige CAPTCHA, cerrar como BLOQUEADO, sin evasión. Seguir el [protocolo reutilizable](references/recuperacion-visual.md).
