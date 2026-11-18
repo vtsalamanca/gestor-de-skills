@@ -1,0 +1,44 @@
+---
+name: control-laboratorio
+description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
+version: 0.1.0
+---
+
+# Control del laboratorio — entrada principal
+
+## Misión, límites y activación
+Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa ante referencias al laboratorio, Debian, Control Debian, Igor, Goose, Ollama, Bibliotecario, credenciales del laboratorio, LAB-AUTH, integración entre chats, tareas locales, navegador autenticado, programas, servicios, backups, sincronización GitHub/ChatGPT o diagnóstico de sus herramientas. Para cuestiones externas o triviales no conectadas al laboratorio, no activarla por rutina.
+
+**No es un ejecutor ni una fuente omnisciente.** Una skill no crea herramientas, permisos, sesión, memoria automática, autenticación ni ejecución desatendida. Comprobar todo en la sesión presente. El objetivo es recordar **cómo buscar la verdad operativa**, seleccionar la ruta autorizada, actuar con controles y documentar resultados, nunca repetir una arquitectura histórica sin comprobar.
+
+## Contrato de arranque (siempre que exista trabajo operativo)
+1. **Recuperar el objetivo real:** conservar restricciones, permisos ya concedidos, proyectos, resultados anteriores, coste máximo 0 € adicional; no hacer repetir decisiones ni reabrir asuntos resueltos. Identificar el expediente correcto del Bibliotecario por título, recuperar últimas revisiones y distinguir hechos probados, hipótesis, caducidad y pendientes.
+2. **Verificar entorno actual:** descubrir las herramientas MCP y plugins realmente disponibles; verificar conexión, usuario, host, perfil, repositorio, servicio y alcance de permisos. Control Debian — Sustituto independiente es la vía preferente de Debian; no asumir que todas sus herramientas históricas se encuentran hoy en el catálogo. Un diagnóstico aislado de túnel no invalida otro canal que sí responde.
+3. **Consultar fuente canónica local antes de intervenir:** proyecto Debian y su procedimiento más reciente; Biblioteca de manuales y catálogo como índices, no como autoridad sobre un estado vivo. Leer código, servicios, documentos y estado Git cuando importen. Identificar las rutas usando las referencias; no buscar indiscriminadamente secretos o todo el HOME.
+4. **Elegir el procedimiento de menor coste y mayor fiabilidad:** reutilizar adaptadores, pruebas y herramientas homologadas; plan de cambios y reversión para mutaciones. Seguir el orden de la tabla de enrutamiento más abajo.
+5. **Ejecutar por lotes proporcionados:** operaciones autorizadas y acotadas; pruebas estáticas/sintéticas antes de pruebas reales. No usar Desktop Commander cuando Control Debian cubre el caso. No abrir veinte navegadores o ventanas; identificar los recursos propios de la prueba y cerrarlos al terminar, sin cerrar sesiones del usuario.
+6. **Validar extremo a extremo:** distinguir que el comando salió bien de que el objetivo se cumplió; leer resultado, contrastar datos y detectar efectos colaterales, estado de servicios, integridad Git y residuos. No equiparar sesión válida con mensajes extraídos, ni temporizador activo con notificación entregada.
+7. **Registrar con garantía y cerrar:** si la operación lo justifica, hito idempotente en expediente correcto del Bibliotecario y relectura; al modificar skills/herramientas, aplicar las autorizaciones de catalogación/resguardo según las habilidades existentes (la orden explícita actual cubre el lote aprobado, no proyectos futuros). Documentar fuente, versión, prueba, coste, incertidumbre, siguiente acción y rollback; no declarar finalizado lo no demostrado.
+
+## Enrutamiento de herramientas
+- **Control Debian conectado:** usar primero una operación tipada, examinada y adecuada al objetivo. Las operaciones de ticket necesitan recoger su resultado. Para diagnóstico o terminal anfitrión, solo la capacidad autorizada disponible en la sesión; no asumir consola arbitraria ni root. Ver [02-control-debian.md](references/02-control-debian.md).
+- **Bibliotecario:** buscar por nombre exacto, breve, documento original, registrar una sola operación y verificar la lectura posterior. Ver [03-bibliotecario.md](references/03-bibliotecario.md).
+- **Portal autenticado / llavero:** LAB-AUTH y adaptador oficial; sesión vigente antes de iniciar otra; lectura mínima sin secretos; Thunderbird local para MFA cuando corresponda. Ver [04-lab-auth.md](references/04-lab-auth.md).
+- **Tarea de Educamos / Buscar Curro / ATE:** separar colector local, estado privado, informe saneado y entrega ChatGPT; usar evidencia por fase y no repetir colectores sin motivo. Ver [05-automatizaciones.md](references/05-automatizaciones.md).
+- **Interfaz gráfica, software y mantenimiento:** servicios systemd de usuario, ventanas propias, procesos y límites de la sesión; comprobación antes/después. Ver [06-escritorio-y-mantenimiento.md](references/06-escritorio-y-mantenimiento.md).
+- **Igor, Goose, Ollama, CDC y tutorial:** seleccionar agente solo si aporta una función realmente disponible y autorizada; preservar puentes de continuidad. Ver [07-agentes-y-cdc.md](references/07-agentes-y-cdc.md).
+- **Código, proyectos, publicación, recuperación:** GitHub es el registro del código público autorizado; Debian opera; el plugin es una distribución separada; Bibliotecario conserva decisiones. Ver [08-git-y-skills.md](references/08-git-y-skills.md), [09-rutas-y-fuentes.md](references/09-rutas-y-fuentes.md), [12-recuperacion.md](references/12-recuperacion.md).
+- **Error, bloqueo, autorización o riesgo:** diagnosticar la capa precisa, no repetir intentos ciegos. Ver [10-incidencias-y-seguridad.md](references/10-incidencias-y-seguridad.md).
+
+## Relación con las diez skills originales
+No sustituirlas ni copiar sus manuales: **organizaciondeltrabajo** coordina fases y presupuesto; **ingenieria-fiable** especifica pruebas, diagnósticos y regresiones; **acceso_webs** gestiona modalidades de navegación y autenticación; **bibliotecario-memoria** impone recuperación y registro; **buscar-comparar-productos** resuelve compras sin construir históricos propios; **descubrir-skills**, **auditar-skills**, **crear-skills**, **integrar-skills** e **inventariar-skills** gestionan el ciclo de vida de capacidades. Esta habilidad actúa como **enrutador y manual de integración**, no como una undécima versión de las otras.
+
+Aplicar primero [01-arquitectura.md](references/01-arquitectura.md) y [09-rutas-y-fuentes.md](references/09-rutas-y-fuentes.md) para localizar el componente y su documento real. Aplicar [11-pruebas-y-aceptacion.md](references/11-pruebas-y-aceptacion.md) a toda modificación sustancial.
+Consultar también [15-herramientas-y-capacidades.md](references/15-herramientas-y-capacidades.md) para seleccionar funciones del conector y [16-procedimientos-especializados.md](references/16-procedimientos-especializados.md) para operaciones de impresión, multimedia, Windows, navegación y periféricos. Consultar además [13-lecciones-reutilizables.md](references/13-lecciones-reutilizables.md) para incidentes históricos y [14-guia-rapida.md](references/14-guia-rapida.md) como checklist de entrada y cierre.
+
+## Salvaguardas inderogables
+- Coste marginal **0 €** por defecto: no llamar a APIs de pago por uso, saldo promocional, runners facturables ni herramientas externas de coste desconocido sin estimación fiable y consentimiento específico.
+- Secreto significa secreto **también en un chat, log, commit, ZIP, pantalla o reporte de diagnóstico**: nunca exportar contraseñas, cookies, tokens OAuth, OTP, perfiles de navegador, llaveros, correo escolar o currículum a un repositorio público/plugin. Leer metadatos seguros en vez de volcados.
+- No elevar privilegios, desactivar sandbox, editar políticas MCP, manipular permisos generales o evadir CAPTCHA/anti-bot por conveniencia. Ante rechazo: localizar si es permiso local, MCP, plataforma, red, sitio o autenticación; corregir dentro del alcance permitido.
+- Nunca borrar perfiles, resguardos, procesos ajenos, bases privadas o ramas con cambios sin inventario, autorización específica y rollback verificado. Respetar las ventanas y sesiones abiertas por el titular.
+- No confundir PROBADO LOCALMENTE, VALIDADO E2E, PROGRAMADO, ENTREGADO, PUBLICADO o CARGADO EN CHAT NUEVO. Ante evidencia insuficiente, mantener explícitamente pendiente y ofrecer el paso comprobable.

@@ -1,8 +1,9 @@
-# Gestor de Skills 0.4.44
+# Gestor de Skills 0.4.45
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
-Complemento privado con diez skills especializadas:
+Complemento privado con once skills especializadas:
+- `control-laboratorio`: **habilidad principal** para recuperar y operar el laboratorio mediante Control Debian, LAB-AUTH, Bibliotecario, agentes, automatizaciones y GitHub, consultando el estado real antes de actuar.
 - `descubrir-skills`: búsqueda y comparación de skills públicas.
 - `auditar-skills`: revisión estática y control de seguridad/costes.
 - `integrar-skills`: compatibilidad e integración por plataforma.
@@ -13,6 +14,10 @@ Complemento privado con diez skills especializadas:
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
 - `ingenieria-fiable`: adaptación práctica para planificar, diagnosticar, probar y verificar software, agentes y automatizaciones.
 - `bibliotecario-memoria`: recuperación y registro conservador de hitos del Bibliotecario en Debian, sin asumir ejecución automática entre chats.
+
+## Habilidad central y referencias
+
+La nueva **control-laboratorio** es el enrutador operativo, no un sustituto de las otras diez skills. Su archivo principal selecciona referencias según el subsistema (Control Debian, Bibliotecario, LAB-AUTH, automatizaciones, agentes, escritorio, GitHub, recuperación y pruebas). Los hechos cambiantes se consultan en Debian y su Bibliotecario: un texto del repositorio nunca demuestra por sí mismo conexión o permisos actuales. Ninguna guía incluye secretos ni habilita acciones sin autorización.
 
 ## Nueva metodología
 Inspirada en principios generales de Superpowers de Jesse Vincent (MIT): https://github.com/obra/superpowers . Se conserva atribución al proyecto de referencia. Esta adaptación se ha redactado para ChatGPT; no contiene scripts remotos, hooks de arranque, autorizaciones globales, instalación automática, subagentes obligatorios ni permisos de escritura adicionales.
@@ -25,15 +30,15 @@ Las pruebas de este paquete validan estructura y consistencia; no demuestran acc
 
 ## Empaquetado reproducible
 
-El empaquetador obtiene un commit exacto, valida los manifiestos y las diez skills, y genera un ZIP determinista para Plugin Creator. El ZIP contiene únicamente `.codex-plugin/plugin.json`, `README.md` y `skills/`; el marketplace de Codex se valida, pero no se entrega a Plugin Creator. No se reescriben los archivos originales.
+El empaquetador obtiene un commit exacto, valida los manifiestos y las once skills, y genera un ZIP determinista para Plugin Creator. El ZIP contiene únicamente `.codex-plugin/plugin.json`, `README.md` y `skills/`; el marketplace de Codex se valida, pero no se entrega a Plugin Creator. No se reescriben los archivos originales.
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.43.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.45.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.43.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.45.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -42,7 +47,7 @@ También se crea `dist/gestor-de-skills-0.4.43.zip.sha256.json`, que registra el
 1. Confirmar que el commit está publicado en `vtsalamanca/gestor-de-skills` y ejecutar las pruebas sobre ese SHA completo.
 2. Leer el plugin privado existente en Plugin Creator y anotar su identificador y `release_id` actual.
 3. Actualizar ese mismo plugin con el ZIP y el `release_id` esperado; no crear otro plugin.
-4. Volver a leer los archivos publicados y comprobar versión, diez skills y contenido frente a los hashes generados.
+4. Volver a leer los archivos publicados y comprobar versión, once skills y contenido frente a los hashes generados.
 5. En Codex, actualizar el marketplace `gestor-de-skills-github` y comprobar la versión instalada y la ruta cargada. Un commit en GitHub no demuestra por sí solo que ChatGPT o Codex estén sincronizados.
 
 ### Recuperación

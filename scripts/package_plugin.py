@@ -21,6 +21,7 @@ import zipfile
 OFFICIAL_REPOSITORY = "https://github.com/vtsalamanca/gestor-de-skills.git"
 EXPECTED_SKILLS = {
     "bibliotecario-memoria",
+    "control-laboratorio",
     "acceso_webs",
     "buscar-comparar-productos",
     "auditar-skills",
