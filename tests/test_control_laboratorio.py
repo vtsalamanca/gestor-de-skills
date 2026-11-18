@@ -29,7 +29,7 @@ class ControlLaboratorioTests(unittest.TestCase):
             self.assertIn(term, hdr)
 
     def test_complete_references_no_broken_links(self):
-        self.assertEqual(len(self.refs), 14)
+        self.assertEqual(len(self.refs), 16)
         links = re.findall(r"\]\(references/([a-z0-9-]+\.md)\)", self.text)
         self.assertEqual(set(links), set(self.refs), "Todas las referencias deben enlazarse")
         for name, content in self.refs.items():
