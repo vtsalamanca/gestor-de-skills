@@ -1,11 +1,13 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.23
+version: 0.2.24
 ---
 # &organizaciondeltrabajo — metodología general
 
 ## Alcance y activación
+**Laboratorio Debian:** cuando el encargo se refiera a administración, herramientas, continuidad, LAB-AUTH, Control Debian, scripts, servicios o GitHub del laboratorio, consultar primero la skill específica **control-laboratorio** y sus referencias, si está instalada. Esta habilidad general conserva la coordinación, el presupuesto y la puerta de cierre; no duplicar el manual local ni presuponer acceso por mencionar su nombre.
+
 Aplicar proactivamente al iniciar, retomar o cambiar de fase de tareas no triviales, si el entorno permite descubrir esta skill. Esta declaración NO garantiza invocación automática desde todos los chats o proyectos: se complementa con instrucciones personalizadas y de proyecto. Para cuestiones triviales, omitir ceremonia.
 
 **Fuente única de verdad:** `vtsalamanca/gestor-de-skills/skills/organizaciondeltrabajo/SKILL.md`. Esta versión consolida la línea 0.1.0–0.1.6 del repositorio y las mejoras 0.2.0 del plugin. ChatGPT y Codex pueden usar copias empaquetadas o cacheadas, pero deben reproducir este archivo canónico; un Markdown en GitHub no se instala ni se actualiza automáticamente.
