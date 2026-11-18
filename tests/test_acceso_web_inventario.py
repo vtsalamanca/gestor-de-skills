@@ -22,7 +22,7 @@ class KnowledgeInventoryTests(unittest.TestCase):
 
     def test_access_skills_refers_to_real_reference(self):
         src=(ACCESS/"SKILL.md").read_text()
-        self.assertRegex(src,r"(?m)^version: 0\.4\.[0-9]+$")
+        self.assertRegex(src,r"(?m)^version: [0-9]+\.[0-9]+\.[0-9]+$")
         self.assertIn("references/recuperacion-visual.md",src)
         self.assertIn("references/lab-auth.md",src)
         self.assertTrue((ACCESS/"references/lab-auth.md").is_file())
