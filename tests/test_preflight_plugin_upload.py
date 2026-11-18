@@ -1,12 +1,13 @@
 import io,json,tempfile,unittest,zipfile
 from pathlib import Path
 from scripts.preflight_plugin_upload import validate
+from scripts.package_plugin import EXPECTED_SKILLS
 class PreflightUpload(unittest.TestCase):
  def archive(self,marketplace=False):
   t=tempfile.TemporaryDirectory();p=Path(t.name)/'plugin.zip'
   with zipfile.ZipFile(p,'w') as z:
    z.writestr('.codex-plugin/plugin.json',json.dumps({'name':'gestor-de-skills','version':'0.4.29'}))
-   for name in ['bibliotecario-memoria','acceso_webs','auditar-skills','crear-skills','descubrir-skills','ingenieria-fiable','integrar-skills','inventariar-skills','organizaciondeltrabajo']:
+   for name in sorted(EXPECTED_SKILLS):
     z.writestr('skills/'+name+'/SKILL.md','---\nname: '+name+'\n---')
    if marketplace:z.writestr('.agents/plugins/marketplace.json','{}')
   return t,p
