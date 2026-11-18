@@ -47,7 +47,7 @@ También se crea `dist/gestor-de-skills-0.4.45.zip.sha256.json`, que registra el
 1. Confirmar que el commit está publicado en `vtsalamanca/gestor-de-skills` y ejecutar las pruebas sobre ese SHA completo.
 2. Leer el plugin privado existente en Plugin Creator y anotar su identificador y `release_id` actual.
 3. Actualizar ese mismo plugin con el ZIP y el `release_id` esperado; no crear otro plugin.
-4. Volver a leer los archivos publicados y comprobar versión, diez skills y contenido frente a los hashes generados.
+4. Volver a leer los archivos publicados y comprobar versión, once skills y contenido frente a los hashes generados.
 5. En Codex, actualizar el marketplace `gestor-de-skills-github` y comprobar la versión instalada y la ruta cargada. Un commit en GitHub no demuestra por sí solo que ChatGPT o Codex estén sincronizados.
 
 ### Recuperación
