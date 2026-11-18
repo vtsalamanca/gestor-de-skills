@@ -28,5 +28,16 @@ E. 429, MFA/CAPTCHA o precio/stock ambiguo: detener automatización y documentar
 F. Producto en cesta sin gastos de envío confirmados: no declarar total entregado.
 G. Navegador no disponible o permiso revocado: no inventar acceso; dar alternativa o intervención requerida.
 
-## Caso real de referencia (no codificarlo como regla universal)
-15-11-2026, PcComponentes: peticiones HTTP desde Debian recibieron 403 con "cf-mitigated: challenge". WebDriver headless sólo dio títulos o contenido insuficiente. Firefox ESR gráfico convencional en X11 sí mostró portada, búsqueda y fichas; se rechazó el aviso de cookies. La herramienta MCP de gesto devolvió "operation denied or unavailable"; un movimiento con XTestFakeMotionEvent y clic XTest autorizados desde el proceso labgestor permitieron interactuar, con captura de verificación. Tres precios vigentes superaron el límite buscado de 900 €. **No se eliminó el 403 de HTTP ni se vulneró Cloudflare.** Detalles específicos: documentación del proyecto en Debian, no en la habilidad general.
+## Aplicación transversal
+Si el navegador normal está disponible y autorizado, emplear `M50_NAVEGADOR_VISUAL` desde `tools/navegador_visual.py` y exigir una prueba con URL final, ventana/PID, dato objetivo y cobertura. Los selectores y nombres propios van en el expediente específico del sitio. El éxito en una web no prueba acceso equivalente en otras.
+
+## Método M55 — recuperación genérica de carga transitoria (18-11-2026)
+
+**Problema:** una URL HTTPS permitida puede aparecer en la barra antes de que Firefox entregue HTML. Una pestaña en blanco carece del MIME `text/html` en el portapapeles y eso no equivale a inventario vacío.
+
+**Corrección:** comprobar origen y sesión X11, esperar y validar contenido real. Solo ante `PAGINA_SIN_HTML_RENDERIZADO` o `CONTENIDO_NO_VERIFICADO`, efectuar **una única recarga normal** en la pestaña autorizada y volver a verificar la URL, el foco y los datos. Sin reiniciar perfiles, cambiar identidad/red ni eludir CAPTCHA/MFA o errores de certificados.
+
+**Implementación:** `tools/navegador_visual.py`, `_leer_html_visible` y `read`; entrada `M55_RECUPERAR_CARGA_TRANSITORIA` en `references/modalidades.json`; regresiones sintéticas en `tests/test_navegador_visual.py`. Al recuperar entrega el campo `recuperacion`. Al fracasar queda `RECARGA_ACOTADA_SIN_CONTENIDO`.
+
+## M56 — navegación no confirmada (18-11-2026)
+Si la URL de una pestaña autorizada no se confirma tras el primer intento, verificar ventana, propietario, foco y URL permitida, y repetir la navegación una sola vez con Firefox normal. Si persiste, informar NAVEGACION_NO_CONFIRMADA_TRAS_REINTENTO. No alterar certificados, cookies, red ni identidad. Implementado en tools/navegador_visual.py y clasificado en references/modalidades.json.

@@ -1,0 +1,201 @@
+{
+  "version": "0.5.2",
+  "criterio": "Menor coste total para obtener datos verificables; los requisitos y permisos prevalecen sobre el orden. No implica acceso universal.",
+  "modalidades": [
+    {
+      "id": "M00_REUSO_VALIDADO",
+      "orden": 0,
+      "nombre": "Reutilizar evidencia o sesión autorizada vigente",
+      "coste": "muy_bajo",
+      "requisitos": [
+        "vigencia",
+        "origen",
+        "cobertura"
+      ],
+      "confirma": "dato, fuente y fecha",
+      "siguiente": "M10_FUENTE_ESTRUCTURADA",
+      "senales": [
+        "*"
+      ],
+      "capacidad_requerida": "cache_vigente"
+    },
+    {
+      "id": "M10_FUENTE_ESTRUCTURADA",
+      "orden": 10,
+      "nombre": "API oficial, exportación o feed público",
+      "coste": "bajo",
+      "requisitos": [
+        "documentada",
+        "autorizada",
+        "gratuita"
+      ],
+      "confirma": "campos reales y cobertura",
+      "siguiente": "M20_HTTP_PUBLICO",
+      "senales": [
+        "*"
+      ],
+      "capacidad_requerida": "fuente_oficial"
+    },
+    {
+      "id": "M20_HTTP_PUBLICO",
+      "orden": 20,
+      "nombre": "HTTP HTML/JSON/XML público",
+      "coste": "bajo",
+      "requisitos": [
+        "peticiones permitidas",
+        "timeout",
+        "límite"
+      ],
+      "confirma": "dato extraído, no solo HTTP 200",
+      "siguiente": "M30_INSPECCION_SELECTIVA",
+      "senales": [
+        "SIN_PROBAR",
+        "HTTP_200_CON_DATOS"
+      ],
+      "capacidad_requerida": null
+    },
+    {
+      "id": "M30_INSPECCION_SELECTIVA",
+      "orden": 30,
+      "nombre": "Diagnóstico selectivo de red, TLS, DOM y JS",
+      "coste": "medio",
+      "requisitos": [
+        "inspección permitida",
+        "sin API privada supuesta"
+      ],
+      "confirma": "causa y vía de acceso documentadas",
+      "siguiente": "M40_NAVEGADOR_DOM",
+      "senales": [
+        "HTTP_200_SIN_DATOS",
+        "HTML_VACIO",
+        "JS_DINAMICO",
+        "PAGINA_SIN_HTML_RENDERIZADO",
+        "NAVEGADOR_BLANCO"
+      ],
+      "capacidad_requerida": "inspeccion_autorizada"
+    },
+    {
+      "id": "M40_NAVEGADOR_DOM",
+      "orden": 40,
+      "nombre": "Navegador JS con DOM e interacción acotada",
+      "coste": "alto",
+      "requisitos": [
+        "navegador instalado",
+        "automatización autorizada",
+        "sin CAPTCHA pendiente"
+      ],
+      "confirma": "dato de página renderizada",
+      "siguiente": "M50_NAVEGADOR_VISUAL",
+      "senales": [
+        "HTTP_200_SIN_DATOS",
+        "HTML_VACIO",
+        "JS_DINAMICO"
+      ],
+      "capacidad_requerida": "navegador_dom"
+    },
+    {
+      "id": "M50_NAVEGADOR_VISUAL",
+      "orden": 50,
+      "nombre": "Navegador convencional gráfico de sesión autorizada",
+      "coste": "alto",
+      "requisitos": [
+        "ventana y PID validados",
+        "dominio permitido",
+        "sesión del titular",
+        "interacción autorizada"
+      ],
+      "ejecutor": "tools/navegador_visual.py",
+      "confirma": "URL, página real y dato renderizado",
+      "siguiente": "M90_ALTERNATIVA_OFICIAL",
+      "senales": [
+        "HTTP_403_DESAFIO",
+        "HTTP_403_PUBLICO",
+        "WEBDRIVER_SIN_CONTENIDO",
+        "HTTP_200_SIN_DATOS",
+        "HTML_VACIO",
+        "JS_DINAMICO"
+      ],
+      "capacidad_requerida": "navegador_visual"
+    },
+    {
+      "id": "M55_RECUPERAR_CARGA_TRANSITORIA",
+      "orden": 55,
+      "nombre": "Recuperar carga gráfica transitoriamente vacía",
+      "coste": "alto_acotado",
+      "requisitos": [
+        "navegador del titular ya abierto",
+        "URL final permitida",
+        "máximo un refresco",
+        "sin CAPTCHA ni error de certificado"
+      ],
+      "confirma": "datos visibles y verificables tras una sola recarga",
+      "siguiente": "M90_ALTERNATIVA_OFICIAL",
+      "ejecutor": "tools/navegador_visual.py",
+      "senales": [
+        "PAGINA_SIN_HTML_RENDERIZADO",
+        "NAVEGADOR_BLANCO",
+        "CONTENIDO_NO_VERIFICADO"
+      ],
+      "capacidad_requerida": "navegador_visual"
+    },
+    {
+      "id": "M56_RECUPERAR_NAVEGACION_TRANSITORIA",
+      "orden": 56,
+      "nombre": "Recuperar navegación gráfica no confirmada",
+      "coste": "alto_acotado",
+      "requisitos": [
+        "navegador del titular ya abierto",
+        "dominio permitido",
+        "foco y portapapeles URL verificados",
+        "máximo un segundo intento",
+        "sin desafío ni cambio de identidad"
+      ],
+      "confirma": "URL final real y dato renderizado en la misma ventana",
+      "siguiente": "M90_ALTERNATIVA_OFICIAL",
+      "ejecutor": "tools/navegador_visual.py",
+      "senales": [
+        "NAVEGACION_NO_CONFIRMADA"
+      ],
+      "capacidad_requerida": "navegador_visual"
+    },
+    {
+      "id": "M90_ALTERNATIVA_OFICIAL",
+      "orden": 90,
+      "nombre": "Fuente alternativa o intervención del titular",
+      "coste": "variable",
+      "requisitos": [
+        "automatización no viable o no autorizada"
+      ],
+      "confirma": "motivo y alternativa verificables",
+      "siguiente": null,
+      "senales": [
+        "*"
+      ],
+      "capacidad_requerida": null
+    }
+  ],
+  "capas": [
+    {
+      "id": "A10_AUTENTICACION",
+      "nombre": "Autenticación y sesión",
+      "regla": "Capa transversal: LAB-AUTH o inicio oficial únicamente con autorización de la cuenta, sin copiar cookies ni secretos."
+    },
+    {
+      "id": "A20_VALIDACION",
+      "nombre": "Validación de la extracción",
+      "regla": "Verificar datos, paginación, fecha, cobertura y errores. HTTP 200 sin dato objetivo no equivale a éxito."
+    },
+    {
+      "id": "A30_EFICIENCIA",
+      "nombre": "Coste y límites",
+      "regla": "0 € marginales. Reducir descargas, reintentos, CPU, red y operaciones humanas, sin degradar la verificación."
+    }
+  ],
+  "detener": [
+    "HTTP_429",
+    "CAPTCHA_PENDIENTE",
+    "MFA_PENDIENTE",
+    "ACCESO_NO_AUTORIZADO",
+    "COSTE_NO_AUTORIZADO"
+  ]
+}

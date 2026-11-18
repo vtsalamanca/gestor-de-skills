@@ -1,12 +1,34 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.4.5
+version: 0.5.2
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
 ## Propósito
 Metodología transversal de investigación de fuentes web, autenticación autorizada, extracción y diseño de conectores. Generaliza el aprendizaje acumulado en proyectos anteriores sin incorporar dependencias, rutas o supuestos exclusivos de una web. La habilidad original «autenticarse» no fue localizada; no se afirma una migración íntegra.
+
+## Catálogo operativo de modalidades (orden orientativo por eficiencia)
+
+**Primera acción ante cualquier incidencia:** consultar [catálogo genérico estructurado](references/modalidades.json), [selector de modalidades](tools/selector_metodos.py) y [ciclo de aprendizaje](references/ciclo-aprendizaje.md). Un nombre de tienda o portal no constituye un método. Las modalidades solo se ejecutan cuando sus precondiciones y permisos están satisfechos.
+
+| Prioridad | Método genérico | Recursos estimados | Seleccionarlo cuando... |
+| ---: | --- | --- | --- |
+| 0 | **M00_REUSO_VALIDADO**: caché/sesión vigente | Muy bajos | El dato sigue vigente, con origen y cobertura comprobados |
+| 10 | **M10_FUENTE_ESTRUCTURADA**: API/feed/exportación oficial | Bajos | La fuente es gratuita, documentada y autorizada |
+| 20 | **M20_HTTP_PUBLICO**: HTML/JSON/XML por HTTP | Bajos | Hay contenido público accesible y verificable |
+| 30 | **M30_INSPECCION_SELECTIVA**: diagnóstico DOM/JS | Medios | Falta conocer dónde aparece el dato; inspección puntual permitida |
+| 40 | **M40_NAVEGADOR_DOM**: navegador JS automatizado | Altos | Se necesita renderizado/interacción y está permitido |
+| 50 | **M50_NAVEGADOR_VISUAL**: navegador normal del titular | Altos | HTTP falla o es insuficiente pero hay sesión gráfica autorizada; verificar ventana, URL y contenido |
+| 55 | **M55_RECUPERAR_CARGA_TRANSITORIA**: una recarga de página en blanco | Alto, acotado | Tras M50, si no hay HTML visible y no existe desafío ni error de certificado |
+| 56 | **M56_RECUPERAR_NAVEGACION_TRANSITORIA**: reintento de URL | Alto, acotado | Sólo una vez, en la ventana autorizada y con URL comprobada |
+| 90 | **M90_ALTERNATIVA_OFICIAL**: otra fuente o acción humana | Variables | No hay vía automática autorizada o suficiente |
+
+**Capas transversales:** A10 autenticación y sesiones aprobadas (LAB-AUTH cuando exista), A20 verificación de extracción y cobertura, A30 presupuesto cero/límites. Un HTTP 401 no se resuelve como un 403 público. En 429, CAPTCHA, MFA pendiente o acceso no autorizado: **detenerse**, no probar evasiones. Una preferencia de menor coste no sustituye la prueba real del dato.
+
+**Recuperación de carga:** una URL correcta no demuestra página cargada. M55 espera y solo permite un refresco de la pestaña actual, verificando de nuevo dominio, foco y datos; si sigue vacía, informa `RECARGA_ACOTADA_SIN_CONTENIDO`. No reintenta ante CAPTCHA, MFA ni errores de certificado.
+
+**Aprendizaje obligatorio:** si falla un método, diagnosticar la capa exacta, intentar el siguiente método elegible del catálogo y, solo ante una capacidad no cubierta, diseñar y probar un mecanismo **con nombre neutro**, añadirlo al catálogo, sus pruebas y el consumidor real. Las variantes específicas de un sitio se documentan en ese proyecto. El selector es declarativo: una nueva entrada válida con señales y capacidades pasa a estar disponible sin añadir condiciones al código. No declarar universalidad por una prueba en un único sitio.
 
 ## Activación
 Aplicar cuando haya que investigar un portal, comprender cómo obtener datos, iniciar o mantener acceso legítimo, diseñar un conector, corregir scraping/paginación o mejorar un recolector existente. Coordinar con `organizaciondeltrabajo` e `ingenieria-fiable`.
@@ -43,24 +65,20 @@ Separar las capas: descubrimiento de URLs, obtención, autenticación/sesión, p
 7. **Pruebas con hipótesis:** aislar la capa que falla; conservar un conjunto mínimo de evidencias saneadas y crear fixtures locales sin datos reales. Agrupar pruebas y ejecutar una sola validación remota cuando realmente haga falta; repetir únicamente con hipótesis nueva.
 8. **Operación eficiente:** una vez demostrado el método, construir un conector mínimo, incremental, con caché, límites y métricas. Preferir las vías más ligeras, estables y autorizadas que recuperen la información completa.
 
-### Patrón de elección por coste total
-- **Primera elección:** reutilización de resultados/sesiones autorizadas, exportaciones oficiales, feeds y API documentadas.
-- **Segunda:** HTTP directo permitido a HTML/JSON/XML, con consultas incrementales, caché y paginación controlada.
-- **Tercera:** inspección puntual de DOM/JavaScript/tráfico mediante herramientas de diagnóstico, sin transformar una API interna no documentada en contrato.
-- **Cuarta:** navegador o WebView automatizado cuando la interacción o el JavaScript sean imprescindibles; mantener contexto y evitar reiniciar cada consulta.
-- **Quinta:** agentes visuales, servicios especializados o plataformas remotas solo si la alternativa más ligera no basta, con consumo y autorización verificados.
+### Decisión por coste total
+Aplicar la tabla M00–M90 y `tools/selector_metodos.py`; validar disponibilidad, permisos, cuota gratuita y **datos recuperados** antes de subir de coste. El selector recomienda, no navega ni acredita éxito.
 
 ### Autenticación con LAB-AUTH (cuando exista en Debian)
 Si la web exige inicio de sesión, comprobar antes si ya hay sesión autorizada o conector oficial. Con petición del titular y LAB-AUTH disponible, recuperar su expediente y manuales, verificar el adaptador del portal y ejecutar sólo las pruebas necesarias; hacer login únicamente con aprobación para ese portal. No transferir secretos al chat ni confundir sondeo de formulario con autenticación real. Seguir la [ruta LAB-AUTH](references/lab-auth.md) y coordinarla con la recuperación visual si el acceso público está bloqueado.
 
 ### Recuperación visual autorizada
-Si HTTP 403 con desafío o WebDriver sin contenido, probar el navegador convencional visible y autorizado, comprobando ventana, foco y evidencia. Nunca eludir protecciones. Seguir el [protocolo reutilizable](references/recuperacion-visual.md) antes de declarar acceso o disponibilidad.
+Si HTTP 403 con desafío o WebDriver sin contenido, **activar la recuperación visual integrada**, no anotar simplemente "bloqueado". En Debian, el módulo reutilizable `tools/navegador_visual.py` abre Firefox ESR normal, verifica origen, ventana, propietario y foco; recupera el HTML renderizado mediante la selección de página de X11 sin usar cookies fuera del navegador. Consumir su resultado con el adaptador de cada web y comprobar las fichas; nunca equiparar contenido copiado a stock o entrega confirmados. Si no hay X11/consentimiento o la web exige CAPTCHA, cerrar como BLOQUEADO, sin evasión. Seguir el [protocolo reutilizable](references/recuperacion-visual.md).
 
 ### Criterios verificables de finalización
 No aceptar «se abre la página», «el botón es visible», «HTTP 200» o «workflow verde» como prueba del objetivo final. Confirmar registros esperados, integridad, cobertura real, tratamiento de adjuntos, resultados de las acciones y trazabilidad de errores. Distinguir evidencia comprobada de conjetura. Documentar mecanismo, coste por consulta, número de iteraciones, límites, fallos conocidos y forma de recuperación.
 
 ### Transferencia de aprendizaje
-Tras resolver cualquier sitio: convertir las observaciones en reglas neutrales, registrar antipatrón → causa → diagnóstico mínimo → corrección → prueba → coste; guardar los detalles específicos en documentación del proyecto, no en esta skill. Se conserva el antecedente que motivó esta política (una pasarela educativa basada en WebView, con navegación de sesión, diferencias móvil/escritorio, fallos de formatos y exceso de iteraciones remotas), **sin imponer su arquitectura a portales distintos**.
+Tras resolver cualquier sitio: ejecutar `references/ciclo-aprendizaje.md`. Convertir el bloqueo en una señal genérica y una modalidad reutilizable **solo si es distinta**; guardar particularidades de páginas, selectores y expedientes fuera de esta skill. Registrar prueba, coste, límites y regresión.
 
 ## Integración MCP: convertir acceso web en herramientas reutilizables
 
@@ -85,12 +103,6 @@ Tras resolver cualquier sitio: convertir las observaciones en reglas neutrales, 
 4. **Presentación avanzada:** si se usan vistas, componentes visuales o interacciones cliente, validar de manera independiente compatibilidad, aislamiento y restricciones de contenido (CSP); no prometer PiP, Voz Live ni otras prestaciones sin una prueba real.
 5. **Operación:** medir peticiones al origen, tiempo, CPU, memoria, tasa de errores, cuota y valor frente al acceso directo; registrar versión de servidor, herramientas, cliente, transporte y evidencia. No automatizar ni alojar permanentemente sin autorización.
 
-### Aprendizaje transferido desde Golon (octubre de 2026)
-- **Verificado en este entorno:** existe un complemento privado «Golon · Viñetas» con una herramienta MCP `mostrar_escena` que acepta un identificador limitado a `ep1` o `ep2`; su contrato muestra cómo encapsular una acción concreta detrás de un esquema acotado. La presencia de la herramienta **no demuestra** que se hayan probado aquí todas sus interacciones o clientes.
-- **Patrón reusable:** separar interfaz MCP y lógica de dominio, declarar parámetros explícitos, limitar entradas, verificar invocación desde un cliente real y conservar evidencia por versión. Ejemplos hipotéticos: `consultar_ofertas`, `consultar_subastas`, `obtener_documentos`; no son herramientas ya implementadas ni accesos garantizados.
-- **Pendiente de confirmar para Golon:** comportamiento de componentes visuales, PiP, Voz Live y compatibilidad entre plataformas. No trasladar estas hipótesis como funciones admitidas a los conectores web.
-- Registrar cada lección nueva como **OBSERVADO / PROBADO LOCALMENTE / VALIDADO EN CLIENTE / HIPÓTESIS / BLOQUEADO**, conservando detalles particulares de Golon en su proyecto y únicamente principios generales en esta skill.
-
 ## Construcción de conectores reutilizables
 Definir contrato de entrada/salida, esquema de campos, procedencia/fecha, errores tipificados, reintentos, checkpoints e idempotencia. Aislar adaptadores por portal y compartir transporte HTTP, validación, normalización y observabilidad. Incluir tests con fixtures sin secretos, ejemplos sintéticos, condiciones de suspensión y alternativa manual autorizada.
 La operación diaria debe poder ejecutarse con recursos gratuitos cuando sea viable y sin depender del servicio usado para investigar el portal.
@@ -98,11 +110,6 @@ La operación diaria debe poder ejecutarse con recursos gratuitos cuando sea via
 ## Evidencias y criterio de verificación
 Para cada sitio registrar: fuente | URL | mecanismo | autenticación | paginación/cobertura | campos | consumo por ejecución | herramientas evaluadas | restricciones | prueba y fecha | confianza | próximo paso.
 Estados obligatorios: HIPÓTESIS, DOCUMENTADO, PROBADO LOCALMENTE, VALIDADO EN ORIGEN, VALIDADO EXTREMO A EXTREMO, BLOQUEADO. No declarar cobertura total si las páginas o respuestas no se comprobaron exhaustivamente.
-
-## Ejemplos y lecciones
-- **Buscar-Curro:** evaluar extracción HTTP y paginación con pruebas controladas antes de probar navegador o Firecrawl; para Eurofirms/Randstad y portales con paginación desconocida conservar expresamente el nivel de cobertura demostrado. Comparar Firecrawl como herramienta *candidata*, nunca asumir acceso, gratuidad ni capacidad de API interna.
-- **Aplicaciones con autenticación federada:** distinguir sesión, interfaz responsiva y extracción de contenido; reutilizar contexto autorizado y evitar pruebas remotas repetitivas.
-- **Subastas:** favorecer datos públicos oficiales estructurados y trazabilidad de anuncios/documentos frente a navegación intensiva.
 
 ## Catálogo de patrones procedentes de repositorios abiertos (evaluación de octubre de 2026)
 
@@ -160,7 +167,7 @@ Para cualquier mecanismo nuevo, producir matriz `infraestructura | sesión/permi
 
 Leer el procedimiento transversal en [sesiones, navegador, llavero y OAuth](references/sesiones-navegador-llavero-oauth.md) antes de integrar cuentas con un navegador o almacenar credenciales. Separa y verifica individualmente red, proceso, sesión autorizada, entradas del almacén, lectura en memoria, inicio de sesión nuevo, consentimiento OAuth, datos privados, persistencia y seguimiento. No confundir éxito de un nivel con el siguiente.
 
-**Aprendizajes probados:** Firefox ESR en Debian controlado mediante WebDriver BiDi solo en loopback (conexión temporal, DOM y cierre del puerto); X11 visual en caso necesario; GNOME Keyring/Secret Service con colección dedicada y permisos restrictivos; lectura local de entradas mediante resultado booleano, sin mostrar secretos. El login mediante contraseña y el flujo OAuth precisan pruebas independientes y cumplimiento de las condiciones oficiales del proveedor. InfoJobs fue legible desde una sesión existente, **no** quedó probado un login nuevo mediante contraseña. Wallapop añadió un selector al almacén, pero su login desde éste **no** ha sido demostrado.
+**Aprendizajes probados:** Firefox ESR en Debian controlado mediante WebDriver BiDi solo en loopback (conexión temporal, DOM y cierre del puerto); X11 visual en caso necesario; GNOME Keyring/Secret Service con colección dedicada y permisos restrictivos; lectura local de entradas mediante resultado booleano, sin mostrar secretos. El login mediante contraseña y el flujo OAuth precisan pruebas independientes y cumplimiento de las condiciones oficiales del proveedor. Las comprobaciones de lectura de sesión, login nuevo y OAuth deben registrarse por separado en el proyecto del servicio.
 
 **Orden de adopción:** contrato oficial y autorización (OAuth si procede) → conexión ligera permitida → navegador local con sesión consentida → interacción gráfica puntual. No usar APIs internas, traslado de cookies, contraseña de otro servicio ni automatización para sortear MFA o el bloqueo del registro de desarrolladores.
 

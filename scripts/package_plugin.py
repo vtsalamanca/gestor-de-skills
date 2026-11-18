@@ -22,6 +22,7 @@ OFFICIAL_REPOSITORY = "https://github.com/vtsalamanca/gestor-de-skills.git"
 EXPECTED_SKILLS = {
     "bibliotecario-memoria",
     "acceso_webs",
+    "buscar-comparar-productos",
     "auditar-skills",
     "crear-skills",
     "descubrir-skills",
