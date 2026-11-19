@@ -71,7 +71,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertFalse(re.search(r"(?i)(password|token|secret)[ \t]*[:=][ \t]*['\"][^'\"]{8,}", all_text))
 
     def test_non_executable_knowledge_only(self):
-        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md"}, {"tools/inventario_herramientas.py"})
+        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md" and "__pycache__" not in p.parts}, {"tools/inventario_herramientas.py"})
         generator = (HUB / "tools/inventario_herramientas.py").read_text(encoding="utf-8")
         for forbidden in ("import subprocess", "import requests", "import socket", "import keyring", "os.system(", "os.popen(", "eval(", "exec("):
             self.assertNotIn(forbidden, generator)
