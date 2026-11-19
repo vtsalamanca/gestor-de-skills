@@ -138,7 +138,7 @@ def build_snapshot(raw: str, captured_at: str, evidence: dict | None = None) -> 
 
 
 def differences(previous: dict | None, current: dict) -> dict[str, list[str]]:
-    before = {x["name"]: x["description"] for x in previous.get("tools", [])} if previous else {}
+    before = {x["name"]: x.get("description", x.get("declared_description", "")) for x in previous.get("tools", [])} if previous else {}
     after = {x["name"]: x["description"] for x in current["tools"]}
     return {
         "added": sorted(after.keys() - before.keys()),
@@ -153,7 +153,7 @@ def markdown(snapshot: dict, diff: dict[str, list[str]]) -> str:
         "# Inventario individual de herramientas MCP — Control Debian",
         "",
         f"**Observación:** {snapshot['captured_at']}. **Funciones expuestas:** {snapshot['total']}.",
-        f"**SHA-256 TSV origen:** \`{snapshot['input_sha256']}\`.",
+        f"**SHA-256 TSV origen:** `{snapshot['input_sha256']}`.",
         "",
         "Este inventario refleja el **catálogo visible en una conversación concreta**, no "
         "un test de funcionamiento de todas las herramientas ni el catálogo de otras sesiones.",
@@ -179,7 +179,7 @@ def markdown(snapshot: dict, diff: dict[str, list[str]]) -> str:
             test = "No probada en esta captura"
             if v["result"] != "sin_prueba":
                 test = f"{v['result']} ({v['scope']}; {v['checked_at']})"
-            out.append(f"| \`{x['name']}\` | {esc(x['description'])} | "
+            out.append(f"| `{x['name']}` | {esc(x['description'])} | "
                        f"{esc(x['effect'])} | {esc(test)} |")
         out.append("")
     out.extend([
