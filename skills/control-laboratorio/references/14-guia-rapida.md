@@ -9,6 +9,8 @@
 - ¿Cuál es la prueba mínima que confirma la postcondición?
 - ¿Qué debo limpiar y qué hito merece relectura del Bibliotecario?
 
+**Chequeo de salud:** ejecutar laboratorio_doctor.py --save desde el repositorio para obtener un diagnóstico privado de solo lectura. Si una operación produjo un error de resultado incierto, consultar supervisor_operaciones.py status y reconciliar antes de repetir. Ver 18-fiabilidad-y-recuperacion.md.
+
 ## Acciones típicas y primera fuente
 | Petición | Punto de entrada | No confundir con |
 |---|---|---|

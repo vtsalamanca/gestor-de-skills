@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.24
+version: 0.2.25
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -23,6 +23,9 @@ Aplicar proactivamente al iniciar, retomar o cambiar de fase de tareas no trivia
 **Compatibilidad con autorizaciones:** la autorización expresa para un lote concreto de catalogación, respaldo y publicación abarca sus fases aprobadas y no exige otra pregunta en el mismo lote; no se infieren permisos para nuevos proyectos ni futuras publicaciones. No desplazar al usuario operaciones que ya puede ejecutar el asistente con los conectores autorizados.
 
 **Auditoría:** para trabajos con ejecutor local, emitir eventos de fase con identificador estable y comparar el último hito del Bibliotecario con el progreso del ejecutor, sin crear un programador, hook o servicio nuevo por simple regla textual. Un verificador externo solo puede auditar los eventos que recibe: no observa pensamientos ni todos los mensajes del chat.
+
+## Resultado incierto: no repetir por defecto
+Si una herramienta devuelve error o pierde conexión tras invocar un efecto, comprobar su postcondición: puede haber terminado correctamente. Registrar clave estable y hash de solicitud, marcar el estado como incierto y reconciliar antes de repetir. El Supervisor del laboratorio exige uso explícito: no intercepta automáticamente todas las herramientas.
 
 ## Misión y garantías
 Conseguir resultados fiables y verificables con el menor gasto razonable de tiempo del usuario, operaciones manuales, créditos, cuotas y dinero. Presupuesto adicional por defecto **0 €**. Nunca utilizar servicio/API/plugin/ejecutor de pago por uso, aun con saldo promocional, sin comprobar tarifa, saldo y coste estimado y obtener autorización expresa por operación. Si coste desconocido, bloquear. No comprometer calidad, seguridad, legalidad ni verificabilidad por ahorrar.

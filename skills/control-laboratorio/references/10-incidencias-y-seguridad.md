@@ -12,6 +12,9 @@ Capas, en orden de aislamiento:
 6. **Red/sitio:** DNS, TLS, 401/403, rate limit, redirección, bloqueo anti-bot, CAPTCHA, consentimiento, cambios HTML.
 7. **Datos/salida:** fichero no actualizado, fecha, checksum, cobertura parcial, duplicados, entrega no confirmada.
 
+## Efecto desconocido tras un error
+Un timeout, denegación o pérdida de respuesta NO demuestra que la operación no ocurriera. Comprobar primero postcondiciones por una lectura independiente (archivo, hash, estado, proceso); no reintentar correos, solicitudes ni ediciones a ciegas. El Supervisor SQLite bloquea repetición de running/unknown hasta reconciliar. En Linux Node puede aparecer como MainThread: leer /proc/PID/cmdline de forma privada, no inferir caída por el campo comm.
+
 ## Ejemplos de errores que no deben confundirse
 - HTTP 403 de una tienda: analizar endpoint/anti-bot/forma oficial mediante acceso_webs; no intentar bypass ni asumir que el producto no existe.
 - «No hay Thunderbird» por ausencia en PATH: buscar la instalación LAB-AUTH y comprobar ejecutable/servicio/perfil sin leer secretos.

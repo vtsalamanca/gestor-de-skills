@@ -29,3 +29,7 @@ Estas lecciones son **patrones**, no hechos vigentes para siempre. Antes de apli
 18. Un artefacto ZIP visible en Debian o Windows no es por eso un archivo accesible a Plugin Creator; validar cada frontera y archivo antes de intentar publicar.
 19. El respaldo automático u Observador no es registro universal: exigir status saved y revisión releída.
 20. «Reiniciar servicio», «reiniciar VM», «recuperar sesión», «funciona la tarea» y «entregó mensaje» son afirmaciones distintas que exigen pruebas distintas.
+21. Error MCP con efecto posible: leer el resultado real antes de repetir y usar idempotencia.
+22. Node.js puede aparecer como MainThread; comprobar /proc/PID/cmdline, no solo ps comm.
+23. Timer activo no demuestra la última ejecución correcta ni la entrega; comprobar ambas por separado.
+24. Una actualización del plugin no refresca necesariamente las funciones de un chat abierto.

@@ -1,0 +1,13 @@
+[Unit]
+Description=Doctor del laboratorio (comprobacion de solo lectura)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 %h/proyectos/gestor-de-skills/skills/control-laboratorio/tools/laboratorio_doctor.py --save
+WorkingDirectory=%h
+NoNewPrivileges=true
+UMask=0077
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=%h/.local/state/control-laboratorio
+Environment=PYTHONDONTWRITEBYTECODE=1

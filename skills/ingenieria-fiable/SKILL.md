@@ -15,6 +15,9 @@ Antes de cada acción técnica, consultar `references/eficiencia-desarrollo.md` 
 ## Desarrollo local mediante MCP
 Cuando el usuario autorice acceso a su ordenador por MCP, usar el protocolo técnico de `references/mcp-local.md` antes de escribir, ejecutar pruebas, sincronizar o publicar. Separar permisos de archivos y terminal, exigir diagnósticos verificables y no prometer aislamiento ni ejecución sin PC conectado.
 
+## Idempotencia y recuperación
+Un fallo de transporte no demuestra ausencia de efectos. Ante cambios de archivos, correo o acciones externas, comprobar el resultado por otro canal antes de repetir, documentar identificador, hash y prueba sin datos sensibles. Cuando el resultado sea incierto, detener la repetición y reconciliar. Para Debian consultar Doctor y Supervisor de control-laboratorio.
+
 ## Integraciones entre agentes y ordenadores
 Antes de diseñar puentes ChatGPT/Work/Codex/MCP, consultar `references/integraciones-agentes-locales.md`: comprobar por separado activación, ejecución, almacenamiento, notificación y entrega a la conversación; no equiparar una prueba parcial con automatización completa.
 

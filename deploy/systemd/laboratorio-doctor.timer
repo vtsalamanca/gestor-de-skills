@@ -1,0 +1,12 @@
+[Unit]
+Description=Diagnostico privado periodico del laboratorio
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*-*-* 07,19:30:00
+Persistent=true
+AccuracySec=10min
+Unit=laboratorio-doctor.service
+
+[Install]
+WantedBy=timers.target
