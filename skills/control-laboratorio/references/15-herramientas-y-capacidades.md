@@ -1,5 +1,8 @@
 # Herramientas, conectores, funciones MCP y selección operativa
 
+## Inventario individual en Debian
+La lista completa de **cada función MCP de la sesión observada** está en el fichero local de Debian, no se congela aquí. Consultar [17-inventario-operativo.md](17-inventario-operativo.md) para conocer las rutas, el generador, los cambios entre capturas y las pruebas limitadas por operación. Verificar siempre el catálogo disponible en este chat y los permisos reales antes de actuar.
+
 ## Inventario dinámico, no listado fijo
 Las capacidades de un chat cambian con el plugin, permisos, modelo, entorno y versión del servidor. Enumerar funciones realmente expuestas en la sesión y verificar su descripción/esquema antes de llamar. Los identificadores aquí son orientativos porque el MCP puede renombrar herramientas: nunca inventar un argumento por parecido. Consultar además inventariar-skills y el catálogo local actualizado.
 

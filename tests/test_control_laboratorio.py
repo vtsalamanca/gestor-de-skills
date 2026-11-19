@@ -24,12 +24,12 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertTrue(self.text.startswith("---\n"))
         hdr = self.text.split("---", 2)[1]
         self.assertIn("\nname: control-laboratorio\n", hdr)
-        self.assertRegex(hdr, r"(?m)^version: 0\.1\.0$")
+        self.assertRegex(hdr, r"(?m)^version: 0\.2\.0$")
         for term in ("Control Debian", "Bibliotecario", "LAB-AUTH", "Goose", "GitHub"):
             self.assertIn(term, hdr)
 
     def test_complete_references_no_broken_links(self):
-        self.assertEqual(len(self.refs), 16)
+        self.assertEqual(len(self.refs), 17)
         links = re.findall(r"\]\(references/([a-z0-9-]+\.md)\)", self.text)
         self.assertEqual(set(links), set(self.refs), "Todas las referencias deben enlazarse")
         for name, content in self.refs.items():
@@ -84,6 +84,14 @@ class ControlLaboratorioTests(unittest.TestCase):
             self.assertIn(word, tasks)
         self.assertIn("ticket", self.refs["02-control-debian.md"])
         self.assertIn("readback", self.refs["03-bibliotecario.md"])
+
+    def test_inventory_reference_and_generator(self):
+        guide = self.refs["17-inventario-operativo.md"]
+        self.assertIn("inventario-mcp.json", guide)
+        self.assertIn("--expected-count", guide)
+        self.assertIn("no equivale", guide.lower())
+        self.assertTrue((HUB / "tools/inventario_herramientas.py").is_file())
+        self.assertIn("17-inventario-operativo.md", self.text)
 
     def test_auth_privacy_and_recovery(self):
         auth = self.refs["04-lab-auth.md"]

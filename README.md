@@ -1,9 +1,9 @@
-# Gestor de Skills 0.4.45
+# Gestor de Skills 0.4.46
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
 Complemento privado con once skills especializadas:
-- `control-laboratorio`: **habilidad principal** para recuperar y operar el laboratorio mediante Control Debian, LAB-AUTH, Bibliotecario, agentes, automatizaciones y GitHub, consultando el estado real antes de actuar.
+- `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye generador de inventario MCP individual, con pruebas y cambios de catálogo.
 - `descubrir-skills`: búsqueda y comparación de skills públicas.
 - `auditar-skills`: revisión estática y control de seguridad/costes.
 - `integrar-skills`: compatibilidad e integración por plataforma.
@@ -18,6 +18,10 @@ Complemento privado con once skills especializadas:
 ## Habilidad central y referencias
 
 La nueva **control-laboratorio** es el enrutador operativo, no un sustituto de las otras diez skills. Su archivo principal selecciona referencias según el subsistema (Control Debian, Bibliotecario, LAB-AUTH, automatizaciones, agentes, escritorio, GitHub, recuperación y pruebas). Los hechos cambiantes se consultan en Debian y su Bibliotecario: un texto del repositorio nunca demuestra por sí mismo conexión o permisos actuales. Ninguna guía incluye secretos ni habilita acciones sin autorización.
+
+## Inventario MCP individual
+
+La referencia `skills/control-laboratorio/references/17-inventario-operativo.md` indica dónde leer en Debian el inventario completo del MCP, con fichas por función y fecha. El script `skills/control-laboratorio/tools/inventario_herramientas.py` convierte una captura verificada de herramientas visibles en Markdown y JSON privados, detecta altas/bajas y permite adjuntar evidencias limitadas por operación. El script no enumera automáticamente las herramientas de ChatGPT ni crea permisos. La captura personal no se publica en GitHub.
 
 ## Nueva metodología
 Inspirada en principios generales de Superpowers de Jesse Vincent (MIT): https://github.com/obra/superpowers . Se conserva atribución al proyecto de referencia. Esta adaptación se ha redactado para ChatGPT; no contiene scripts remotos, hooks de arranque, autorizaciones globales, instalación automática, subagentes obligatorios ni permisos de escritura adicionales.
