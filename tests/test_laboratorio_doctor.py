@@ -2,6 +2,8 @@
 import hashlib
 import importlib.util
 import json
+import sqlite3
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -61,6 +63,13 @@ class DoctorTests(unittest.TestCase):
             past=doctor.datetime(2026,11,23,0,0,tzinfo=doctor.timezone.utc)
             self.assertEqual(doctor.check_last_trigger("job.timer",past)["status"],"warning")
 
+    def test_job_supervision_binding_requires_adapter(self):
+        body="ExecStart={ path=/usr/bin/python3 ; argv[]=.../supervision_diaria.py --job educamos }\nDropInPaths=/tmp/10-supervisor.conf"
+        with mock.patch.object(doctor,"command",return_value=(0,body)):
+            self.assertEqual(doctor.check_job_supervision("educamos-diario-laboratorio.service")["status"],"ok")
+        with mock.patch.object(doctor,"command",return_value=(0,"ExecStart=/old/educamos_diario.py")):
+            self.assertEqual(doctor.check_job_supervision("educamos-diario-laboratorio.service")["status"],"warning")
+
     def test_last_success_requires_timestamp_and_exit_zero(self):
         response=("Result=success\nExecMainStatus=0\n"
                   "ExecMainExitTimestamp=Thu 2026-11-19 13:45:28 CET")
@@ -84,6 +93,19 @@ class DoctorTests(unittest.TestCase):
         self.assertEqual(json.loads(output.read_text())["status"],"ok")
         doctor.save_report(output,report)
         self.assertEqual(json.loads(output.read_text())["schema_version"],1)
+
+    def test_supervisor_unknown_is_warning(self):
+        db=self.home/".local/state/control-laboratorio/operaciones.sqlite3"
+        db.parent.mkdir(mode=0o700,parents=True)
+        with sqlite3.connect(db) as connection:
+            connection.execute("CREATE TABLE operations (state TEXT)")
+            connection.execute("INSERT INTO operations VALUES ('unknown')")
+        os.chmod(db,0o600)
+        item=doctor.check_supervisor(self.home)
+        self.assertEqual(item["status"],"warning")
+        self.assertIn("unsettled=1",item["detail"])
+        db.unlink()
+        self.assertEqual(doctor.check_supervisor(self.home)["status"],"unknown")
 
     def test_symlink_report_rejected(self):
         destination=self.home/"doctor.json"

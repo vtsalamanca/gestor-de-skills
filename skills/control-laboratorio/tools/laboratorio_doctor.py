@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sqlite3
 from zoneinfo import ZoneInfo
 
 SERVICES=("control-debian-sustituto.service","control-debian-audit-retention.service")
@@ -75,6 +76,15 @@ def check_last_trigger(timer,now=None):
     except (ValueError,IndexError):
         return result("warning","last trigger date not understood")
 
+def check_job_supervision(job):
+    rc,body=command(["systemctl","--user","show",job,
+                     "-p","ExecStart","-p","DropInPaths","--no-pager"])
+    if rc:
+        return result("warning","supervision binding unavailable")
+    if "supervision_diaria.py" not in body or "10-supervisor.conf" not in body:
+        return result("warning","supervised daily job not configured")
+    return result("ok","supervisor adapter loaded; no execution implied")
+
 def check_job_completion(job,now=None):
     rc,body=command(["systemctl","--user","show",job,"-p","Result","-p","ExecMainStatus","-p","ExecMainExitTimestamp","--no-pager"])
     if rc:
@@ -123,6 +133,23 @@ def check_docs(home):
         return result("warning","bibliotecario instructions refer to historical 43-tool catalog")
     return result("ok","no detected historical 43-tool reference")
 
+def check_supervisor(home):
+    db=home/".local/state/control-laboratorio/operaciones.sqlite3"
+    if not db.is_file():
+        return result("unknown","daily operations not yet supervised")
+    if db.is_symlink() or db.stat().st_mode & 0o077:
+        return result("error","supervisor ledger permissions unsafe")
+    try:
+        with sqlite3.connect(f"file:{db}?mode=ro",uri=True,timeout=3) as connection:
+            rows=connection.execute("SELECT state,COUNT(*) FROM operations GROUP BY state").fetchall()
+        counts=dict(rows)
+    except (sqlite3.Error,OSError):
+        return result("error","supervisor ledger unreadable")
+    unsettled=sum(counts.get(s,0) for s in ("unknown","running"))
+    status="warning" if unsettled else "ok"
+    detail=f"operations={sum(counts.values())}, unsettled={unsettled}; no replay performed"
+    return result(status,detail)
+
 def check_git(home):
     repo=home/"proyectos/gestor-de-skills"
     rc,out=command(["git","-C",str(repo),"status","--porcelain=v1"],timeout=5)
@@ -134,7 +161,7 @@ def check_git(home):
 
 def doctor(home,with_systemd=True):
     now=datetime.now(timezone.utc)
-    checks={"audit":check_audit(home),"skills_docs":check_docs(home),"skills_git":check_git(home)}
+    checks={"audit":check_audit(home),"skills_docs":check_docs(home),"skills_git":check_git(home),"supervisor":check_supervisor(home)}
     if with_systemd:
         checks.update(check_services())
         checks["node_child"]=check_node_process()
@@ -142,6 +169,7 @@ def doctor(home,with_systemd=True):
             checks["last_"+timer]=check_last_trigger(timer,now)
         for job in JOBS:
             checks["last_success_"+job]=check_job_completion(job,now)
+            checks["supervision_"+job]=check_job_supervision(job)
     else:
         checks["live_services"]=result("unknown","not queried in fixture mode")
     checks["full_vm_restore"]=result("unknown","not certified: synthetic SQLite restore is not a full VM restore")

@@ -24,7 +24,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertTrue(self.text.startswith("---\n"))
         hdr = self.text.split("---", 2)[1]
         self.assertIn("\nname: control-laboratorio\n", hdr)
-        self.assertRegex(hdr, r"(?m)^version: 0\.2\.1$")
+        self.assertRegex(hdr, r"(?m)^version: 0\.2\.2$")
         for term in ("Control Debian", "Bibliotecario", "LAB-AUTH", "Goose", "GitHub"):
             self.assertIn(term, hdr)
 
@@ -55,7 +55,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
         market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
         entry = next(p for p in market["plugins"] if p["name"] == manifest["name"])
-        self.assertEqual(manifest["version"], "0.4.47")
+        self.assertEqual(manifest["version"], "0.4.48")
         self.assertEqual(entry["version"], manifest["version"])
         self.assertEqual(manifest["interface"]["capabilities"], ["Read"])
         self.assertIn("once habilidades", manifest["interface"]["longDescription"])
@@ -71,7 +71,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertFalse(re.search(r"(?i)(password|token|secret)[ \t]*[:=][ \t]*['\"][^'\"]{8,}", all_text))
 
     def test_non_executable_knowledge_only(self):
-        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md" and "__pycache__" not in p.parts}, {"tools/inventario_herramientas.py", "tools/supervisor_operaciones.py", "tools/laboratorio_doctor.py"})
+        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md" and "__pycache__" not in p.parts}, {"tools/inventario_herramientas.py", "tools/supervisor_operaciones.py", "tools/laboratorio_doctor.py", "tools/supervision_diaria.py"})
         generator = (HUB / "tools/inventario_herramientas.py").read_text(encoding="utf-8")
         for forbidden in ("import subprocess", "import requests", "import socket", "import keyring", "os.system(", "os.popen(", "eval(", "exec("):
             self.assertNotIn(forbidden, generator)

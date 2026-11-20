@@ -29,6 +29,34 @@ Antes de una operación con efectos:
 
 Un segundo `begin` para un trabajo `running` o `unknown` devuelve `requires_reconciliation`, código de salida 3. Mismo identificador con SHA distinto devuelve `fingerprint_conflict`. `already_succeeded` nunca vuelve a ejecutar la operación. El supervisor NO envuelve automáticamente las llamadas de cualquier chat: el flujo llamante tiene que usarlo expresamente.
 
+## Integración supervisada: EducaMos y Buscar Curro
+El módulo `skills/control-laboratorio/tools/supervision_diaria.py` se activa
+mediante drop-ins de usuario versionados en `deploy/systemd`. Una clave
+`daily:educamos:AAAA-MM-DD` o `daily:buscar-curro:AAAA-MM-DD` representa
+una jornada local. Las dos unidades conservan sus timers y el trabajo se
+ejecuta una sola vez por fecha y versión del script principal.
+
+Para Buscar Curro el antiguo `ExecStartPre=-` de Thunderbird queda dentro
+de la transacción supervisada; su error de salida sigue siendo consultivo,
+como antes. Los programas originales y las credenciales NO se modifican.
+La ejecución solo se acredita si el proceso retorna 0 y un informe privado
+nuevo tiene fecha de la jornada, estado esperado y permisos restrictivos.
+El Supervisor conserva hash del informe y ningún cuerpo escolar o correo.
+
+Un segundo lanzamiento después de fallo incierto no vuelve a abrir mensajes
+ni repetir fuentes. Si el proceso terminó y el informe se escribió antes de
+perder la respuesta, el Supervisor lo reconcilia con su SHA. Si falta prueba
+de efecto, la jornada queda bloqueada para intervención/diagnóstico y la
+siguiente fecha dispone de clave diferente. Una salida parcial de Buscar Curro
+es válida solo si el coordinador original devuelve 0 y estado `parcial`.
+
+**Roll-back:** quitar exclusivamente las dos unidades
+`10-supervisor.conf` de `~/.config/systemd/user/{nombre}.service.d/` y
+aplicar `systemctl --user daemon-reload`. No borrar la SQLite: contiene
+justificantes y debe poder inspeccionarse. No activar pruebas reales durante
+la configuración. Pruebas sintéticas: `test_supervision_diaria.py`.
+La recuperación y supervisión no acreditan entrega de avisos de ChatGPT.
+
 ## Recuperación y pruebas
 Pruebas sintéticas: `python3 -m unittest discover -s tests -p 'test_supervisor_operaciones.py'` y `test_laboratorio_doctor.py`. La prueba SQLite restaura una copia en directorio temporal y verifica `PRAGMA integrity_check`; **no** es una restauración de Debian, perfiles Firefox, llavero ni archivos escolares.
 

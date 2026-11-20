@@ -7,7 +7,7 @@
     {
       "name": "gestor-de-skills",
       "description": "Once habilidades con control-laboratorio e inventario individual MCP verificable, LAB-AUTH y Bibliotecario.",
-      "version": "0.4.47",
+      "version": "0.4.48",
       "source": {
         "source": "local",
         "path": "."
