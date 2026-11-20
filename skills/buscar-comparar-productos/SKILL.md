@@ -2,7 +2,7 @@
 name: buscar-comparar-productos
 description: Investiga y compara productos físicos con búsquedas reales desde Debian, leyendo fichas actuales de comercios, verificando precio, modelo, stock, requisitos y envío; distingue ofertas confirmadas, pendientes, agotadas y bloqueos.
 metadata:
-  version: "0.3.5"
+  version: "0.3.6"
 ---
 
 # Buscar y comparar productos — ejecutor real en Debian
@@ -55,3 +55,11 @@ Consulta bajo demanda: --consultar-historico-web, maximo dos comprobaciones con 
 
 ## Google y archivos web: publicaciones anteriores
 Para cada ficha se generan enlaces a Google con filtro before: (30 dias antes de la consulta) y al calendario de Wayback, sin realizar solicitudes adicionales. Son pistas de investigacion: la fecha atribuida por Google y una noticia antigua no prueban el precio efectivamente cobrado por el vendedor ni el minimo legal de 30 dias. Confirmar modelo, estado, tienda, fecha, fuente y precio antes de afirmar un descuento real.
+
+## Regla antirreclamos de descuento (20/11/2026)
+- «Gran oferta», «Black Friday», un precio tachado o el porcentaje anunciado son publicidad, no prueba de ahorro; no repetirlos como veredicto propio.
+- Priorizar precio final, vendedor, modelo/variante exactos, disponibilidad y alternativas actuales comparables.
+- Solo hablar de rebaja real verificada con precio anterior fechado, fuente, mismo artículo y condiciones equivalentes.
+- Separar PVP, precio anterior, referencia de terceros y mínimo legal de 30 días: no tratarlos como equivalentes ni inferir fraude sin prueba.
+- Si no hay histórico fiable: «descuento histórico NO VERIFICADO»; valorar solo competitividad actual. Para decidir comprar ahora o esperar, explicar incertidumbre y riesgo de perder stock/precio.
+- Búsqueda ordinaria sin consultas históricas adicionales; usar enlaces externos existentes. Comprobar como máximo dos finalistas a petición expresa y sin base propia.

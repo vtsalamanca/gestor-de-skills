@@ -1,4 +1,4 @@
-# Buscar y comparar productos (v0.3.5, Debian)
+# Buscar y comparar productos (v0.3.6, Debian)
 
 Habilidad con **ejecutor real**, no solo instrucciones. Incluye `SKILL.md`, `tools/buscar.py` y pruebas `tests/test_buscar.py`.
 
@@ -39,3 +39,6 @@ Modo normal: enlaces a comparadores, cero consultas extra. Bajo demanda: anadir 
 
 ## Fuentes historicas indirectas
 El informe incluye enlaces generados a Google con before: y a Wayback Machine, ademas de Keepa, PCComTracker e idealo. Cero solicitudes extra para esos enlaces. Los resultados antiguos deben verificarse antes de considerarlos evidencia; las fechas de Google no son capturas. No se incorpora scraping automatico de Google.
+
+## Descuentos comerciales
+El informe no considera «Black Friday», «Gran oferta» o un porcentaje tachado prueba de ahorro: exige precio anterior fechado del mismo modelo para acreditar rebaja; sin ello muestra `DESCUENTO_HISTORICO_NO_VERIFICADO`. La comparación de precios actuales permanece independiente y no consulta históricos sin petición explícita.

@@ -611,6 +611,11 @@ def md(report):
         fuentes=" | ".join("[%s](%s)"%(f["fuente"],f["url"]) for f in h.get("enlaces",[]))
         out.append("- %s: %s; minimo_anual_externo=%s; fuente=%s; alertas=%s"%(x["nombre"][:45],h.get("estado"),h.get("minimo_anual_eur"),h.get("fuente_url"),h.get("aviso")))
         if fuentes:out.append("  Fuentes: "+fuentes)
+    out+=["","## Verificacion del descuento publicitado", "> Black Friday, Gran oferta, PVP tachado y porcentajes del vendedor NO prueban ahorro.", "> Sin precio anterior fechado y comparable del mismo modelo, el descuento historico queda NO VERIFICADO; comparar los precios actuales de alternativas."]
+    for x in report["ofertas"]:
+        nombre=cell(x.get("nombre_ficha") or x.get("nombre") or "Sin nombre")
+        estado="PRECIO_ACTUAL_NO_VERIFICADO" if x.get("precio_eur") is None else "DESCUENTO_HISTORICO_NO_VERIFICADO"
+        out.append("- %s: %s"%(nombre,estado))
     out+=["","## Incidencias por oferta"]
     for x in report["ofertas"]:
         out.append(f"- **{x['tienda']}: {x.get('id_producto') or x['url'].split('/')[-2][:28]}**: incumple {', '.join(x['incumplimientos']) or 'ningún criterio acreditado'}; pendiente {', '.join(x['pendientes']) or 'nada'}; error {x.get('error_detalle','ninguno')}")

@@ -114,6 +114,9 @@ class TestPure(unittest.TestCase):
                 "candidatos_en_listados":0,"fichas_directas_comprobadas":0,"comprables_verificados":0,
                 "cobertura_tiendas":[],"ofertas":[]}
         self.assertIn("Búsqueda automática desde Debian",buscar.md(report))
+        self.assertIn("NO prueban ahorro",buscar.md(report))
+        report["ofertas"]=[{"nombre":"Robot","nombre_ficha":None,"url":URL,"tienda":"Amazon","precio_eur":299,"estado":"CANDIDATO_PENDIENTE","incumplimientos":[],"pendientes":[]}]
+        self.assertIn("Robot: DESCUENTO_HISTORICO_NO_VERIFICADO",buscar.md(report))
 
 class TestGeneric(unittest.TestCase):
     def test_european_thousands_without_cents(self):

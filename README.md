@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.48
+# Gestor de Skills 0.4.49
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
