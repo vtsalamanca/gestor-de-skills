@@ -21,6 +21,7 @@ E. Dependencia con precio desconocido: detener ejecución y mantener presupuesto
 F. Incompatibilidad ChatGPT vs CLI: distinguir instrucciones reutilizables de instalación real.
 G. Fuente caída o autenticación exigida: reportar incidencia y alternativa, sin bucles.
 H. Usuario solicita modificación: verificar autorización, identificar versión, aplicar cambio mínimo, leer de nuevo y ofrecer rollback.
+I. Ficha de Agensi sin SKILL.md/código completo accesible: no confundir descripción ni etiqueta «security scanned» con auditoría; no instalar sin inspección estática y licencia verificable.
 
 ## Estrategia de búsqueda
 Buscar primero por tarea específica; ampliar a sinónimos inglés/español y al repositorio canónico. Skills.sh es índice, no prueba de legitimidad. Popularidad y estrellas son señales auxiliares. Priorizar lectura estática por encima de instalación de CLI. Conservar hasta tres recomendaciones no redundantes.
