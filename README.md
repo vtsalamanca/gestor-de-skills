@@ -1,9 +1,9 @@
-# Gestor de Skills 0.4.50
+# Gestor de Skills 0.4.51
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
 Complemento privado con once skills especializadas:
-- `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye generador de inventario MCP individual, con pruebas y cambios de catálogo.
+- `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye generador de inventario MCP individual y analizador no destructivo de eficiencia, con pruebas y control de cambios de catálogo.
 - `descubrir-skills`: búsqueda y comparación de skills en GitHub, Skills.sh y Agensi (fichas; no importar contenidos sin licencia y auditoría).
 - `auditar-skills`: revisión estática y control de seguridad/costes.
 - `integrar-skills`: compatibilidad e integración por plataforma.

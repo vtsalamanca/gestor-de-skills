@@ -38,6 +38,19 @@ evidencias.json usa schema_version: 1 y un objeto checks indexado por nombre rea
 
 La relectura de un resultado con ticket puede acreditar la consulta tipada. Un error de transporte o denegación no equivale a funcionalidad inexistente. Las verificaciones no autorizan nuevos usos ni sustituyen los permisos de la sesión.
 
+## Evaluación de eficiencia MCP (no destructiva)
+
+El script propio `skills/control-laboratorio/tools/eficiencia_mcp.py` analiza el inventario JSON anterior sin conectarse a servicios ni tocar la configuración. La estimación `name_description_proxy_tokens` se calcula únicamente a partir de la longitud de nombre y descripción dividida entre cuatro. **No es el consumo real de tokens ni incluye esquemas JSON, prompts de sistema ni contexto de ChatGPT**; se utiliza para priorizar revisiones, no para justificar costes o desconexiones.
+
+Ejemplo de lectura, con el inventario existente (no actualiza datos):
+
+    python3 skills/control-laboratorio/tools/eficiencia_mcp.py --inventory "$HOME/utilidades/control-laboratorio/inventario-mcp.json"
+    python3 skills/control-laboratorio/tools/eficiencia_mcp.py --inventory "$HOME/utilidades/control-laboratorio/inventario-mcp.json" --format json
+
+Uso opcional observado: JSON local **saneado**, generado explícitamente a partir de una sesión conocida, con `{"schema_version":1,"scope":"sesion observada","complete":false,"counts":{"read_file":2}}`. El campo `complete` solo puede ser verdadero si la cobertura de llamadas de ese ámbito es demostrable. Si está ausente o es falso, las herramientas no mencionadas son **desconocidas**, no «nunca usadas». El informe no guarda datos ni habilita permisos, y no interpreta como prescindible una herramienta de contingencia.
+
+Revisar un grupo muy extenso no equivale a desinstalarlo: distinguir conectores de recuperación y operaciones críticas, confirmar contratos y medir el coste real solo con métricas oficiales disponibles. No modificar auto-connect ni herramientas MCP sin aprobación diferenciada. Código y tests del análisis son propios: no se incorpora código de terceros ni una nueva skill separada.
+
 ## Seguridad y alcance
 - La lista representa únicamente el conector Control Debian; no inventariar aquí todos los conectores de ChatGPT ni los paquetes instalados en Linux.
 - Nunca incluir cookies, tokens, contraseñas, OTP, datos de menores, CV, direcciones privadas, argumentos sensibles ni configuraciones completas.
