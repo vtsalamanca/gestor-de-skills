@@ -1,10 +1,10 @@
-# Gestor de Skills 0.4.49
+# Gestor de Skills 0.4.50
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
 Complemento privado con once skills especializadas:
 - `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye generador de inventario MCP individual, con pruebas y cambios de catálogo.
-- `descubrir-skills`: búsqueda y comparación de skills públicas.
+- `descubrir-skills`: búsqueda y comparación de skills en GitHub, Skills.sh y Agensi (fichas; no importar contenidos sin licencia y auditoría).
 - `auditar-skills`: revisión estática y control de seguridad/costes.
 - `integrar-skills`: compatibilidad e integración por plataforma.
 - `inventariar-skills`: versiones, inventario y detección de duplicados.
@@ -12,7 +12,7 @@ Complemento privado con once skills especializadas:
 - `organizaciondeltrabajo`: coordinación general, continuidad y coste total.
 - `acceso_webs`: estrategias de acceso web y conectores eficientes, incluida la integración MCP y patrones aprendidos con Golon.
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
-- `ingenieria-fiable`: adaptación práctica para planificar, diagnosticar, probar y verificar software, agentes y automatizaciones.
+- `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora un verificador estático propio de cambios Python/JS, con pruebas y sin dependencias externas (no es código de Agensi).
 - `bibliotecario-memoria`: recuperación y registro conservador de hitos del Bibliotecario en Debian, sin asumir ejecución automática entre chats.
 
 ## Habilidad central y referencias

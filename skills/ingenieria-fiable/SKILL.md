@@ -7,6 +7,9 @@ description: Planifica, diagnostica, prueba y verifica cambios en programas, aut
 ## Objetivo y activación
 Usar al crear, mejorar o reparar **software, agentes, scripts, automatizaciones o skills**. Coordina la evaluación de requisitos, la causa de errores, las pruebas y la confirmación final. No invocar para saludos, preguntas triviales ni tareas sin implementación técnica. No reemplaza `crear-skills`, `auditar-skills` ni `integrar-skills`: complementa sus pruebas y calidad.
 
+## Verificación estructural de trabajo de agentes
+Ante cambios en Python o JavaScript/TypeScript, utilizar cuando aporte valor el verificador estático propio `tools/verificador_trabajo.py` para descubrir stubs, tests vacíos, excepciones silenciadas y depuración residual. Leer primero `references/verificador-trabajo.md`. Inspecciona solamente rutas o diffs explícitos; no sustituye tests ni pruebas E2E y no ejecuta el código revisado. **No es la habilidad de Agensi ni incorpora su contenido sujeto a licencia.**
+
 Esta es una **adaptación propia** inspirada conceptualmente en el proyecto abierto Superpowers de Jesse Vincent: https://github.com/obra/superpowers (MIT). No se copia su sistema de arranque obligatorio, hooks, comandos, agentes externos ni sus permisos. No se instala Superpowers ni se ejecuta código de ese repositorio.
 
 ## Regla previa obligatoria de eficiencia
