@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.52
+# Gestor de Skills 0.4.53
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -13,7 +13,9 @@ Complemento privado con once skills especializadas:
 - `acceso_webs`: estrategias de acceso web y conectores eficientes, incluido el método M45 de grabación con BrowserLearn **ya instalado en Debian**; el paquete ofrece instrucciones, no el ejecutable externo ni acceso automático al navegador.
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
 - `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora el verificador estático y la nueva prueba de reparación antes/después vinculada a huellas SHA-256 de archivos; ambas son herramientas propias sin dependencias de terceros.
-- `bibliotecario-memoria`: recuperación y registro conservador de hitos del Bibliotecario en Debian, sin asumir ejecución automática entre chats.
+- `bibliotecario-memoria`: recuperación y registro conservador de hitos, con recibos de traspaso entre agentes que no convierten autorizaciones antiguas en permisos vigentes.
+
+**Novedades 0.4.53:** auditor de portabilidad independiente para ChatGPT/Codex/Windows/Debian en `integrar-skills`, preflight de políticas y arranque seguro optativo de Codex/Goose en `control-laboratorio`, y traspasos de contexto verificables sin transferir permisos en `bibliotecario-memoria`. Los scripts no activan conexiones ni ejecutan modelos por sí solos.
 
 ## Habilidad central y referencias
 

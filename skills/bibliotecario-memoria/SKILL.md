@@ -1,7 +1,7 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra hitos autorizados en SQLite de Debian por el acceso realmente disponible, priorizando Control Debian cuando exponga la operación.
-version: 0.3.7
+version: 0.3.8
 ---
 # Bibliotecario — memoria y documentación
 
@@ -16,6 +16,10 @@ version: 0.3.7
 5. **Diagnóstico sin fingir:** una skill no ejecuta hooks por sí sola y los conectores pueden no estar instalados en otro chat o en Free. Diferenciar herramienta anunciada, herramienta cargada, escritura real y lectura posterior. Si falta acceso, no atribuir al Bibliotecario un guardado que solo consta en la conversación.
 
 **Control de calidad en proyectos con ejecutor:** cuando el ejecutor emita eventos identificables, comparar cada hito sustancial con la revisión y el identificador de operación en SQLite; reportar pérdidas, conflictos y demoras. Esta comparación no rastrea automáticamente todas las conversaciones ni instala servicios de vigilancia.
+
+## Traspaso seguro entre conversaciones y agentes
+
+Para transferir avances sin delegar autoridad, consultar [traspaso-seguro.md](references/traspaso-seguro.md) y usar el script propio `tools/traspaso_seguro.py` con un JSON privado saneado. El recibo solo contiene hechos, evidencias y **autorizaciones históricas**; no constituye aprobación activa ni sustituye el control de permisos de la sesión receptora. Siempre reconciliar el destino antes de repetir una escritura.
 
 ## Comportamiento al recuperar
 1. Identifica el tema real de la conversación, sin suponer ningún proyecto preexistente. Busca con `{"action":"find","title":"TÍTULO"}` mediante `interfaz_chat.py` y comprueba el **título de cada coincidencia**: una mención incidental a un proyecto en otro trabajo no significa que ambos sean el mismo.

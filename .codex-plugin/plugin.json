@@ -1,6 +1,6 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.52",
+  "version": "0.4.53",
   "description": "Gestor de Skills con inventario MCP individual verificable, Control Debian, LAB-AUTH y Bibliotecario.",
   "author": {
     "name": "Pav├│n Serrano",
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Gestor de Skills",
     "shortDescription": "Gestiona skills y organiza proyectos con coste cero",
-    "longDescription": "Complemento privado con once habilidades. control-laboratorio 0.2.2 es el punto de entrada para operar el laboratorio Debian a través de herramientas conectadas: Control Debian, LAB-AUTH, Bibliotecario, automatizaciones, agentes y GitHub. Conserva las diez habilidades previas como especialistas; no crea permisos ni sesiones por sí misma. Inventario MCP individual privado en Debian con recuento, diferencias y pruebas; continuidad y privacidad por defecto; presupuesto marginal cero.",
+    "longDescription": "Complemento privado con once habilidades. control-laboratorio 0.2.4 es el punto de entrada para operar el laboratorio Debian a través de herramientas conectadas: Control Debian, LAB-AUTH, Bibliotecario, automatizaciones, agentes y GitHub. Conserva las diez habilidades previas como especialistas; no crea permisos ni sesiones por sí misma. Inventario MCP individual privado en Debian con recuento, diferencias y pruebas; continuidad y privacidad por defecto; presupuesto marginal cero.",
     "category": "Productivity",
     "developerName": "Pav├│n Serrano",
     "capabilities": [

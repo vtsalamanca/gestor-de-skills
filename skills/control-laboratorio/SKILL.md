@@ -1,7 +1,7 @@
 ---
 name: control-laboratorio
 description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
-version: 0.2.3
+version: 0.2.4
 ---
 
 # Control del laboratorio — entrada principal
@@ -31,6 +31,7 @@ Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa a
 - **Código, proyectos, publicación, recuperación:** GitHub es el registro del código público autorizado; Debian opera; el plugin es una distribución separada; Bibliotecario conserva decisiones. Ver [08-git-y-skills.md](references/08-git-y-skills.md), [09-rutas-y-fuentes.md](references/09-rutas-y-fuentes.md), [12-recuperacion.md](references/12-recuperacion.md).
 - **Error, bloqueo, autorización o riesgo:** diagnosticar la capa precisa, no repetir intentos ciegos. Ver [10-incidencias-y-seguridad.md](references/10-incidencias-y-seguridad.md).
 - **Diagnóstico y continuidad:** usar Doctor para observación sin efectos y Supervisor SQLite para operaciones con resultado incierto; nunca reintentar una escritura por un simple error de transporte. Ver [18-fiabilidad-y-recuperacion.md](references/18-fiabilidad-y-recuperacion.md).
+- **Políticas de agentes y gasto:** revisar configuración de Codex/Goose mediante preflight sin secretos; si conviene, utilizar el arranque local optativo y verificable, sin sustituir los comandos originales ni conectar proveedores externos. Ver [19-controles-agentes.md](references/19-controles-agentes.md).
 
 ## Relación con las diez skills originales
 No sustituirlas ni copiar sus manuales: **organizaciondeltrabajo** coordina fases y presupuesto; **ingenieria-fiable** especifica pruebas, diagnósticos y regresiones; **acceso_webs** gestiona modalidades de navegación y autenticación; **bibliotecario-memoria** impone recuperación y registro; **buscar-comparar-productos** resuelve compras sin construir históricos propios; **descubrir-skills**, **auditar-skills**, **crear-skills**, **integrar-skills** e **inventariar-skills** gestionan el ciclo de vida de capacidades. Esta habilidad actúa como **enrutador y manual de integración**, no como una undécima versión de las otras.

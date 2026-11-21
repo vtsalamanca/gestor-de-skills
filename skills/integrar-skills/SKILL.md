@@ -26,6 +26,10 @@ No asumir que un error de transferencia indica que el empaquetador falla, ni que
 
 **GitHub Actions:** un `SKILL.md` por sí solo no ejecuta una tarea programada. La integración requiere workflow, código y mecanismo de entrega; credenciales siempre en secretos del repositorio. En público, runners estándar pueden estar incluidos; en privado hay cuotas y el uso adicional puede ser facturable. Runners grandes o APIs de terceros pueden generar cargos incluso en repositorio público. No iniciar trabajos si no está acreditado coste 0 para la operación.
 
+## Auditoría de portabilidad antes de distribuir
+
+En paquetes para ChatGPT, Codex, Windows y Debian, ejecutar cuando corresponda la herramienta propia `tools/portabilidad_agentes.py` y leer [portabilidad-agentes.md](references/portabilidad-agentes.md). Valida coherencia de manifiestos, referencias locales y patrones de rutas fijas. Las advertencias son heurísticas y no demuestran compatibilidad real ni autorizan instalar dependencias. La verificación en cada entorno sigue siendo obligatoria.
+
 ## Entregables
 Compatibilidad por entorno (confirmada / pendiente / incompatible), requisitos, arquitectura, pasos de instalación con aprobación pendiente, pruebas, coste marginal esperado y rollback. No repetir preguntas resueltas.
 
