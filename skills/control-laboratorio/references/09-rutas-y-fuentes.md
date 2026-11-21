@@ -6,6 +6,7 @@ Usar $HOME solo como raíz del usuario Debian autorizado, no como una orden para
 | Componente | Entrada de documentación o código que conviene inspeccionar | Evidencia adicional |
 |---|---|---|
 | Gestor de Skills | $HOME/proyectos/gestor-de-skills/skills/ y scripts/package_plugin.py | git status / SHA, tests, release Plugin Creator |
+| BrowserLearn | $HOME/proyectos/browserlearn-local/LAB-SEGURIDAD.md; $HOME/.local/bin/browserlearn-lab | rama/commit, navegador separado, permisos del perfil, pruebas sintéticas, puerto local |
 | LAB-AUTH | $HOME/proyectos/_gestion/credenciales-laboratorio/LAB-AUTH.md | adaptador local, metadatos de llavero, sesión privada verificada |
 | JCCM/ATE | $HOME/proyectos/_gestion/credenciales-laboratorio/ate_*.py | estado personal real, fuente oficial y fecha |
 | InfoJobs | $HOME/proyectos/Buscar-Curro/infojobs_*.py | Firefox dedicado, lector privado, fecha, pruebas |

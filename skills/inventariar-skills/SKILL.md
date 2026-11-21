@@ -13,6 +13,9 @@ description: Inventaría skills y plugins existentes, detecta duplicados, regist
 6. Presenta inventario exportable como tabla o Markdown/CSV si se solicita. Si se requiere persistirlo fuera de la conversación, pide destino o utiliza el ya expresamente indicado; no afirmes que hay una base de datos continua sin ella.
 7. Cualquier publicación, instalación, desinstalación o cambio persistente requiere la autorización pertinente. Para operación facturable, presupuesto cero hasta tarifa/saldo/coste y autorización explícita.
 
+## Herramientas locales catalogadas sin duplicar skills
+BrowserLearn es una herramienta de grabación web instalada en Debian: el procedimiento reusable está en `acceso_webs/references/browserlearn-laboratorio.md` y su ficha operativa en `control-laboratorio/references/15-herramientas-y-capacidades.md`. **No figura como una duodécima skill ni como función MCP**: no es una capacidad nueva del conector por estar citada en un manifiesto. Su instalación local, revisión y funcionamiento deben comprobarse antes de cada uso; Codex y ChatGPT solo reciben la documentación.
+
 ## Salida
 Resumen de cobertura, duplicados, elementos a revisar y recomendación priorizada. Indica fechas de comprobación y **desconocido** cuando no pueda comprobarse mantenimiento/versión.
 

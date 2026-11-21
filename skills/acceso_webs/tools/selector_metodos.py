@@ -42,6 +42,7 @@ def recomendar(senal, disponibles=None, datos=None):
 if __name__=="__main__":
     p=argparse.ArgumentParser()
     p.add_argument("senal")
+    p.add_argument("--browserlearn-local",action="store_true")
     p.add_argument("--navegador-visual",action="store_true")
     p.add_argument("--navegador-dom",action="store_true")
     p.add_argument("--fuente-oficial",action="store_true")

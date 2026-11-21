@@ -1,7 +1,7 @@
 ---
 name: control-laboratorio
 description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
-version: 0.2.2
+version: 0.2.3
 ---
 
 # Control del laboratorio — entrada principal
@@ -24,6 +24,7 @@ Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa a
 - **Control Debian conectado:** usar primero una operación tipada, examinada y adecuada al objetivo. Las operaciones de ticket necesitan recoger su resultado. Para diagnóstico o terminal anfitrión, solo la capacidad autorizada disponible en la sesión; no asumir consola arbitraria ni root. Ver [02-control-debian.md](references/02-control-debian.md).
 - **Bibliotecario:** buscar por nombre exacto, breve, documento original, registrar una sola operación y verificar la lectura posterior. Ver [03-bibliotecario.md](references/03-bibliotecario.md).
 - **Portal autenticado / llavero:** LAB-AUTH y adaptador oficial; sesión vigente antes de iniciar otra; lectura mínima sin secretos; Thunderbird local para MFA cuando corresponda. Ver [04-lab-auth.md](references/04-lab-auth.md).
+- **Grabación de procedimientos web:** BrowserLearn instalado localmente en Debian con navegador separado; elegirlo solo para aprender recorridos repetibles y después de verificar permisos, consentimiento y ocultación de datos. No es una función MCP nueva ni está incluido como binario en este plugin. Ver [16-procedimientos-especializados.md](references/16-procedimientos-especializados.md) y `acceso_webs/references/browserlearn-laboratorio.md`.
 - **Tarea de Educamos / Buscar Curro / ATE:** separar colector local, estado privado, informe saneado y entrega ChatGPT; usar evidencia por fase y no repetir colectores sin motivo. Ver [05-automatizaciones.md](references/05-automatizaciones.md).
 - **Interfaz gráfica, software y mantenimiento:** servicios systemd de usuario, ventanas propias, procesos y límites de la sesión; comprobación antes/después. Ver [06-escritorio-y-mantenimiento.md](references/06-escritorio-y-mantenimiento.md).
 - **Igor, Goose, Ollama, CDC y tutorial:** seleccionar agente solo si aporta una función realmente disponible y autorizada; preservar puentes de continuidad. Ver [07-agentes-y-cdc.md](references/07-agentes-y-cdc.md).

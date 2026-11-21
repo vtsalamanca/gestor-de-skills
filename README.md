@@ -1,18 +1,18 @@
-# Gestor de Skills 0.4.51
+# Gestor de Skills 0.4.52
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
 Complemento privado con once skills especializadas:
-- `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye generador de inventario MCP individual y analizador no destructivo de eficiencia, con pruebas y control de cambios de catálogo.
+- `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye inventario MCP, análisis de eficiencia y registro de BrowserLearn local para grabación manual de procedimientos web.
 - `descubrir-skills`: búsqueda y comparación de skills en GitHub, Skills.sh y Agensi (fichas; no importar contenidos sin licencia y auditoría).
 - `auditar-skills`: revisión estática y control de seguridad/costes.
 - `integrar-skills`: compatibilidad e integración por plataforma.
 - `inventariar-skills`: versiones, inventario y detección de duplicados.
 - `crear-skills`: diseño y validación de skills propias.
 - `organizaciondeltrabajo`: coordinación general, continuidad y coste total.
-- `acceso_webs`: estrategias de acceso web y conectores eficientes, incluida la integración MCP y patrones aprendidos con Golon.
+- `acceso_webs`: estrategias de acceso web y conectores eficientes, incluido el método M45 de grabación con BrowserLearn **ya instalado en Debian**; el paquete ofrece instrucciones, no el ejecutable externo ni acceso automático al navegador.
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
-- `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora un verificador estático propio de cambios Python/JS, con pruebas y sin dependencias externas (no es código de Agensi).
+- `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora el verificador estático y la nueva prueba de reparación antes/después vinculada a huellas SHA-256 de archivos; ambas son herramientas propias sin dependencias de terceros.
 - `bibliotecario-memoria`: recuperación y registro conservador de hitos del Bibliotecario en Debian, sin asumir ejecución automática entre chats.
 
 ## Habilidad central y referencias

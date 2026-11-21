@@ -32,6 +32,7 @@ Las capacidades de un chat cambian con el plugin, permisos, modelo, entorno y ve
 
 ## Herramientas instaladas en Debian
 - **Python, Git, Bash, systemd de usuario:** verificar ejecutable real, versión y cwd. Scripts locales se ejecutan únicamente cuando el usuario ha encargado esa operación y se ha revisado su alcance.
+- **BrowserLearn local 0.1.0 (variante auditada Debian):** `browserlearn-lab` y `browserlearn-lab-browser` para grabación manual de recorridos web en Chromium independiente; datos locales privados, sin servicio permanente ni IA externa. Comprobar `$HOME/proyectos/browserlearn-local/LAB-SEGURIDAD.md` y `acceso_webs/references/browserlearn-laboratorio.md`. Permisos amplios HTTP/HTTPS de la extensión en ese perfil: usar solo con autorización, nunca trasladar el perfil al plugin. **Herramienta local, no MCP anunciado ni skill duplicada.**
 - **Firefox ESR, GeckoDriver, AT-SPI, X11, Mousepad, Writer, Calc:** presencia física y permisos GUI se comprueban, no se infieren del README.
 - **GNOME Keyring y Credenciales del laboratorio:** solo metadatos y uso local autorizado; los secretos nunca pasan a otras herramientas.
 - **Thunderbird LAB-AUTH:** instalación aislada fuera de PATH, perfil OAuth persistente; su presencia no acredita acceso a Gmail actual ni OTP válido.

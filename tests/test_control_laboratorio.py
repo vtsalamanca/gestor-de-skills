@@ -24,7 +24,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertTrue(self.text.startswith("---\n"))
         hdr = self.text.split("---", 2)[1]
         self.assertIn("\nname: control-laboratorio\n", hdr)
-        self.assertRegex(hdr, r"(?m)^version: 0\.2\.2$")
+        self.assertRegex(hdr, r"(?m)^version: 0\.2\.3$")
         for term in ("Control Debian", "Bibliotecario", "LAB-AUTH", "Goose", "GitHub"):
             self.assertIn(term, hdr)
 
@@ -55,7 +55,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
         market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
         entry = next(p for p in market["plugins"] if p["name"] == manifest["name"])
-        self.assertEqual(manifest["version"], "0.4.51")
+        self.assertEqual(manifest["version"], "0.4.52")
         self.assertEqual(entry["version"], manifest["version"])
         self.assertEqual(manifest["interface"]["capabilities"], ["Read"])
         self.assertIn("once habilidades", manifest["interface"]["longDescription"])

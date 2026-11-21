@@ -1,5 +1,5 @@
 {
-  "version": "0.5.2",
+  "version": "0.5.4",
   "criterio": "Menor coste total para obtener datos verificables; los requisitos y permisos prevalecen sobre el orden. No implica acceso universal.",
   "modalidades": [
     {
@@ -92,6 +92,17 @@
         "JS_DINAMICO"
       ],
       "capacidad_requerida": "navegador_dom"
+    },
+    {
+      "id": "M45_GRABAR_PROCEDIMIENTO_WEB",
+      "orden": 45,
+      "nombre": "Aprender manualmente procedimientos web con BrowserLearn instalado en Debian",
+      "coste": "alto_puntual",
+      "requisitos": ["instalación local verificada", "consentimiento explícito para grabar", "Chromium aislado", "sin secretos en artefactos", "no automatizar el login"],
+      "confirma": "grabación manual reproducida en fixture y contenido saneado",
+      "siguiente": "M50_NAVEGADOR_VISUAL",
+      "senales": ["PROCEDIMIENTO_WEB_REPETIBLE", "GRABACION_GUI_AUTORIZADA"],
+      "capacidad_requerida": "browserlearn_local"
     },
     {
       "id": "M50_NAVEGADOR_VISUAL",

@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.5.3
+version: 0.5.4
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -19,10 +19,13 @@ Metodología transversal de investigación de fuentes web, autenticación autori
 | 20 | **M20_HTTP_PUBLICO**: HTML/JSON/XML por HTTP | Bajos | Hay contenido público accesible y verificable |
 | 30 | **M30_INSPECCION_SELECTIVA**: diagnóstico DOM/JS | Medios | Falta conocer dónde aparece el dato; inspección puntual permitida |
 | 40 | **M40_NAVEGADOR_DOM**: navegador JS automatizado | Altos | Se necesita renderizado/interacción y está permitido |
+| 45 | **M45_GRABAR_PROCEDIMIENTO_WEB**: BrowserLearn local en Debian | Alto, puntual | Se necesita aprender un recorrido repetible; instalación real, grabación y tratamiento de datos autorizados |
 | 50 | **M50_NAVEGADOR_VISUAL**: navegador normal del titular | Altos | HTTP falla o es insuficiente pero hay sesión gráfica autorizada; verificar ventana, URL y contenido |
 | 55 | **M55_RECUPERAR_CARGA_TRANSITORIA**: una recarga de página en blanco | Alto, acotado | Tras M50, si no hay HTML visible y no existe desafío ni error de certificado |
 | 56 | **M56_RECUPERAR_NAVEGACION_TRANSITORIA**: reintento de URL | Alto, acotado | Sólo una vez, en la ventana autorizada y con URL comprobada |
 | 90 | **M90_ALTERNATIVA_OFICIAL**: otra fuente o acción humana | Variables | No hay vía automática autorizada o suficiente |
+
+**BrowserLearn (M45):** para grabar procedimientos humanos repetibles de páginas HTTP/HTTPS, consultar [manual local auditado](references/browserlearn-laboratorio.md). Es una herramienta **externa instalada en Debian**, no una nueva skill, ni una función de Control Debian o del plugin. Requiere el Chromium separado, consentimiento para la grabación y revisión de datos; no sustituye LAB-AUTH, ni se debe iniciar por una búsqueda puntual. No exportar grabaciones privadas a ChatGPT, Codex o GitHub.
 
 **Capas transversales:** A10 autenticación y sesiones aprobadas (LAB-AUTH cuando exista), A20 verificación de extracción y cobertura, A30 presupuesto cero/límites. Un HTTP 401 no se resuelve como un 403 público. En 429, CAPTCHA, MFA pendiente o acceso no autorizado: **detenerse**, no probar evasiones. Una preferencia de menor coste no sustituye la prueba real del dato.
 

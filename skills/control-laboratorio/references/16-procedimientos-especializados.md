@@ -8,6 +8,9 @@ Buscar en Control Debian funciones tipadas de ventana, captura, gesto y fixtures
 ## Navegadores y acceso a webs complejas
 Consultas públicas: modalidad ligera gratuita (fuente oficial, HTML, JSON, API sin pago); si una web aplica JS, 403 o autenticación, revisar acceso_webs y su catálogo de modalidades. Para portales del usuario usar LAB-AUTH en Debian, no una sesión supuesta de navegador del chat. Pruebas con perfil temporal, sin secretos y sin rebote de URLs inseguras. Solo si la página exige interacción real usar el navegador autorizado existente.
 
+### Grabador local BrowserLearn
+Si hace falta **enseñar** a un agente una secuencia interactiva (en vez de consultar una página), verificar primero la aplicación ya instalada en Debian y leer `skills/acceso_webs/references/browserlearn-laboratorio.md`. Ejecutar solo con sesión local autorizada, `browserlearn-lab start` y `browserlearn-lab-browser` (perfil separado). El usuario autorizó acceso de la extensión a páginas HTTP/HTTPS, **no** grabación automática, acceso a llavero ni ejecución desatendida de acciones. El procedimiento exige iniciar y detener manualmente la captura, examinar artefactos y comprobar que no contienen datos privados antes de exportar. Mantener `BROWSERLEARN_STRICT_REDACTION=1`, pero no tratarlo como protección total contra datos en DOM o rutas. No añadir la herramienta al inventario de funciones MCP si no existe un conector real independiente.
+
 ## Educamos y empleo
 Los dos proyectos tienen colectores y coordinadores específicos. Recuperar siempre última documentación del proyecto y revisiones del Bibliotecario antes de cambiar selectores, campos, adjuntos, filtros o periodicidad. Distinguir datos personales de estado público. Comparación de resultados por fecha y hash, no por impresión de que «hay más mensajes».
 

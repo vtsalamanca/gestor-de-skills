@@ -18,7 +18,7 @@ class AccesoWebProgramadoTests(unittest.TestCase):
     def test_enlaces_y_version(self):
         skill = (ROOT / "skills/acceso_webs/SKILL.md").read_text()
         auth = (ROOT / "skills/acceso_webs/references/lab-auth.md").read_text()
-        self.assertIn("version: 0.5.3", skill)
+        self.assertIn("version: 0.5.4", skill)
         self.assertIn(GUIDE, skill)
         self.assertIn(GUIDE, auth)
 
