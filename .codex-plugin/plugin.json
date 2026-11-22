@@ -1,6 +1,6 @@
 {
   "name": "gestor-de-skills",
-  "version": "0.4.53",
+  "version": "0.4.54",
   "description": "Gestor de Skills con inventario MCP individual verificable, Control Debian, LAB-AUTH y Bibliotecario.",
   "author": {
     "name": "Pav├│n Serrano",

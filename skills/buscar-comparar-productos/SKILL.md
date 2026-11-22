@@ -2,7 +2,7 @@
 name: buscar-comparar-productos
 description: Investiga y compara productos físicos con búsquedas reales desde Debian, leyendo fichas actuales de comercios, verificando precio, modelo, stock, requisitos y envío; distingue ofertas confirmadas, pendientes, agotadas y bloqueos.
 metadata:
-  version: "0.3.6"
+  version: "0.3.7"
 ---
 
 # Buscar y comparar productos — ejecutor real en Debian
@@ -33,7 +33,7 @@ python3 -m unittest discover -s tests -v
 El programa ejecuta de manera autónoma **descubrimiento → deduplicación → consultas a fichas → extracción de datos → filtros → comparación → informe JSON y Markdown**. Admite presupuesto, búsqueda libre, atributos obligatorios y perfil portátil gaming. **Recupera `acceso_webs` automáticamente** si PcComponentes responde 403; usa el mismo Firefox de la sesión del usuario, con control X11 limitado al navegador verificado. Los resultados de cada ejecución se guardan en `reports/`, con marca de tiempo UTC.
 
 ## Cobertura comprobada y fallos
-- **Amazon.es**: búsqueda HTML y lectura de fichas individuales con precio visible, título, stock y pista de transporte general; no confirma reparto a Toledo ni garantía particular del vendedor.
+- **Amazon.es**: HTTP primero. Si no acredita el catálogo, recuperación AT-SPI con Firefox (PID, dominio, ASIN, tamaño, oferta y vendedor). Precio de índice no confirma precio de ficha; ver sección Amazon.
 - **El Corte Inglés**: búsqueda HTML de productos y lectura del JSON-LD `Product/Offer` de la ficha directa, con precio y disponibilidad, cuando existen. Los listados pueden mostrar esqueletos sin precio.
 - **MediaMarkt**: búsqueda y extracción `ItemList` schema.org; ficha `BuyAction.object.Product/Offer` para precio y stock; atributos de pantalla y teclado solo si aparecen unívocamente en los datos técnicos de la misma página.
 - **PcComponentes**: aplica el selector genérico de `acceso_webs`: primero prueba HTTP permitido y, ante una incidencia elegible, activa `../acceso_webs/tools/navegador_visual.py` (Firefox ESR convencional, X11, HTML renderizado y URL verificada), obtiene fichas y precios con `tools/pccomponentes_adapter.py` y registra fallos por página. No instalar WebDriver ni declarar stock, envío o garantía sin comprobación adicional. El selector evita elevar el coste si HTTP ya ofrece registros verificables. Está activado por defecto; `--no-visual-fallback` lo desactiva.
@@ -63,3 +63,14 @@ Para cada ficha se generan enlaces a Google con filtro before: (30 dias antes de
 - Separar PVP, precio anterior, referencia de terceros y mínimo legal de 30 días: no tratarlos como equivalentes ni inferir fraude sin prueba.
 - Si no hay histórico fiable: «descuento histórico NO VERIFICADO»; valorar solo competitividad actual. Para decidir comprar ahora o esperar, explicar incertidumbre y riesgo de perder stock/precio.
 - Búsqueda ordinaria sin consultas históricas adicionales; usar enlaces externos existentes. Comprobar como máximo dos finalistas a petición expresa y sin base propia.
+
+## Recuperación de Amazon con acceso_webs y BrowserLearn (v0.3.7, 22/11/2026)
+
+1. Mantener M20_HTTP_PUBLICO como primera vía. Ante HTTP 403/503, desafío, agotamiento del tiempo o catálogo no verificable, usar --visual-fallback (activado por defecto) para comprobar Amazon con tools/amazon_visual.py mediante AT-SPI. No repetir la petición bloqueada.
+2. En Firefox se comprueban identidad del proceso del usuario, ventana activa, dominio HTTPS, URL real del navegador, ASIN y coincidencia de modelo/tamaño. Se espera a que el documento y la tarjeta estén cargados; no se depende de xclip ni de copiar HTML.
+3. El precio del listado es **solo orientativo** (precio_indice_eur). La ficha usa únicamente una variante del tamaño solicitado marcada como seleccionada o una opción de compra inequívoca. Extraer vendedor en el bloque de compra; dejar stock, transporte, garantía y coste total como desconocidos cuando falte evidencia. Nunca inferir el precio de un producto de una recomendación patrocinada o de otra diagonal.
+4. Limitar a dos fichas visuales por consulta; cerrar solo pestañas que el propio comparador haya abierto, siempre verificando la URL. No añadir artículos a la cesta, efectuar pagos ni manipular credenciales. Una comprobación visual no prueba una compra posible en todos los códigos postales.
+5. **BrowserLearn (M45):** útil para aprender nuevos recorridos cuando cambie una tienda y los métodos habituales no basten. No se ejecuta ni graba automáticamente en una comparación. Su Chromium separado y su extensión de permisos amplios requieren revisión, consentimiento y grabación deliberada Record/Stop; usar un entorno público o sintético, sanear y probar la exportación antes de integrar. No transferir cookies, capturas privadas ni datos de Amazon a GitHub o al plugin.
+6. Errores como URL_DISTINTA, DOCUMENTO_NO_VISIBLE, MODELO_NO_COINCIDE o SIN_OFERTA_PRINCIPAL quedan como **pendientes**, no precios confirmados. La mejora local no equivale a una actualización del plugin distribuido.
+
+Pruebas de regresión en tests/test_amazon_visual.py: identidad y tamaño, enlaces Amazon válidos, separación entre listado y ficha, selección de variante, vendedor, fallos de navegador e integración con el comparador. La consulta en vivo del 22/11 acreditó una variante 55″ con 449 € y vendedor Amazon; entrega al domicilio y garantía siguen pendientes.

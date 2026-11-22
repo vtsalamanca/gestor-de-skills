@@ -1,4 +1,4 @@
-# Buscar y comparar productos (v0.3.6, Debian)
+# Buscar y comparar productos (v0.3.7, Debian)
 
 Habilidad con **ejecutor real**, no solo instrucciones. Incluye `SKILL.md`, `tools/buscar.py` y pruebas `tests/test_buscar.py`.
 
@@ -42,3 +42,7 @@ El informe incluye enlaces generados a Google con before: y a Wayback Machine, a
 
 ## Descuentos comerciales
 El informe no considera «Black Friday», «Gran oferta» o un porcentaje tachado prueba de ahorro: exige precio anterior fechado del mismo modelo para acreditar rebaja; sin ello muestra `DESCUENTO_HISTORICO_NO_VERIFICADO`. La comparación de precios actuales permanece independiente y no consulta históricos sin petición explícita.
+
+## Amazon visual (22/11/2026)
+Si Amazon no entrega datos públicos válidos por HTTP, tools/amazon_visual.py utiliza Firefox con AT-SPI: URL visible, PID, ASIN y tamaño exactos. El precio de búsqueda nunca se certifica como oferta; la ficha de compra exige variante seleccionada y vendedor identificado.
+Si faltan datos se conserva CANDIDATO_PENDIENTE. Las opciones de compra no añaden nada a la cesta. BrowserLearn es opcional para aprender recorridos en Chromium aislado, con grabación expresamente autorizada; no es un recolector automático.

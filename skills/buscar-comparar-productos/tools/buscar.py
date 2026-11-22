@@ -458,6 +458,66 @@ def pccomponentes_por_http(session, url, response, args):
          "metodo":"M20_HTTP_PUBLICO"}
     return [row],list(by_url.values()),verified
 
+def amazon_verificar_ficha_visual(item, args, factory=None):
+    """Solo ficha exacta, incluso cuando el listado HTTP funcionó."""
+    if factory is None:
+        from amazon_visual import AmazonVisual
+        factory=AmazonVisual
+    browser=None
+    clone=item.copy()
+    clone["consultado_utc"]=datetime.now(timezone.utc).isoformat(timespec="seconds")
+    try:
+        browser=factory()
+        clone.update(browser.detail(item["url"],item["nombre"]))
+    except Exception as e:
+        clone.update(precio_eur=None,stock=None,
+                     error_detalle="BLOQUEADO_VISUAL_"+getattr(e,"code",type(e).__name__))
+    finally:
+        if browser is not None:
+            browser.close_own_tab()
+    return assess(clone,args.presupuesto,min_hz=args.min_hz,
+                  require_keyboard=args.teclado_es,profile=args.perfil,
+                  product_query=args.producto,must=args.debe_contener)
+
+
+
+def amazon_por_acceso_webs(queries, args, factory=None):
+    """Sólo tras fallo HTTP: listado es descubrimiento; precio exige ficha."""
+    if factory is None:
+        from amazon_visual import AmazonVisual
+        factory=AmazonVisual
+    rows=[]; found=[]; verified=[]
+    for query in queries[:3]:
+        browser=None
+        try:
+            browser=factory()
+            candidates=browser.search(query)
+            unique={c["id_producto"]:c for c in candidates}
+            for c in unique.values():
+                item=card("Amazon",c["nombre"],c["url"],
+                          require_gpu=args.perfil=="portatil-gaming",
+                          fuente_descubrimiento="amazon_firefox_atspi",
+                          id_producto=c["id_producto"],
+                          precio_indice_eur=c["precio_indice_eur"])
+                if item: found.append(item)
+            rows.append({"tienda":"Amazon","consulta":query,
+                         "resultado":"VISUAL_CANDIDATOS_PENDIENTES" if unique else
+                                     "VISUAL_SIN_FICHAS_IDENTIFICABLES",
+                         "encontrados":len(unique),"metodo":"M50_NAVEGADOR_VISUAL","adaptador":"amazon_firefox_atspi"})
+        except Exception as e:
+            rows.append({"tienda":"Amazon","consulta":query,
+                         "resultado":"BLOQUEADO_VISUAL_"+getattr(e,"code",type(e).__name__),
+                         "encontrados":0})
+        finally:
+            if browser is not None:browser.close_own_tab()
+    chosen=sorted({c["url"]:c for c in found}.values(),
+                  key=lambda x:x.get("precio_indice_eur") or 999999)
+    for item in chosen[:min(2,args.max_fichas_por_tienda)]:
+        verified.append(amazon_verificar_ficha_visual(item,args,factory=factory))
+    return rows,found,verified
+
+
+
 def run(args, transport=None):
     session = transport or requests.Session()
     session.headers.update(HEADERS)
@@ -482,6 +542,11 @@ def run(args, transport=None):
                     row["resultado"] = classify_empty_result(shop,response.text)
                 raw.extend(found)
             searches.append(row)
+    amazon_visual_checked=[]
+    if args.visual_fallback and transport is None and any(x["tienda"]=="Amazon" and x["resultado"]!="OK" for x in searches):
+        r,c,amazon_visual_checked=amazon_por_acceso_webs(queries,args)
+        searches.extend(r)
+        raw.extend(c)
     # PcComponentes: primero HTTP directo; ante 403 no repetir peticiones.
     # De manera predeterminada, se activa la recuperación visual documentada en acceso_webs.
     pc_verified=[]
@@ -536,6 +601,8 @@ def run(args, transport=None):
         if len(selected_shop)<quota:
             selected_shop.extend(x for x in pool if x["url"] not in {z["url"] for z in selected_shop})
         selected.extend(selected_shop[:quota])
+    visual_urls={x["url"] for x in amazon_visual_checked}
+    selected=[x for x in selected if x["url"] not in visual_urls]
     def detail(item):
         clone=item.copy()
         response,err=get(session,clone["url"])
@@ -566,11 +633,18 @@ def run(args, transport=None):
                 clone["stock"]=None
         return assess(clone,args.presupuesto,min_hz=args.min_hz,require_keyboard=args.teclado_es,
                       profile=args.perfil,product_query=args.producto,must=args.debe_contener)
-    checked=list(pc_verified)
+    checked=list(pc_verified)+list(amazon_visual_checked)
     with ThreadPoolExecutor(max_workers=3) as pool:
         pending=[pool.submit(detail, x) for x in selected]
         for future in as_completed(pending):
             checked.append(future.result())
+    if args.visual_fallback and transport is None:
+        rechecked=0
+        for i,x in enumerate(checked):
+            if x["tienda"]=="Amazon" and x.get("precio_eur") is None:
+                checked[i]=amazon_verificar_ficha_visual(x,args)
+                rechecked+=1
+                if rechecked>=2:break
     checked.sort(key=lambda x:(x["estado"]=="DESCARTADO",len(x["pendientes"]),x.get("precio_eur") if x.get("precio_eur") is not None else 100000.0))
     from historial_web import incorporar
     historial=incorporar(checked,verificar=getattr(args,"consultar_historico_web",False),max_comprobaciones=2)
@@ -627,7 +701,7 @@ def main(argv=None):
     p.add_argument("--perfil",choices=["portatil-gaming","general"],default="portatil-gaming")
     p.add_argument("--producto",default="portatil gaming",help="Necesario para perfil general")
     p.add_argument("--visual-fallback",action=argparse.BooleanOptionalAction,default=True,
-                   help="Al recibir 403 en PcComponentes, usar acceso_webs/Firefox ESR gráfico")
+                   help="Recuperar Amazon por AT-SPI y PcComponentes por Firefox ante bloqueo HTTP")
     p.add_argument("--debe-contener",default="",help="Atributos separados por coma que deben comprobarse en la ficha")
     p.add_argument("--consultar-historico-web","--verificar-descuento",action="store_true",help="Solo finalistas; máximo 2 consultas HTTP a un histórico externo")
     p.add_argument("--presupuesto",type=float,default=900)
