@@ -16,3 +16,7 @@ Esta regla tiene **prioridad sobre las instrucciones históricas** y exige aprob
 9. **Registro:** guardar hito idempotente en Bibliotecario y confirmar revisión mediante relectura; anotar estado real y reversión.
 
 Los procedimientos reemplazados se conservan exclusivamente en [actualizar-skills-historico.md](actualizar-skills-historico.md). No usar allí cifras históricas ni instrucciones de intervención manual como referencia actual.
+
+
+## Lección verificada del marketplace local Codex (23/11/2026)
+`codex plugin marketplace upgrade` devuelve error para un marketplace **local** porque solo actualiza los Git marketplaces. Para la instalación local existente `gestor-de-skills-github`, la operación probada es `codex plugin add gestor-de-skills@gestor-de-skills-github --json`; verificar después versión efectiva, `enabled` y contenido de los archivos instalados. No borrar el cache ni desinstalar antes por reflejo. Otra instalación puede usar otra vía: detectar su tipo primero.

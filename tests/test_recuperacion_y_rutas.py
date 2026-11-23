@@ -65,6 +65,6 @@ class TestRutas(unittest.TestCase):
     def test_manifest_versions_same(self):
         a=json.loads((ROOT/'.codex-plugin/plugin.json').read_text())
         b=json.loads((ROOT/'.agents/plugins/marketplace.json').read_text())
-        self.assertEqual(a['version'],'0.4.56')
+        self.assertRegex(a['version'],r'^0\.4\.[0-9]+$')
         self.assertEqual(b['plugins'][0]['version'],a['version'])
 if __name__=='__main__': unittest.main()

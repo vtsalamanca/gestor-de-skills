@@ -29,7 +29,7 @@ class ControlLaboratorioTests(unittest.TestCase):
             self.assertIn(term, hdr)
 
     def test_complete_references_no_broken_links(self):
-        self.assertEqual(len(self.refs), 20)
+        self.assertEqual(len(self.refs), 21)
         links = re.findall(r"\]\(references/([a-z0-9-]+\.md)\)", self.text)
         self.assertEqual(set(links), set(self.refs), "Todas las referencias deben enlazarse")
         for name, content in self.refs.items():
@@ -71,7 +71,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         self.assertFalse(re.search(r"(?i)(password|token|secret)[ \t]*[:=][ \t]*['\"][^'\"]{8,}", all_text))
 
     def test_non_executable_knowledge_only(self):
-        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md" and "__pycache__" not in p.parts}, {"tools/inventario_herramientas.py", "tools/eficiencia_mcp.py", "tools/supervisor_operaciones.py", "tools/laboratorio_doctor.py", "tools/supervision_diaria.py", "tools/preflight_agentes.py", "tools/arranque_seguro_agentes.py"})
+        self.assertEqual({str(p.relative_to(HUB)) for p in HUB.rglob("*") if p.is_file() and p.suffix != ".md" and "__pycache__" not in p.parts}, {"tools/inventario_herramientas.py", "tools/eficiencia_mcp.py", "tools/supervisor_operaciones.py", "tools/laboratorio_doctor.py", "tools/supervision_diaria.py", "tools/preflight_agentes.py", "tools/arranque_seguro_agentes.py", "tools/ensayo_restauracion.py", "tools/supervisor_revision.py", "tools/mcp_sesion_diagnostico.py", "tools/eval_skill_routing.py", "references/eval_cases.jsonl"})
         generator = (HUB / "tools/inventario_herramientas.py").read_text(encoding="utf-8")
         for forbidden in ("import subprocess", "import requests", "import socket", "import keyring", "os.system(", "os.popen(", "eval(", "exec("):
             self.assertNotIn(forbidden, generator)

@@ -9,6 +9,11 @@ import re
 import sqlite3
 import unicodedata
 import bibliotecario as b
+try:
+    from vinculos_contexto import lookup as lookup_scope, confirmed as confirmed_aliases
+except ImportError:
+    lookup_scope = None
+    confirmed_aliases = None
 
 def normalize(text):
     return "".join(c for c in unicodedata.normalize("NFKD", str(text).casefold())
@@ -40,8 +45,13 @@ def _fallback(jobs, events, term, scope, limit, tokens):
 def _sorted(jobs, ids, scope, limit, tokens, bm_scores=None):
     by_id = {j["id"]: j for j in jobs}
     scope_norm = normalize(scope).strip() if scope else ""
+    matched_scope_ids=set()
+    if scope_norm and lookup_scope is not None:
+        home=getattr(b,"BASE",b.DB.parent)
+        try:matched_scope_ids=lookup_scope(home/"proyectos_indice.sqlite3",scope)
+        except (OSError,sqlite3.Error):matched_scope_ids=set()
     filtered = [by_id[i] for i in ids if i in by_id and
-                (not scope_norm or scope_norm in normalize(by_id[i]["title"]))]
+                (not scope_norm or scope_norm in normalize(by_id[i]["title"]) or i in matched_scope_ids)]
     # Exact/prefix/title matches first; event-only matches by BM25 and recency.
     # ISO timestamps sort descending within equal lexical ranking and score.
     filtered.sort(key=lambda j: j["updated"], reverse=True)
@@ -66,7 +76,15 @@ def find(term, limit=20, scope=None):
         source.row_factory=sqlite3.Row
         jobs = [dict(x) for x in source.execute(
           "SELECT id,title,status,revision,updated FROM jobs")]
-        events = source.execute("SELECT job_id,detail FROM events").fetchall()
+        events = list(source.execute("SELECT job_id,detail FROM events").fetchall())
+        if confirmed_aliases is not None:
+            home=getattr(b,"BASE",b.DB.parent)
+            try:
+                allow={j["id"] for j in jobs}
+                events.extend((work,alias) for alias,work in confirmed_aliases(home/"proyectos_indice.sqlite3")
+                              if work in allow)
+            except (OSError,sqlite3.Error):
+                pass
         try:
             idx = sqlite3.connect(":memory:")
             try:

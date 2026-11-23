@@ -26,19 +26,42 @@ class TestFTS(unittest.TestCase):
             ('c','InfoJobs candidatura'),
             ('d','InfoJobs comparación')])
         c.commit();c.close()
+        c=sqlite3.connect(self.db)
+        c.execute("INSERT INTO jobs VALUES (?,?,?,?,?)",('e','Acceso web y llavero seguro','active',9,'2026-11-22'))
+        c.execute("INSERT INTO events VALUES (?,?)",('e','GeckoDriver fallo en Firefox'))
+        c.commit();c.close()
+        index=sqlite3.connect(Path(self.tmp.name)/'proyectos_indice.sqlite3')
+        index.execute("CREATE TABLE work_aliases(alias TEXT,work_id TEXT,confirmed INT,source TEXT)")
+        index.execute("INSERT INTO work_aliases VALUES (?,?,?,?)",('browserlearn','e',1,'explicit'))
+        index.commit();index.close()
         self.old=sys.modules.get('bibliotecario')
-        sys.modules['bibliotecario']=types.SimpleNamespace(DB=self.db)
+        sys.modules['bibliotecario']=types.SimpleNamespace(DB=self.db,BASE=Path(self.tmp.name))
         spec=importlib.util.spec_from_file_location('busqueda_fts_fixture',MODULE)
         self.module=importlib.util.module_from_spec(spec)
+        aliases=MODULE.with_name('vinculos_contexto.py')
+        alias_spec=importlib.util.spec_from_file_location('vinculos_contexto',aliases)
+        alias_module=importlib.util.module_from_spec(alias_spec)
+        alias_spec.loader.exec_module(alias_module)
+        self.old_alias=sys.modules.get('vinculos_contexto')
+        sys.modules['vinculos_contexto']=alias_module
         spec.loader.exec_module(self.module)
     def tearDown(self):
         if self.old is None:sys.modules.pop('bibliotecario',None)
         else:sys.modules['bibliotecario']=self.old
+        if self.old_alias is None:sys.modules.pop('vinculos_contexto',None)
+        else:sys.modules['vinculos_contexto']=self.old_alias
         self.tmp.cleanup()
     def test_title_over_event(self):
         self.assertEqual(self.module.find('gestor de skills')[0]['id'],'a')
     def test_scoped_project(self):
         self.assertEqual([j['id'] for j in self.module.find('InfoJobs',scope='Buscar-Curro')],['c'])
+    def test_scope_alias_proven(self):
+        self.assertEqual([j['id'] for j in self.module.find('GeckoDriver',scope='BrowserLearn')],['e'])
+    def test_alias_is_searchable_by_name(self):
+        matches=self.module.find('BrowserLearn')
+        self.assertEqual([j['id'] for j in matches],['e'])
+    def test_unknown_alias_not_guessed(self):
+        self.assertEqual(self.module.find('GeckoDriver',scope='Other-Unrelated'),[])
     def test_no_scope_guessing(self):
         self.assertEqual(self.module.find('InfoJobs',scope='Unknown'),[])
     def test_literal_fts_injection_resistance(self):

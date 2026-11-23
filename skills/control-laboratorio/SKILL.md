@@ -1,7 +1,7 @@
 ---
 name: control-laboratorio
 description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
-version: 0.2.5
+version: 0.2.6
 ---
 
 # Control del laboratorio — entrada principal
@@ -21,6 +21,13 @@ Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa a
 5. **Ejecutar por lotes proporcionados:** operaciones autorizadas y acotadas; pruebas estáticas/sintéticas antes de pruebas reales. No usar Desktop Commander cuando Control Debian cubre el caso. No abrir veinte navegadores o ventanas; identificar los recursos propios de la prueba y cerrarlos al terminar, sin cerrar sesiones del usuario.
 6. **Validar extremo a extremo:** distinguir que el comando salió bien de que el objetivo se cumplió; leer resultado, contrastar datos y detectar efectos colaterales, estado de servicios, integridad Git y residuos. No equiparar sesión válida con mensajes extraídos, ni temporizador activo con notificación entregada.
 7. **Registrar con garantía y cerrar:** si la operación lo justifica, hito idempotente en expediente correcto del Bibliotecario y relectura; al modificar skills/herramientas, aplicar las autorizaciones de catalogación/resguardo según las habilidades existentes (la orden explícita actual cubre el lote aprobado, no proyectos futuros). Documentar fuente, versión, prueba, coste, incertidumbre, siguiente acción y rollback; no declarar finalizado lo no demostrado.
+
+## Recuperación por capas y pruebas de continuidad (23/11/2026)
+- Diagnóstico MCP **sin reiniciar servicios**: [mcp_sesion_diagnostico.py](tools/mcp_sesion_diagnostico.py). Un error `Session terminated` con servidor systemd activo justifica sospecha de cliente/transporte, pero NO identifica la capa exacta. Registrar error del chat por separado y no repetir escrituras dudosas.
+- Revisión de operaciones inciertas: [supervisor_revision.py](tools/supervisor_revision.py). Solo reconcilia automáticamente la operación **aplicada** si `supervision_diaria.inspect` prueba fecha, hora, propiedad, permisos, estado y SHA del justificante. La falta de justificante histórico NO demuestra `not_applied` y deja `unknown` sin nuevos efectos.
+- Ejercicio no destructivo de restauración: [ensayo_restauracion.py](tools/ensayo_restauracion.py). Una copia SQLite recuperada y `PRAGMA integrity_check=ok` es evidencia acotada a bases; **nunca** declarar restaurada una VM, Firefox ni llaveros sin prueba aislada adicional en el anfitrión.
+- Resultados y protocolo de la segunda auditoría: [21-mejoras-revision-20261123.md](references/21-mejoras-revision-20261123.md).
+- Evaluación L4: [eval_skill_routing.py](tools/eval_skill_routing.py) y [casos positivos/negativos](references/eval_cases.jsonl); requiere observaciones reales con evidencia. La puntuación offline sintética no certifica activación universal.
 
 ## Enrutamiento de herramientas
 - **Control Debian conectado:** usar primero una operación tipada, examinada y adecuada al objetivo. Las operaciones de ticket necesitan recoger su resultado. Para diagnóstico o terminal anfitrión, solo la capacidad autorizada disponible en la sesión; no asumir consola arbitraria ni root. Ver [02-control-debian.md](references/02-control-debian.md).

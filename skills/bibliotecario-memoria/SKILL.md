@@ -1,7 +1,7 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra hitos autorizados en SQLite de Debian por el acceso realmente disponible, priorizando Control Debian cuando exponga la operación.
-version: 0.3.9
+version: 0.3.10
 ---
 # Bibliotecario — memoria y documentación
 
@@ -9,6 +9,11 @@ version: 0.3.9
 
 ## Búsqueda actual por proyecto y vigencia (23/11/2026)
 La implementación canónica verificable está en [tools/busqueda_fts5.py](tools/busqueda_fts5.py), desplegada como `busqueda.py` en el Bibliotecario local. El `find` de `interfaz_chat.py` emplea SQLite FTS5 en memoria, ranking con prioridad de título y `scope` opcional. Cuando una palabra aparezca en proyectos distintos (p. ej. InfoJobs en Goose), usar `{"action":"find","title":"InfoJobs","scope":"Buscar-Curro"}` y comprobar el título/ID antes de recuperar. El índice FTS no modifica las tablas persistentes; la búsqueda es **léxica**, no semántica. La procedencia y la versión probada deben confirmarse mediante `brief` y el documento original, no inferirse del score. Si FTS5 falta, la función usa búsqueda `LIKE` literal con ámbito y prioridad de título; nunca devuelve una coincidencia como prueba de ejecución.
+
+## Pendientes vigentes y vinculación de proyectos (23/11/2026)
+- Código canónico del estado de pendientes: [knowledge_status.py](tools/knowledge_status.py). El despliegue idempotente con backup y verificación está en [deploy_local_bibliotecario.py](tools/deploy_local_bibliotecario.py); por defecto se limita a previsualizar. Las revisiones y checkpoints originales son inmutables; un pendiente se marca `open|blocked|resolved|superseded` solo mediante `knowledge_transition` con identificador idempotente y **checkpoint posterior del mismo expediente** cuyo tipo valide la afirmación. Para `superseded` se exige otro `next_action` sustitutorio. Acciones antiguas sin clasificación quedan `historical_unreviewed`, no se presumen abiertas; únicamente las del último checkpoint se consideran provisionalmente abiertas. Nunca cerrar por similitud semántica, por la fecha ni por mensajes del agente sin evidencia. Consultar `knowledge_pending`; `next_actions` permanece como historial, **no lista vigente**.
+- Alias de ámbitos explícitos: [vinculos_contexto.py](tools/vinculos_contexto.py). La clave `scope` puede coincidir con título o alias previamente confirmado en la SQLite privada de proyectos. Un alias no autoriza acceso nuevo y no se publica con datos personales; si no existe, devolver lista vacía, nunca adivinar.
+- Para `brief` utilizar `pending_knowledge` cuando el despliegue local lo devuelva. Los estados y las relaciones no se sincronizan automáticamente a nuevos chats por instalar esta skill: hay que leerlos mediante el canal real del Bibliotecario. Un `blocked` no equivale a un `resolved`.
 
 ## Protocolo exigible de registro verificado y continuación (01/11/2026)
 

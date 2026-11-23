@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.56
+# Gestor de Skills 0.4.57
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -14,6 +14,8 @@ Complemento privado con once skills especializadas. [Índice de activación y pr
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
 - `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora el verificador estático y la nueva prueba de reparación antes/después vinculada a huellas SHA-256 de archivos; ambas son herramientas propias sin dependencias de terceros.
 - `bibliotecario-memoria`: recuperación y registro conservador de hitos, con recibos de traspaso entre agentes que no convierten autorizaciones antiguas en permisos vigentes.
+
+**Novedades 0.4.57:** estado explícito de pendientes con prueba y sin borrar hitos, ámbito de búsqueda por alias confirmado, reconciliación sin reintentos, diagnóstico MCP por capas, ensayo aislado de restauración SQLite y 26 casos de evaluación con positivos y negativos. Código y documentación en las skills existentes, sin añadir una duodécima.
 
 **Novedades 0.4.53:** auditor de portabilidad independiente para ChatGPT/Codex/Windows/Debian en `integrar-skills`, preflight de políticas y arranque seguro optativo de Codex/Goose en `control-laboratorio`, y traspasos de contexto verificables sin transferir permisos en `bibliotecario-memoria`. Los scripts no activan conexiones ni ejecutan modelos por sí solos.
 
@@ -40,11 +42,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las once skil
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.56.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.57.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.56.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.57.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -54,7 +56,7 @@ También se crea `dist/gestor-de-skills-0.4.56.zip.sha256.json`, que registra el
 2. Leer el plugin privado existente en Plugin Creator y anotar su identificador y `release_id` actual.
 3. Actualizar ese mismo plugin con el ZIP y el `release_id` esperado; no crear otro plugin.
 4. Volver a leer los archivos publicados y comprobar versión, once skills y contenido frente a los hashes generados.
-5. En Codex, actualizar el marketplace `gestor-de-skills-github` y comprobar la versión instalada y la ruta cargada. Un commit en GitHub no demuestra por sí solo que ChatGPT o Codex estén sincronizados.
+5. En Codex, si `gestor-de-skills-github` es **marketplace local**, utilizar `codex plugin add gestor-de-skills@gestor-de-skills-github --json` (reinstalación idempotente de versión desde repositorio); `codex plugin marketplace upgrade` solo admite marketplace Git. Verificar instalada y habilitada sin borrar cachés ajenas. Un commit en GitHub no demuestra por sí solo que ChatGPT o Codex estén sincronizados.
 
 ### Recuperación
 
@@ -62,7 +64,7 @@ Conservar fuera de Git el ZIP y el informe de hashes de la versión anterior. Si
 
 
 ## Publicación autenticada y recuperación
-Para actualizar el plugin privado con el empaquetador reproducible, seguir `skills/ingenieria-fiable/references/actualizar-skills.md`. Incluye transferencia correcta entre Desktop Commander, host del publicador, release ID y verificación real. No entregar una ruta de Windows directamente a Plugin Creator.
+Para actualizar el plugin privado con el empaquetador reproducible, seguir `skills/ingenieria-fiable/references/actualizar-skills.md`. Incluye transferencia autónoma mediante Control Debian y artefactos del host, release ID y verificación real. No entregar una ruta de Windows directamente a Plugin Creator.
 
 
 ## Inventario de habilidades, MCP y control de Debian (29/10/2026)

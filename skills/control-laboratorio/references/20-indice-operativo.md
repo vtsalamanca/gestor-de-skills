@@ -6,15 +6,15 @@
 1. Identificar la tarea y su proyecto exacto; cargar `organizaciondeltrabajo` si no es trivial.
 2. Seleccionar una única skill principal en la tabla; para trabajo de Debian usar antes `control-laboratorio`, y para cambios de software añadir `ingenieria-fiable`.
 3. Buscar último hito en Bibliotecario por título real y, si la búsqueda es ambigua, pasar el ámbito del proyecto; verificar título e ID antes de hacer `brief`.
-4. Abrir únicamente el SKILL.md y la referencia especificada; comprobar que el procedimiento sigue vigente frente a cambios posteriores.
+4. Abrir únicamente el SKILL.md y la referencia especificada; comprobar la lista `pending_knowledge` antes de tomar como vigente un `next_action` histórico.
 5. Ejecutar, verificar efectos y registrar nueva lección con versión, evidencia y `supersedes` explícito. Sin coste extra ni traslado de trabajo al usuario.
 
 ## Tabla canónica de enrutamiento
 | Skill | Versión empaquetada | Activación principal | Referencia | Situación de la prueba |
 |---|---:|---|---|---|
-| `organizaciondeltrabajo` | 0.2.26 | Planificar/retomar trabajo no trivial | `skills/organizaciondeltrabajo/SKILL.md` | L0 + escenarios |
-| `control-laboratorio` | 0.2.5 | Debian/TPM2/Bibliotecario/servicios | `skills/control-laboratorio/SKILL.md y references/14-guia-rapida.md` | L0; E2E pendiente |
-| `bibliotecario-memoria` | 0.3.9 | Recuperar, registrar, releer | `skills/bibliotecario-memoria/SKILL.md` | L0; buscar en Debian |
+| `organizaciondeltrabajo` | 0.2.27 | Planificar/retomar trabajo no trivial | `skills/organizaciondeltrabajo/SKILL.md` | L0 + escenarios |
+| `control-laboratorio` | 0.2.6 | Debian/TPM2/Bibliotecario/servicios | `skills/control-laboratorio/SKILL.md y references/14-guia-rapida.md` | L0/L3; E2E total pendiente |
+| `bibliotecario-memoria` | 0.3.10 | Recuperar, registrar, releer | `skills/bibliotecario-memoria/SKILL.md` | L0/L3 recuperación probada |
 | `ingenieria-fiable` | sin versión individual | Reparación y pruebas de software | `skills/ingenieria-fiable/SKILL.md y references/actualizar-skills.md` | L0 + escenarios |
 | `acceso_webs` | 0.5.5 | Web, sesiones, BrowserLearn | `skills/acceso_webs/SKILL.md` | L0 + escenarios |
 | `buscar-comparar-productos` | sin versión individual | Productos, precios, historial público | `skills/buscar-comparar-productos/SKILL.md` | L0 + escenarios |
@@ -52,3 +52,12 @@ Buscar con FTS5 local + prioridad de títulos y parámetro opcional `scope` para
 
 ## Cierre y registro
 Si un flujo falla: diagnóstico por capa → solución comprobada → actualización de referencia → marcar anterior como sustituido → prueba de regresión → comprobación de distribución → registro idempotente y relectura.
+
+
+## Evidencia de nuevas conversaciones y segundo ciclo de mejoras
+- El 23/11/2026 el titular aportó informes de **dos conversaciones nuevas**: una validación guiada y otra petición ordinaria de retomar InfoJobs. Ambas declararon selección pertinente y carga 0.4.56. Son **informes facilitados por el usuario**, no trazas MCP independientes accesibles desde el repositorio; valen como indicio L4 acotado, no como ensayo automatizado de 26 casos.
+- Banco actual: [26 casos positivos y negativos](eval_cases.jsonl); la herramienta [evaluador L4](../tools/eval_skill_routing.py) calcula precisión, recuperación y falsos positivos solo al recibir observaciones verificables. Sin observaciones indica `not_evaluated`.
+- `brief.next_actions` es el historial; `brief.pending_knowledge` es la vista vigente. Cada resolución/sustitución/bloqueo requiere un hito posterior concreto, sin borrar checkpoint.
+- Alias de proyecto y asociaciones de archivos son datos locales privados; código canónico en `bibliotecario-memoria/tools/vinculos_contexto.py`. Nunca publicar rutas privadas o correos.
+- Reconciliaciones del Supervisor solo con prueba independiente; los `unknown` no se limpian mediante reintento. Copia y restauración de SQLite no certifican restauración VM.
+- Procedimientos ampliados: [auditoría de segunda pasada](21-mejoras-revision-20261123.md).

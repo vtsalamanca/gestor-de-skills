@@ -1,0 +1,26 @@
+{"id": "reparar_infojobs", "prompt": "Retoma el problema de InfoJobs usando el laboratorio; inspecciona el estado real.", "expected_skills": ["control-laboratorio", "acceso_webs", "bibliotecario-memoria"]}
+{"id": "navegador_ff", "prompt": "Comprueba si BrowserLearn se empareja en Firefox sin alterar el perfil.", "expected_skills": ["acceso_webs", "control-laboratorio"]}
+{"id": "bibliotecario", "prompt": "Recupera el expediente del control de Debian y sus últimos hitos.", "expected_skills": ["bibliotecario-memoria", "control-laboratorio"]}
+{"id": "publicar_plugin", "prompt": "Actualiza y distribuye el complemento privado de habilidades tras las pruebas.", "expected_skills": ["ingenieria-fiable", "control-laboratorio"]}
+{"id": "comparar_compra", "prompt": "Busca un robot aspirador fregador en oferta y verifica precios históricos.", "expected_skills": ["buscar-comparar-productos"]}
+{"id": "desarrollo", "prompt": "Corrige una función Python del laboratorio, con prueba de regresión.", "expected_skills": ["ingenieria-fiable", "control-laboratorio"]}
+{"id": "inventario", "prompt": "Audita las habilidades instaladas y su estado actual.", "expected_skills": ["inventariar-skills", "auditar-skills"]}
+{"id": "skills_nuevas", "prompt": "Investiga habilidades nuevas y compara sus licencias.", "expected_skills": ["descubrir-skills", "auditar-skills"]}
+{"id": "codex", "prompt": "Comprueba la versión de las skills en Codex.", "expected_skills": ["integrar-skills"]}
+{"id": "educamos", "prompt": "Recupera el procedimiento de EducamosCLM sin abrir sesión.", "expected_skills": ["control-laboratorio", "bibliotecario-memoria"]}
+{"id": "control_error", "prompt": "La conexión MCP con Debian se termina. Diagnostica por capas.", "expected_skills": ["control-laboratorio"]}
+{"id": "memoria_vigente", "prompt": "Qué trabajos siguen pendientes tras la última revisión del Bibliotecario.", "expected_skills": ["bibliotecario-memoria"]}
+{"id": "saludo", "prompt": "Buenos días, ¿qué tal?", "expected_skills": []}
+{"id": "traduccion", "prompt": "Traduce al inglés: Me gusta jugar al baloncesto.", "expected_skills": []}
+{"id": "idea_narrativa", "prompt": "Inventa un cuento corto sobre un gato astronauta.", "expected_skills": []}
+{"id": "calculo", "prompt": "Cuánto es 15 más 27.", "expected_skills": []}
+{"id": "fecha_historica", "prompt": "¿En qué año llegó el hombre a la Luna?", "expected_skills": []}
+{"id": "anatomia", "prompt": "¿Qué hace el diafragma al inspirar?", "expected_skills": []}
+{"id": "codigo_generico", "prompt": "Explícame qué significa una clase en Python, sin tocar archivos.", "expected_skills": []}
+{"id": "charla_navegador", "prompt": "¿Qué es Firefox y en qué se diferencia de Chromium?", "expected_skills": []}
+{"id": "memoria_general", "prompt": "¿Qué es la memoria a corto plazo?", "expected_skills": []}
+{"id": "empleo_publico", "prompt": "¿Qué significa una bolsa de interinos?", "expected_skills": []}
+{"id": "acceso_ambiguo", "prompt": "¿Qué significa CAPTCHA? Solo necesito una explicación.", "expected_skills": []}
+{"id": "git_explicar", "prompt": "Explícame qué hace un commit de Git sin entrar en mi repositorio.", "expected_skills": []}
+{"id": "compra_general", "prompt": "¿Qué significa que un producto sea reacondicionado?", "expected_skills": []}
+{"id": "correccion_texto", "prompt": "Corrige las faltas de esta frase: Él me dijo que hiba.", "expected_skills": []}

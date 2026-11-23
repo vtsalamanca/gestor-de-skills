@@ -1,7 +1,7 @@
 ---
 name: organizaciondeltrabajo
 description: Metodología general predeterminada de planificación y ejecución eficiente. Aplicar al iniciar, retomar, organizar o cambiar de fase de un trabajo no trivial: recuperar contexto y skills, elegir entorno de menor coste, agrupar pruebas, continuar hasta bloqueo real y verificar resultados. Presupuesto adicional cero.
-version: 0.2.26
+version: 0.2.27
 ---
 # &organizaciondeltrabajo — metodología general
 
@@ -11,6 +11,9 @@ version: 0.2.26
 Aplicar proactivamente al iniciar, retomar o cambiar de fase de tareas no triviales, si el entorno permite descubrir esta skill. Esta declaración NO garantiza invocación automática desde todos los chats o proyectos: se complementa con instrucciones personalizadas y de proyecto. Para cuestiones triviales, omitir ceremonia.
 
 **Fuente única de verdad:** `vtsalamanca/gestor-de-skills/skills/organizaciondeltrabajo/SKILL.md`. Esta versión consolida la línea 0.1.0–0.1.6 del repositorio y las mejoras 0.2.0 del plugin. ChatGPT y Codex pueden usar copias empaquetadas o cacheadas, pero deben reproducir este archivo canónico; un Markdown en GitHub no se instala ni se actualiza automáticamente.
+
+## Priorizar estado vigente de expedientes
+Al retomar un proyecto, leer `brief` y el campo `pending_knowledge` si está desplegado. `next_actions` es historia y puede contener pasos ya resueltos; contrastar un cierre con hito posterior o estado explícito confirmado. Si la vista de pendientes vigentes falta, indicarlo, no inferir resolución. Para datos de proyecto usar alias confirmados, nunca coincidencias incidentales.
 
 ## Contrato de continuidad y puerta de cierre (01/11/2026)
 
