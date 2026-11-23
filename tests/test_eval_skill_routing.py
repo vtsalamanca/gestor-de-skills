@@ -58,4 +58,28 @@ class TestRoutingEval(unittest.TestCase):
    obs[0]["trace_sha256"]="a"*64
    with self.assertRaises(ValueError):
     m.score(cases,obs,expected_version="0.4.58",trace_root=d)
+ def test_current_skill_resource_uri(self):
+  uri="skill://plugins_6add39166308819193bc271cfa0af302/control-laboratorio/SKILL.md"
+  with tempfile.TemporaryDirectory() as d:
+   row=self.write_trace(d, {"tool_name":"skills__read","uri":uri}, ["control-laboratorio"])
+   self.assertTrue(m.validate_trace(d,row))
+ def test_empty_traces_are_not_verified(self):
+  with tempfile.TemporaryDirectory() as d:
+   row=self.write_trace(d, None, [])
+   with self.assertRaisesRegex(ValueError,"empty_trace"):
+    m.validate_trace(d,row)
+ def test_other_plugin_same_skill_does_not_count(self):
+  uri="skill://plugins_other/control-laboratorio/SKILL.md"
+  with tempfile.TemporaryDirectory() as d:
+   row=self.write_trace(d, {"tool_name":"skills__read","uri":uri}, [])
+   self.assertTrue(m.validate_trace(d,row))
+ def write_trace(self,d,event,skills):
+  row={"conversation_ref":"test-conversation","plugin_version":"0.4.58",
+       "trace_path":"trace.jsonl","selected_skills":skills}
+  raw=b"\n" if event is None else json.dumps({
+      "conversation_ref":row["conversation_ref"],"plugin_version":row["plugin_version"],**event
+  }).encode()
+  (Path(d)/row["trace_path"]).write_bytes(raw)
+  row["trace_sha256"]=hashlib.sha256(raw).hexdigest()
+  return row
 if __name__=='__main__':unittest.main()

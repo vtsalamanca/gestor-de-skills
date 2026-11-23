@@ -13,6 +13,11 @@ import re
 from pathlib import Path
 from collections import Counter
 
+SKILL_RESOURCE = re.compile(
+    r"(?:skill://plugins_6add39166308819193bc271cfa0af302/([a-z0-9_-]+)/SKILL\.md"
+    r"|skills://plugins/gestor-de-skills/([a-z0-9_-]+)/skill\.md)"
+)
+
 def load_cases(path):
     cases=[]
     known=set()
@@ -48,10 +53,14 @@ def validate_trace(root, row):
     raw=candidate.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=row["trace_sha256"]:
         raise ValueError("trace_hash_mismatch")
+    if not raw.strip():
+        raise ValueError("empty_trace")
     skills=set()
     for line in raw.splitlines():
         if not line.strip():continue
         event=json.loads(line)
+        if not isinstance(event, dict):
+            raise ValueError("invalid_trace_event")
         if event.get("conversation_ref")!=row.get("conversation_ref"):
             raise ValueError("wrong_conversation_trace")
         if event.get("plugin_version")!=row.get("plugin_version"):
@@ -59,8 +68,11 @@ def validate_trace(root, row):
         if event.get("tool_name") not in ("skills__read","tools.skills__read"):
             continue
         uri=event.get("uri","")
-        match=re.fullmatch(r"skills://plugins/gestor-de-skills/([a-z0-9_-]+)/skill[.]md",uri)
-        if match:skills.add(match.group(1))
+        if not isinstance(uri, str):
+            raise ValueError("invalid_skill_resource_uri")
+        match=SKILL_RESOURCE.fullmatch(uri)
+        if match:
+            skills.add(match.group(1) or match.group(2))
     if skills!=set(row["selected_skills"]):
         raise ValueError("selected_skills_mismatch_with_trace")
     return True

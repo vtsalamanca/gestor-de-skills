@@ -69,3 +69,5 @@ Si un flujo falla: diagnóstico por capa → solución comprobada → actualizac
 
 
 El evaluador comprueba integridad del JSONL y correspondencia entre llamadas reales listadas y habilidades declaradas, **pero no dispone de firma de procedencia oficial del servicio ChatGPT**. El operador tiene que comprobar que el archivo proviene de un registro auténtico del chat; una huella SHA-256 no distingue material falsificado de material legítimo.
+
+Desde 0.4.59, el evaluador rechaza trazas vacías y reconoce el identificador `skill://` que devuelve la lectura del complemento privado vigente, además del formato anterior. En un caso negativo, la fuente debe acreditar la cobertura del turno completo, aunque no haya lecturas de habilidades. Una captura parcial o el historial de un conector externo solo acreditan los eventos que muestran. Para puntuar conversaciones de una release anterior con el evaluador corregido, indicar su versión con `--version`.
