@@ -47,4 +47,17 @@ class TestRecuperacion(unittest.TestCase):
    x=m.review(p,{'educamos':{'report':'/no/such/report'}},lambda *args:None)
    self.assertEqual(x[0]['evidence'],'missing_or_stale')
    self.assertIsNone(x[0]['proof_sha'])
+ def test_proof_failed_requires_independent_correlated_log(self):
+  m=load('supervisor_revision')
+  key='daily:educamos:2026-11-20'
+  created='2026-11-20T12:45:09+00:00'
+  fixture="""{"job": "educamos", "state": "job_returned_error", "exit": 3}
+educamos-diario-laboratorio.service: Main process exited, code=exited, status=3/NOTIMPLEMENTED
+educamos-diario-laboratorio.service: Failed with result 'exit-code'."""
+  assert len(m.proof_failed_run(key,created,lambda _:fixture))==64
+  self.assertIsNone(m.proof_failed_run(key,created,lambda _:fixture.replace('job_returned_error','verified')))
+  self.assertIsNone(m.proof_failed_run(key,created,lambda _:fixture.replace('Failed with result','Succeeded with result')))
+  self.assertIsNone(m.proof_failed_run('daily:buscar-curro:2026-11-20',created,lambda _:fixture))
+  self.assertIsNone(m.proof_failed_run(key,'2026-11-19T12:45:09+00:00',lambda _:fixture))
+
 if __name__=='__main__':unittest.main()

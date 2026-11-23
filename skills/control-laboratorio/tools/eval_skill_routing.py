@@ -8,7 +8,10 @@ Si no se entregan observaciones, solo valida el banco; NO declara aprobado L4.
 from __future__ import annotations
 import argparse
 import json
+import hashlib
+import re
 from pathlib import Path
+from collections import Counter
 
 def load_cases(path):
     cases=[]
@@ -29,9 +32,46 @@ def load_cases(path):
     if not cases:raise ValueError("empty_case_bank")
     return cases
 
-def score(cases,observations):
+def validate_trace(root, row):
+    """Check supplied JSONL records and checksum, not merely a claimed hash.
+
+    The caller must independently establish that the file really came from a
+    ChatGPT execution; filesystem checksum alone does not attest provenance.
+    """
+    root=Path(root).resolve()
+    rel=row.get("trace_path")
+    if not isinstance(rel,str) or not rel.strip() or Path(rel).is_absolute():
+        raise ValueError("trace_path_required")
+    candidate=(root/rel).resolve()
+    if not candidate.is_relative_to(root) or not candidate.is_file() or candidate.is_symlink():
+        raise ValueError("unsafe_or_missing_trace")
+    raw=candidate.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=row["trace_sha256"]:
+        raise ValueError("trace_hash_mismatch")
+    skills=set()
+    for line in raw.splitlines():
+        if not line.strip():continue
+        event=json.loads(line)
+        if event.get("conversation_ref")!=row.get("conversation_ref"):
+            raise ValueError("wrong_conversation_trace")
+        if event.get("plugin_version")!=row.get("plugin_version"):
+            raise ValueError("wrong_plugin_version_trace")
+        if event.get("tool_name") not in ("skills__read","tools.skills__read"):
+            continue
+        uri=event.get("uri","")
+        match=re.fullmatch(r"skills://plugins/gestor-de-skills/([a-z0-9_-]+)/skill[.]md",uri)
+        if match:skills.add(match.group(1))
+    if skills!=set(row["selected_skills"]):
+        raise ValueError("selected_skills_mismatch_with_trace")
+    return True
+
+def score(cases,observations,expected_version=None,trace_root=None):
     expected={case['id']:set(case['expected_skills']) for case in cases}
     found={}
+    seen_conversations=set()
+    provenance=Counter()
+    versions=Counter()
+    version_mismatches=[]
     for row in observations:
         key=row.get("id")
         if key not in expected:raise ValueError("unknown_observation")
@@ -40,6 +80,28 @@ def score(cases,observations):
             raise ValueError("invalid_observation")
         if not isinstance(row.get("evidence"),str) or not row['evidence'].strip():
             raise ValueError("observation_requires_evidence")
+        kind=row.get("observation_kind","unverified")
+        if kind not in ("user_report","verified_tool_trace","unverified"):
+            raise ValueError("invalid_evidence_kind")
+        version=row.get("plugin_version","unknown")
+        if not isinstance(version,str) or not version.strip():
+            raise ValueError("invalid_version")
+        conversation_ref=row.get("conversation_ref")
+        if kind=="verified_tool_trace":
+            if not isinstance(conversation_ref,str) or not conversation_ref.strip():
+                raise ValueError("verified_trace_requires_conversation")
+            if conversation_ref in seen_conversations:
+                raise ValueError("not_independent_conversations")
+            if not isinstance(row.get("trace_sha256"),str) or len(row["trace_sha256"])!=64 or any(c not in '0123456789abcdef' for c in row["trace_sha256"]):
+                raise ValueError("verified_trace_requires_sha256")
+            if trace_root is None:
+                raise ValueError("verified_trace_requires_local_evidence_root")
+            validate_trace(trace_root,row)
+            seen_conversations.add(conversation_ref)
+        provenance[kind]+=1
+        versions[version]+=1
+        if expected_version and version!=expected_version:
+            version_mismatches.append(key)
         found[key]=set(row["selected_skills"])
     tp=fp=fn=0
     details=[]
@@ -50,21 +112,39 @@ def score(cases,observations):
         tp+=len(want&selected);fp+=len(selected-want);fn+=len(want-selected)
         details.append({"id":key,"true_positive":sorted(want&selected),
           "false_positive":sorted(selected-want),"false_negative":sorted(want-selected)})
+    all_observed=len(found)==len(cases)
+    independently_verified=(provenance.get("verified_tool_trace",0)==len(cases)
+                           and len(cases)>0 and not version_mismatches)
+    status=("not_evaluated" if not found else
+            "measured" if independently_verified else
+            "reported_partial" if not provenance.get("verified_tool_trace",0) else
+            "partial")
     return {"total_cases":len(cases),"observed":len(found),
+      "provenance":dict(provenance),"plugin_versions":dict(versions),
+      "expected_version":expected_version,
+      "version_mismatches":version_mismatches,
+      "independent_l4_validated":independently_verified,
+      "attestation_note":"The trace source must be independently trusted; a matching SHA256 alone cannot attest ChatGPT provenance.",
       "unobserved":sorted(set(expected)-set(found)),
       "TP":tp,"FP":fp,"FN":fn,
       "precision":round(tp/(tp+fp),3) if tp+fp else None,
       "recall":round(tp/(tp+fn),3) if tp+fn else None,
-      "all_cases_observed":len(found)==len(cases),
-      "status":"not_evaluated" if not found else "partial" if len(found)<len(cases) else "measured",
+      "all_cases_observed":all_observed,
+      "status":status,
       "case_details":details}
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--cases",type=Path,default=Path(__file__).resolve().parents[1]/'references/eval_cases.jsonl')
-    p.add_argument("--observations",type=Path,help="Trazas reales verificadas, no simulaciones.")
+    p.add_argument("--observations",type=Path,help="Trazas verificadas o informes etiquetados.")
+    p.add_argument("--version",help="Versión de plugin para validación L4; datos de otra versión no cuentan.")
+    p.add_argument("--trace-root",type=Path,help="Carpeta privada de trazas JSONL exportadas y comprobables.")
     args=p.parse_args()
     cases=load_cases(args.cases)
     obs=[json.loads(line) for line in args.observations.read_text().splitlines() if line.strip()] if args.observations else []
-    print(json.dumps(score(cases,obs),ensure_ascii=False,indent=2))
+    if args.version:
+        version=args.version
+    else:
+        version=json.loads((Path(__file__).resolve().parents[3]/'.codex-plugin/plugin.json').read_text())['version']
+    print(json.dumps(score(cases,obs,expected_version=version,trace_root=args.trace_root),ensure_ascii=False,indent=2))
 if __name__=="__main__":main()

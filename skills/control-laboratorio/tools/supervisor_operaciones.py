@@ -131,12 +131,37 @@ class Ledger:
             if row is None:
                 raise KeyError("unknown key")
             target="succeeded" if outcome=="applied" else "not_applied"
-            if row[0] == "succeeded" or (row[0]=="not_applied" and target!="not_applied"):
+            if row[0] in ("succeeded","failed_effects_unknown") or (row[0]=="not_applied" and target!="not_applied"):
                 raise ValueError("completed records cannot change")
             c.execute("UPDATE operations SET state=?,proof_sha=?,updated_at=? WHERE key=?",
                       (target,proof_sha,stamp(),key))
             c.execute("COMMIT")
         return target
+
+    def close_failed_effects_unknown(self, key, evidence_sha):
+        """Terminal failed run; partial side effects remain UNKNOWN and never replay.
+
+        evidence_sha is SHA256 of independently verified service-failure records,
+        NOT proof that nothing was applied.
+        """
+        valid(key, KEY, "key")
+        valid(evidence_sha, SHA, "evidence_sha")
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            row=c.execute("SELECT state,proof_sha FROM operations WHERE key=?", (key,)).fetchone()
+            if row is None:
+                raise KeyError("unknown key")
+            if row[0]=="failed_effects_unknown":
+                outcome="already_closed" if row[1]==evidence_sha else "evidence_conflict"
+            elif row[0]!="unknown":
+                outcome="requires_reconciliation"
+            else:
+                c.execute("""UPDATE operations
+                     SET state='failed_effects_unknown', proof_sha=?, updated_at=?
+                     WHERE key=?""",(evidence_sha,stamp(),key))
+                outcome="failed_effects_unknown"
+            c.execute("COMMIT")
+        return outcome
 
     def status(self, key=None):
         if key is not None:
@@ -153,14 +178,14 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--db",type=Path,default=Path.home()/".local/state/control-laboratorio/operaciones.sqlite3")
     sub=p.add_subparsers(dest="action",required=True)
-    for verb in ("begin","complete","unknown","reconcile","status"):
+    for verb in ("begin","complete","unknown","reconcile","close-failed","status"):
         a=sub.add_parser(verb)
         a.add_argument("--key",required=verb!="status")
         if verb=="begin":
             a.add_argument("--kind",choices=sorted(KINDS),required=True)
             a.add_argument("--request-sha",required=True)
             a.add_argument("--allow-reconciled-retry",action="store_true")
-        if verb in ("complete","reconcile"):
+        if verb in ("complete","reconcile","close-failed"):
             a.add_argument("--proof-sha",required=True)
         if verb=="reconcile":
             a.add_argument("--outcome",choices=("applied","not_applied"),required=True)
@@ -174,10 +199,12 @@ def main():
         result=l.unknown(a.key)
     elif a.action=="reconcile":
         result=l.reconcile(a.key,a.outcome,a.proof_sha)
+    elif a.action=="close-failed":
+        result=l.close_failed_effects_unknown(a.key,a.proof_sha)
     else:
         result=l.status(a.key)
     print(json.dumps({"action":a.action,"result":result},ensure_ascii=False))
-    if result in ("fingerprint_conflict","requires_reconciliation"):
+    if result in ("fingerprint_conflict","requires_reconciliation","evidence_conflict"):
         raise SystemExit(3)
 
 if __name__=="__main__":

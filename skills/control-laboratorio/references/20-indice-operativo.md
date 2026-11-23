@@ -13,7 +13,7 @@
 | Skill | Versión empaquetada | Activación principal | Referencia | Situación de la prueba |
 |---|---:|---|---|---|
 | `organizaciondeltrabajo` | 0.2.27 | Planificar/retomar trabajo no trivial | `skills/organizaciondeltrabajo/SKILL.md` | L0 + escenarios |
-| `control-laboratorio` | 0.2.6 | Debian/TPM2/Bibliotecario/servicios | `skills/control-laboratorio/SKILL.md y references/14-guia-rapida.md` | L0/L3; E2E total pendiente |
+| `control-laboratorio` | 0.2.7 | Debian/TPM2/Bibliotecario/servicios | `skills/control-laboratorio/SKILL.md y references/14-guia-rapida.md` | L0/L3; E2E total pendiente |
 | `bibliotecario-memoria` | 0.3.10 | Recuperar, registrar, releer | `skills/bibliotecario-memoria/SKILL.md` | L0/L3 recuperación probada |
 | `ingenieria-fiable` | sin versión individual | Reparación y pruebas de software | `skills/ingenieria-fiable/SKILL.md y references/actualizar-skills.md` | L0 + escenarios |
 | `acceso_webs` | 0.5.5 | Web, sesiones, BrowserLearn | `skills/acceso_webs/SKILL.md` | L0 + escenarios |
@@ -61,3 +61,11 @@ Si un flujo falla: diagnóstico por capa → solución comprobada → actualizac
 - Alias de proyecto y asociaciones de archivos son datos locales privados; código canónico en `bibliotecario-memoria/tools/vinculos_contexto.py`. Nunca publicar rutas privadas o correos.
 - Reconciliaciones del Supervisor solo con prueba independiente; los `unknown` no se limpian mediante reintento. Copia y restauración de SQLite no certifican restauración VM.
 - Procedimientos ampliados: [auditoría de segunda pasada](21-mejoras-revision-20261123.md).
+
+
+## Cierre de incidentes Educamos y evaluación independiente · 23/11/2026
+- El 20 y 21/11/2026 el servicio diario Educamos terminó con job_returned_error y resultado exit-code, verificado en journal de usuario con ventanas temporales concretas. Los dos registros se cerraron como failed_effects_unknown, no como succeeded ni not_applied. Cero reejecuciones y copia previa del Supervisor SQLite.
+- El evaluador eval_skill_routing.py distingue procedencia (user_report o verified_tool_trace), versión e independencia de las conversaciones. Los informes previos 0.4.56 no certifican la versión actual. Los 26 casos están redactados, pero no se han ejecutado automáticamente en 26 conversaciones nuevas desde este chat. Prohibido declarar L4 completo basándose en fixtures o informes ajenos.
+
+
+El evaluador comprueba integridad del JSONL y correspondencia entre llamadas reales listadas y habilidades declaradas, **pero no dispone de firma de procedencia oficial del servicio ChatGPT**. El operador tiene que comprobar que el archivo proviene de un registro auténtico del chat; una huella SHA-256 no distingue material falsificado de material legítimo.

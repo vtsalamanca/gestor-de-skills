@@ -1,7 +1,7 @@
 ---
 name: control-laboratorio
 description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
-version: 0.2.6
+version: 0.2.7
 ---
 
 # Control del laboratorio — entrada principal
@@ -24,10 +24,11 @@ Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa a
 
 ## Recuperación por capas y pruebas de continuidad (23/11/2026)
 - Diagnóstico MCP **sin reiniciar servicios**: [mcp_sesion_diagnostico.py](tools/mcp_sesion_diagnostico.py). Un error `Session terminated` con servidor systemd activo justifica sospecha de cliente/transporte, pero NO identifica la capa exacta. Registrar error del chat por separado y no repetir escrituras dudosas.
+- Cierre histórico de errores: la misma revisión admite --close-proven-failures si systemd acredita inequívocamente el error y no hay justificante válido. El estado terminal failed_effects_unknown significa servicio fallido, efectos parciales desconocidos, sin reintento. No equivale a not_applied.
 - Revisión de operaciones inciertas: [supervisor_revision.py](tools/supervisor_revision.py). Solo reconcilia automáticamente la operación **aplicada** si `supervision_diaria.inspect` prueba fecha, hora, propiedad, permisos, estado y SHA del justificante. La falta de justificante histórico NO demuestra `not_applied` y deja `unknown` sin nuevos efectos.
 - Ejercicio no destructivo de restauración: [ensayo_restauracion.py](tools/ensayo_restauracion.py). Una copia SQLite recuperada y `PRAGMA integrity_check=ok` es evidencia acotada a bases; **nunca** declarar restaurada una VM, Firefox ni llaveros sin prueba aislada adicional en el anfitrión.
 - Resultados y protocolo de la segunda auditoría: [21-mejoras-revision-20261123.md](references/21-mejoras-revision-20261123.md).
-- Evaluación L4: [eval_skill_routing.py](tools/eval_skill_routing.py) y [casos positivos/negativos](references/eval_cases.jsonl); requiere observaciones reales con evidencia. La puntuación offline sintética no certifica activación universal.
+- Evaluación L4: [eval_skill_routing.py](tools/eval_skill_routing.py) y [casos positivos/negativos](references/eval_cases.jsonl); requiere observaciones reales con evidencia y versión pertinente; los informes aportados por el usuario no son trazas observadas. La puntuación offline sintética no certifica activación universal.
 
 ## Enrutamiento de herramientas
 - **Control Debian conectado:** usar primero una operación tipada, examinada y adecuada al objetivo. Las operaciones de ticket necesitan recoger su resultado. Para diagnóstico o terminal anfitrión, solo la capacidad autorizada disponible en la sesión; no asumir consola arbitraria ni root. Ver [02-control-debian.md](references/02-control-debian.md).

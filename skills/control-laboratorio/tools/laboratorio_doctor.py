@@ -147,7 +147,9 @@ def check_supervisor(home):
         return result("error","supervisor ledger unreadable")
     unsettled=sum(counts.get(s,0) for s in ("unknown","running"))
     status="warning" if unsettled else "ok"
-    detail=f"operations={sum(counts.values())}, unsettled={unsettled}; no replay performed"
+    detail=(f"operations={sum(counts.values())}, unsettled={unsettled}, "
+            f"failed_effects_unknown={counts.get('failed_effects_unknown',0)}; "
+            "no replay performed")
     return result(status,detail)
 
 def check_git(home):

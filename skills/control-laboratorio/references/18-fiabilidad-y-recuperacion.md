@@ -27,6 +27,8 @@ Antes de una operación con efectos:
 5. Si la respuesta se perdió, `unknown --key CLAVE` y **detener** cualquier nuevo efecto hasta reconciliar con un justificante real.
 6. Si se verificó que ya se aplicó: `reconcile --key CLAVE --outcome applied --proof-sha SHA256`. Si se demostró que NO se aplicó: `--outcome not_applied`, y solo una nueva invocación explícita `begin ... --allow-reconciled-retry` permite reintentar.
 
+**Caso histórico de fallo acreditado sin prueba de efectos:** supervisor_revision.py --close-proven-failures exige señales independientes en el journal de la unidad del día (job_returned_error, systemd Failed result exit-code, salida código 3), y ausencia de un informe final válido en la ventana original. El estado failed_effects_unknown es terminal, conserva SHA de evidencia y prohíbe begin aun con allow-reconciled-retry; ni éxito ni ausencia de efectos parciales están demostrados. No usar reconcile not_applied porque el fallo del proceso no acredita que ninguna acción web ocurriera. Doctor separa unsettled del conteo histórico failed_effects_unknown.
+
 Un segundo `begin` para un trabajo `running` o `unknown` devuelve `requires_reconciliation`, código de salida 3. Mismo identificador con SHA distinto devuelve `fingerprint_conflict`. `already_succeeded` nunca vuelve a ejecutar la operación. El supervisor NO envuelve automáticamente las llamadas de cualquier chat: el flujo llamante tiene que usarlo expresamente.
 
 ## Integración supervisada: EducaMos y Buscar Curro

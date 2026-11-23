@@ -1,4 +1,4 @@
-# Gestor de Skills 0.4.57
+# Gestor de Skills 0.4.58
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
@@ -14,6 +14,8 @@ Complemento privado con once skills especializadas. [Índice de activación y pr
 - `buscar-comparar-productos`: búsquedas desde Debian y comprobación opcional de descuentos mediante históricos públicos, sin base propia.
 - `ingenieria-fiable`: planificación, diagnóstico y verificación; incorpora el verificador estático y la nueva prueba de reparación antes/después vinculada a huellas SHA-256 de archivos; ambas son herramientas propias sin dependencias de terceros.
 - `bibliotecario-memoria`: recuperación y registro conservador de hitos, con recibos de traspaso entre agentes que no convierten autorizaciones antiguas en permisos vigentes.
+
+**Novedades 0.4.58:** cierre auditable de fallos históricos del Supervisor (estado failed_effects_unknown) con prueba independiente de systemd, sin reiterar acciones; evaluador L4 que distingue informes de usuario de trazas independientes y bloquea conclusiones entre versiones. Las conversaciones nuevas requieren instrumentación efectiva: una skill no puede crearlas por sí sola.
 
 **Novedades 0.4.57:** estado explícito de pendientes con prueba y sin borrar hitos, ámbito de búsqueda por alias confirmado, reconciliación sin reintentos, diagnóstico MCP por capas, ensayo aislado de restauración SQLite y 26 casos de evaluación con positivos y negativos. Código y documentación en las skills existentes, sin añadir una duodécima.
 
@@ -42,11 +44,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las once skil
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.57.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.58.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.57.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.58.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 

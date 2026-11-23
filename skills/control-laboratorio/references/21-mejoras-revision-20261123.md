@@ -20,3 +20,8 @@
 `skills/bibliotecario-memoria/tools/deploy_local_bibliotecario.py` compara módulos, rechaza versiones desconocidas y por defecto solo ejecuta `--dry-run`; `--apply` requiere autorización para el lote, crea backup privado y no reinicia servicios. La base de datos original se respalda con la API SQLite `backup()` y `quick_check` antes de cualquier migración aditiva. Para rollback, restaurar solo archivos modificados desde ese backup y restaurar una SQLite a partir de una copia aislada validada, nunca mientras otros servicios escriban.
 
 Las asociaciones `vinculos.py` se realizan por prefijo de proyecto confirmado y guardan únicamente rutas, no los contenidos. Su configuración concreta pertenece al Bibliotecario privado y no se publica. La tabla `work_aliases` almacena alias por expediente; consultas no pueden inferir alias no confirmados.
+
+
+## Cierre posterior de operaciones y niveles de evidencia
+failed_effects_unknown: se sabe por systemd que el proceso devolvió error, pero se ignora si la automatización alcanzó efectos parciales. Es distinto de unknown (sin cierre) y not_applied (ausencia de efectos demostrada). La huella SHA queda en proof_sha para trazabilidad; no significa SHA de éxito. No reutilizar esa huella para pasar inspect.
+eval_skill_routing.py distingue user_report de trazas, comprueba la versión y la independencia de las conversaciones. Sin acceso a nuevas conversaciones, el resultado es parcial/no evaluado, nunca L4 aprobado.

@@ -52,6 +52,37 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(l.status("task-3")[0]["attempts"],2)
         self.assertEqual(l.complete("task-3",B),"succeeded")
 
+    def test_fail_with_unknown_partial_effects_terminal(self):
+        l=self.ledger
+        l.begin("daily:educamos:2026-11-21","write",A)
+        l.unknown("daily:educamos:2026-11-21")
+        self.assertEqual(
+            l.close_failed_effects_unknown("daily:educamos:2026-11-21",B),
+            "failed_effects_unknown")
+        self.assertEqual(
+            l.close_failed_effects_unknown("daily:educamos:2026-11-21",B),
+            "already_closed")
+        self.assertEqual(
+            l.close_failed_effects_unknown("daily:educamos:2026-11-21",A),
+            "evidence_conflict")
+        self.assertEqual(l.begin("daily:educamos:2026-11-21","write",A),
+                         "requires_reconciliation")
+        self.assertEqual(l.begin("daily:educamos:2026-11-21","write",A,
+                                 allow_reconciled_retry=True),"requires_reconciliation")
+        with self.assertRaises(ValueError):
+            l.reconcile("daily:educamos:2026-11-21","not_applied",A)
+        with self.assertRaises(ValueError):
+            l.reconcile("daily:educamos:2026-11-21","applied",A)
+        self.assertEqual(l.status("daily:educamos:2026-11-21")[0]["attempts"],1)
+
+    def test_failure_closure_not_allowed_without_unknown(self):
+        l=self.ledger
+        l.begin("daily:educamos:2026-11-20","write",A)
+        self.assertEqual(l.close_failed_effects_unknown("daily:educamos:2026-11-20",B),
+                         "requires_reconciliation")
+        with self.assertRaises(ValueError):
+            l.close_failed_effects_unknown("daily:educamos:2026-11-20","invalid-sha")
+
     def test_bad_keys_and_missing_operations(self):
         l=self.ledger
         for key in ("../evil","", "x y","x"*100,"a/b"):
