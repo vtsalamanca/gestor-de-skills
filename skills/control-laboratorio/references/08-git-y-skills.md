@@ -30,7 +30,7 @@ El repo oficial de las skills es vtsalamanca/gestor-de-skills. Buscar-Curro, Edu
 - **buscar-comparar-productos:** compras con precios reales, envíos y rebajas contrastadas desde fuentes públicas, sin histórico propio.
 
 ## Actualización segura del complemento privado
-Leer el procedimiento CANÓNICO skills/ingenieria-fiable/references/actualizar-skills.md y sus referencias postpublicacion-plugin.md y publicacion-sin-credenciales.md desde el commit realmente vigente. En particular:
+**No pedir al usuario copiar o adjuntar ZIP mientras exista una vía autorizada de preparación y carga que pueda operar ChatGPT.** Leer primero `skills/ingenieria-fiable/references/publicacion-autonoma-complemento.md` (publicación autónoma 0.4.54 comprobada el 23/11/2026), después el procedimiento CANÓNICO `skills/ingenieria-fiable/references/actualizar-skills.md` y sus referencias `postpublicacion-plugin.md` y `publicacion-sin-credenciales.md` desde el commit vigente. En particular:
 - Misma identidad de plugin privado, usuario y release actual; **no crear uno nuevo**.
 - Añadir la nueva skill al conjunto de empaquetado y a versiones de manifiesto de Codex/marketplace; aumentar versión semántica y actualizar README.
 - Pruebas del repo y paquete determinista hecho desde SHA exacto; sin archivos privados ni marketplace dentro del ZIP del publicador.

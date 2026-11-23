@@ -1,5 +1,7 @@
 # Protocolo canónico de actualización y publicación del Gestor de Skills
 
+**PRIORIDAD ACTUAL (23/11/2026):** consultar primero [publicacion-autonoma-complemento.md](publicacion-autonoma-complemento.md). La publicación del plugin privado 0.4.54 **se hizo sin adjuntos ni copias manuales del usuario**, creando y cargando el paquete desde la conversación. **No pedir al usuario que copie o adjunte ZIP como primer paso.** Las rutas históricas de esta página que lo proponen quedan subordinadas a ese procedimiento, salvo falta comprobada de una vía automática compatible.
+
 **Uso obligatorio:** cuando el usuario ordene modificar una skill, actualizar el plugin, publicar una versión o recuperar un fallo de distribución. Fuente única: `vtsalamanca/gestor-de-skills`. Aplicar con `organizaciondeltrabajo`, `integrar-skills` e `ingenieria-fiable`. **No activar comprobaciones por cada chat**, cron ni GitHub Actions por defecto. Presupuesto adicional 0 €.
 
 ## Regla vigente de autorización de catálogo y resguardo (29/10/2026)

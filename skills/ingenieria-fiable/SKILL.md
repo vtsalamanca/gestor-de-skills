@@ -4,6 +4,10 @@ description: Planifica, diagnostica, prueba y verifica cambios en programas, aut
 ---
 # Ingeniería fiable · metodología adaptada
 
+## Actualizar el complemento privado sin pedir archivos al usuario
+
+Si la tarea implica publicar, versionar o distribuir el Gestor de Skills, leer obligatoriamente [publicacion-autonoma-complemento.md](references/publicacion-autonoma-complemento.md) y [actualizar-skills.md](references/actualizar-skills.md). Reutilizar la publicación autónoma ya verificada mediante GitHub, creación/carga de artefactos y Plugin Creator. No delegar al titular el copiado o adjuntado de ZIP mientras exista un mecanismo autorizado comprobado; probar primero y verificar contenido, versión y privacidad.
+
 ## Objetivo y activación
 Usar al crear, mejorar o reparar **software, agentes, scripts, automatizaciones o skills**. Coordina la evaluación de requisitos, la causa de errores, las pruebas y la confirmación final. No invocar para saludos, preguntas triviales ni tareas sin implementación técnica. No reemplaza `crear-skills`, `auditar-skills` ni `integrar-skills`: complementa sus pruebas y calidad.
 

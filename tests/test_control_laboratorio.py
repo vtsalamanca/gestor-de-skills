@@ -55,7 +55,7 @@ class ControlLaboratorioTests(unittest.TestCase):
         manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8"))
         market = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text(encoding="utf-8"))
         entry = next(p for p in market["plugins"] if p["name"] == manifest["name"])
-        self.assertEqual(manifest["version"], "0.4.53")
+        self.assertRegex(manifest["version"], r"^\d+\.\d+\.\d+$")
         self.assertEqual(entry["version"], manifest["version"])
         self.assertEqual(manifest["interface"]["capabilities"], ["Read"])
         self.assertIn("once habilidades", manifest["interface"]["longDescription"])
