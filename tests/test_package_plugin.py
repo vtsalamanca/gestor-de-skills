@@ -156,9 +156,12 @@ class RepositoryReleaseTests(unittest.TestCase):
         self.assertRegex(plugin["version"], r"^\d+\.\d+\.\d+$")
         self.assertEqual(marketplace["plugins"][0]["version"], plugin["version"])
         self.assertRegex(procedure, r"(?m)^version: 0\.2\.\d+$")
-        self.assertIn("http.sslBackend", procedure)
-        self.assertIn("codex plugin marketplace upgrade", procedure)
-        self.assertIn("no ejecutar `plugin add`", procedure)
+        legacy = (root / "skills" / "organizaciondeltrabajo" / "references" / "historico-operativo.md").read_text(encoding="utf-8")
+        # Recovery instructions remain available, but no longer compete with current runbook.
+        self.assertIn("http.sslBackend", legacy)
+        self.assertIn("codex plugin marketplace upgrade", legacy)
+        self.assertIn("no ejecutar `plugin add`", legacy)
+        self.assertIn("publicacion-autonoma-complemento.md", procedure)
 
 
 if __name__ == "__main__":

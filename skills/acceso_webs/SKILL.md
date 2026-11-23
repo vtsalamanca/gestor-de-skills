@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.5.4
+version: 0.5.5
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -118,64 +118,11 @@ La operación diaria debe poder ejecutarse con recursos gratuitos cuando sea via
 Para cada sitio registrar: fuente | URL | mecanismo | autenticación | paginación/cobertura | campos | consumo por ejecución | herramientas evaluadas | restricciones | prueba y fecha | confianza | próximo paso.
 Estados obligatorios: HIPÓTESIS, DOCUMENTADO, PROBADO LOCALMENTE, VALIDADO EN ORIGEN, VALIDADO EXTREMO A EXTREMO, BLOQUEADO. No declarar cobertura total si las páginas o respuestas no se comprobaron exhaustivamente.
 
-## Catálogo de patrones procedentes de repositorios abiertos (evaluación de octubre de 2026)
-
-Consultar referencias oficiales antes de cada adopción; un repositorio público no implica aprobación automática de seguridad, mantenimiento o licencia para el uso concreto. **No instalar ni ejecutar estos proyectos por defecto**: extraer primero el principio reusable y reutilizar el código existente si basta.
-
-| Repositorio | Patrón útil | Cuándo elegirlo / límite |
-| --- | --- | --- |
-| [psf/requests](https://github.com/psf/requests) | Cliente HTTP simple, sesiones, timeouts y control explícito de respuestas | Sitios estáticos y peticiones puntuales; un HTTP 200 no acredita extracción |
-| [encode/httpx](https://github.com/encode/httpx) | Pool de conexiones, HTTP/1.1 y HTTP/2, sincronía/asincronía, streaming y límites | Muchas solicitudes HTTP autorizadas; medir si la concurrencia realmente mejora coste total |
-| [scrapy/scrapy](https://github.com/scrapy/scrapy) | Separación de spiders, selectores, pipelines, seguimiento de enlaces y paginación | Rastreo relativamente amplio con extracción estructurada; evitarlo para un par de URLs simples |
-| [microsoft/playwright-python](https://github.com/microsoft/playwright-python) | Reproducción de navegación real, DOM dinámico, contextos aislados y diagnóstico de red | Cuando el contenido depende de JS/interacciones; mayor CPU, RAM y peso de instalación |
-| [microsoft/playwright, HAR](https://github.com/microsoft/playwright/blob/main/docs/src/mock.md) | Captura puntual y reproducción de tráfico en pruebas | Depuración offline sin repetir peticiones; **HAR puede incluir cookies, cabeceras y datos privados: sanitizar antes de almacenar y nunca subir capturas reales a repositorios públicos** |
-| [gocolly/colly](https://github.com/gocolly/colly) | Caché, límites de concurrencia/demora por dominio y respeto de robots.txt | Patrones para rastreadores eficientes; introducir Go solo con ventajas medibles respecto al stack existente |
-
-### Recetas tecnológicas independientes del lenguaje
-1. **Petición HTTP mínima:** comprobar en orden origen autorizado, URL, respuesta, tipo MIME, representación del documento, presencia de datos y siguiente página. Reutilizar sesiones en memoria y conexiones cuando esté permitido; timeouts y errores explícitos.
-2. **Paginación demostrable:** identificar enlace o cursor, detener ante ausencia de avance, duplicados persistentes, límites o agotamiento real; registrar páginas vistas versus páginas estimadas. No asumir cobertura completa por recorrer una sola página.
-3. **Carga JavaScript:** identificar si el dato está en HTML inicial o llega después. Diagnosticar con navegador una sola vez; si se verifica alternativa ligera permitida y estable, usarla en el conector final.
-4. **Evidencia offline:** capturar únicamente muestras sintéticas o previamente anonimizadas del DOM/HTML/JSON/HAR para pruebas; aplicar tests de regresión sin contactos repetidos al origen.
-5. **Extracción incremental:** calcular claves estables, almacenar hash/fecha, evitar descargar y procesar documentos sin cambios, límites por dominio y backoff en fallos transitorios. Usar ETag/Last-Modified solo si el servidor los admite y dan resultado correcto.
-6. **Balance de recursos:** estimar y medir peticiones, ancho de banda, memoria pico, CPU, duración de trabajos y acciones manuales, comparando HTTP directo, crawler y navegador. El menor número de peticiones no siempre equivale al menor coste total.
-7. **Autenticación responsable:** mantener el estado solo en el contexto autorizado, preferir estándares e interfaces oficiales; no exportar sesiones de navegador a runners ni conservar secretos en registros. Verificar permisos sin intentar superar mecanismos de protección.
-8. **Criterio de selección:** implementar primero un caso mínimo medible en el stack existente; si falla, formular hipótesis de capa y probar el siguiente escalón. No migrar de lenguaje, herramienta o servicio por popularidad.
-
-### Control de adopción de una dependencia
-Antes de incluir código ajeno: revisar licencia y compatibilidad, mantenedores y actividad reciente, política de versiones, vulnerabilidades conocidas y cadena de dependencias; limitar permisos y comparar peso de instalación y coste de ejecución. Documentar **seleccionado / descartado / solo referencia** junto con la razón. Las referencias de este catálogo están **documentadas**, no significa que hayan sido instaladas, auditadas en profundidad, ejecutadas ni probadas contra los portales de nuestros proyectos.
-
+## Referencias especializadas
+- [Sesiones de navegador, llavero y OAuth](references/sesiones-navegador-llavero-oauth.md) para autenticación real.
+- [Patrones de proyectos evaluados](references/patrones-repositorios-evaluados.md): documentación orientativa, no dependencias instaladas.
+- [Lecciones históricas de red, sesiones y OAuth](references/lecciones-historicas-acceso.md), subordinadas a la política vigente.
+- [Índice para selección de herramientas y habilidades](../control-laboratorio/references/20-indice-operativo.md).
 
 ## Aprendizaje y distribución
 Al resolver un problema, registrar estrategia validada y métricas, añadir un caso reproducible genérico y extraer patrones a la skill; evitar guardar detalles operativos sensibles del sitio o credenciales. Mantener este repositorio como fuente canónica. Después de cambios, validar, versionar y publicar en el mismo plugin privado y marketplace de Codex cuando existan herramientas/permisos, sin confundir commit con despliegue.
-
-
-## Red de laboratorio aislada y acceso web (lección MCP-Debian, 2026-10-21)
-En un entorno Debian host-only sin ruta externa, **no interpretar la falta de Internet como fallo de autenticación, DNS o scraping**. Comprobar primero `ip route`, `ip -6 route` y la ruta al destino, sin realizar reintentos web inútiles. Separar conectividad del anfitrión Windows y del invitado Debian. Si una investigación exige obtener información externa, preferir un conector web autorizado en ChatGPT o una descarga selectiva desde Windows con inspección de procedencia, licencia, tamaño y seguridad antes de trasladar archivos a Debian mediante SCP; no habilitar NAT, puente, proxy o reenvío sin autorización específica y nueva auditoría.
-
-El control local mediante MCP → Windows → SSH es una **vía de ejecución**, no un método de autenticación web ni una capacidad de red adicional. No transportar cookies, contraseñas, tokens ni sesiones del navegador hacia la VM. Distinguir siempre aislamiento de red observado, acceso a servicios locales y posibilidad de reenvío por el anfitrión. Protocolo técnico en `ingenieria-fiable/references/mcp-local.md`.
-
-## Conectividad entre entornos: lecciones comprobadas (octubre de 2026)
-
-Además de acceso a páginas, aplicar el diagnóstico por capas cuando intervengan VM, anfitrión, navegador, aplicación, agente remoto o MCP. Evidencia ampliada: `/home/labgestor/utilidades/conectividad-comunicacion/documentacion/LECCIONES_VERIFICADAS_CONECTIVIDAD_2026-10-25.md` (referencia local opcional, no requisito para usar esta skill).
-
-- **Infraestructura:** separar interfaz de red, NAT/red privada, DNS, proxy de entorno, transporte y servicio. Una respuesta CONNECT 403 de un proxy heredado no prueba que Internet esté caído. Antes de cambiar red o reiniciar, aislar la capa y conservar una vía de recuperación; un timeout breve no prueba fallo persistente.
-- **Capacidad por cliente:** detectar realmente herramientas y autorizaciones de la cuenta y plataforma. No extrapolar acceso entre ChatGPT, navegador, Work, Codex, Free, Plus, Android, Voz Live o nodos remotos. Una VM accesible depende de que siga funcionando su anfitrión.
-- **Eventos vs. visualización:** conectividad SSE/websocket, estado del servidor y revisión actualizada no garantizan que la interfaz haya representado el cambio. Verificar por separado transporte, aplicación, contenido visible, audio y persistencia, con pruebas negativas y reversión.
-- **Pilotos seguros con navegador:** favorecer perfiles temporales, contenido sintético, permisos mínimos, endpoints loopback y control de captura desactivado de origen. Una prueba satisfactoria con Chrome headless y extensión aislada NO acredita capturas en cuentas reales, otros navegadores o dispositivos.
-- **Autonomía real:** instrucciones de una skill no equivalen a hooks, suscripciones de eventos ni ejecución tras finalizar una sesión. Los hooks requieren un host compatible y pruebas específicas; no asumir captura de conversaciones ChatGPT por un hook de otro cliente.
-- **Diseño MCP:** distinguir adaptador y lógica de negocio, servidor/transporte MCP y cliente/presentación. La invocación y la devolución de datos estructurados deben comprobarse en el cliente real; no asumir capacidades de voz, PiP o panel visual por presencia del servidor.
-- **Reproducibilidad y conservación:** transferir contexto entre agentes autorizados mediante documento versionado, ruta comprobable, inventario y pruebas; una ruta compartida no concede acceso. Registrar estado, licencias, permisos, costes, restricciones y evidencia. Las comprobaciones de sintaxis no sustituyen las funcionales.
-
-### Resultado exigible
-Para cualquier mecanismo nuevo, producir matriz `infraestructura | sesión/permiso | transporte | contrato | dato | interfaz | persistencia | recuperación`; anotar por elemento `no probado / probado localmente / probado extremo a extremo / bloqueado`. Evitar activar capturas, servicios persistentes, ampliar privilegios o almacenar credenciales sin autorización explícita.
-
-
-## Navegador local, almacenes de claves y autorización OAuth (27/10/2026)
-
-Leer el procedimiento transversal en [sesiones, navegador, llavero y OAuth](references/sesiones-navegador-llavero-oauth.md) antes de integrar cuentas con un navegador o almacenar credenciales. Separa y verifica individualmente red, proceso, sesión autorizada, entradas del almacén, lectura en memoria, inicio de sesión nuevo, consentimiento OAuth, datos privados, persistencia y seguimiento. No confundir éxito de un nivel con el siguiente.
-
-**Aprendizajes probados:** Firefox ESR en Debian controlado mediante WebDriver BiDi solo en loopback (conexión temporal, DOM y cierre del puerto); X11 visual en caso necesario; GNOME Keyring/Secret Service con colección dedicada y permisos restrictivos; lectura local de entradas mediante resultado booleano, sin mostrar secretos. El login mediante contraseña y el flujo OAuth precisan pruebas independientes y cumplimiento de las condiciones oficiales del proveedor. Las comprobaciones de lectura de sesión, login nuevo y OAuth deben registrarse por separado en el proyecto del servicio.
-
-**Orden de adopción:** contrato oficial y autorización (OAuth si procede) → conexión ligera permitida → navegador local con sesión consentida → interacción gráfica puntual. No usar APIs internas, traslado de cookies, contraseña de otro servicio ni automatización para sortear MFA o el bloqueo del registro de desarrolladores.
-
-Inventario versionado de herramientas, estados, pruebas y límites en [inventariar-skills](../inventariar-skills/references/inventario-acceso-web-2026-10-27.md). Ante discrepancia entre documento y plataforma, actualizar evidencia y mantener estado NO_PROBADO o BLOQUEADO hasta comprobar.

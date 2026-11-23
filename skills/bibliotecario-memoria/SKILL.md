@@ -1,11 +1,14 @@
 ---
 name: bibliotecario-memoria
 description: Recupera trabajos y registra hitos autorizados en SQLite de Debian por el acceso realmente disponible, priorizando Control Debian cuando exponga la operación.
-version: 0.3.8
+version: 0.3.9
 ---
 # Bibliotecario — memoria y documentación
 
 **Ejecución en Debian:** Python estándar + SQLite, sin API de pago. Primero comprobar las herramientas realmente expuestas por el chat. El catálogo visible y el backend local pueden diferir (p. ej., 81 funciones en ChatGPT frente a 82 en una instancia Debian): no fijar cifras ni presuponer métodos de Bibliotecario. Si no hay operaciones tipadas efectivamente anunciadas, utilizar la interfaz local autorizada `interfaz_chat.py` con JSON por stdin, recuperar `find/brief` y verificar `record_and_brief` con relectura. Si no aparecen, utilizar un canal alternativo autorizado sin simular acceso. GitHub→Issues→runner sigue como alternativa aprobada, con alcance restringido; Remote Desktop Commander queda para excepciones justificadas, solo en Debian. Nunca mezclar expedientes ni exponer credenciales.
+
+## Búsqueda actual por proyecto y vigencia (23/11/2026)
+La implementación canónica verificable está en [tools/busqueda_fts5.py](tools/busqueda_fts5.py), desplegada como `busqueda.py` en el Bibliotecario local. El `find` de `interfaz_chat.py` emplea SQLite FTS5 en memoria, ranking con prioridad de título y `scope` opcional. Cuando una palabra aparezca en proyectos distintos (p. ej. InfoJobs en Goose), usar `{"action":"find","title":"InfoJobs","scope":"Buscar-Curro"}` y comprobar el título/ID antes de recuperar. El índice FTS no modifica las tablas persistentes; la búsqueda es **léxica**, no semántica. La procedencia y la versión probada deben confirmarse mediante `brief` y el documento original, no inferirse del score. Si FTS5 falta, la función usa búsqueda `LIKE` literal con ámbito y prioridad de título; nunca devuelve una coincidencia como prueba de ejecución.
 
 ## Protocolo exigible de registro verificado y continuación (01/11/2026)
 

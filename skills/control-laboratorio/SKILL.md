@@ -1,10 +1,12 @@
 ---
 name: control-laboratorio
 description: Habilidad principal para controlar, administrar, diagnosticar y mantener el laboratorio Debian del usuario mediante herramientas realmente conectadas; integra Control Debian, Bibliotecario, LAB-AUTH, proyectos, GitHub, automatizaciones, escritorio, Igor/Goose/Ollama y las demás skills. Usar cuando se pida actuar en el laboratorio, recuperar un procedimiento o resolver una incidencia operativa.
-version: 0.2.4
+version: 0.2.5
 ---
 
 # Control del laboratorio — entrada principal
+
+**Entrada de recuperación:** leer el [índice operativo y mapa de habilidades](references/20-indice-operativo.md) antes de elegir un procedimiento histórico; usar versiones y pruebas como evidencia, no como promesa de activación automática.
 
 ## Misión, límites y activación
 Esta es la **habilidad de coordinación operativa** del laboratorio. Se activa ante referencias al laboratorio, Debian, Control Debian, Igor, Goose, Ollama, Bibliotecario, credenciales del laboratorio, LAB-AUTH, integración entre chats, tareas locales, navegador autenticado, programas, servicios, backups, sincronización GitHub/ChatGPT o diagnóstico de sus herramientas. Para cuestiones externas o triviales no conectadas al laboratorio, no activarla por rutina.

@@ -1,8 +1,8 @@
-# Gestor de Skills 0.4.55
+# Gestor de Skills 0.4.56
 
 Repositorio canónico independiente para skills transversales de ChatGPT y Codex.
 
-Complemento privado con once skills especializadas:
+Complemento privado con once skills especializadas. [Índice de activación y procedimientos vigentes](skills/control-laboratorio/references/20-indice-operativo.md):
 - `control-laboratorio`: **habilidad principal** para operar Debian, LAB-AUTH, Bibliotecario y GitHub; incluye inventario MCP, análisis de eficiencia y registro de BrowserLearn local para grabación manual de procedimientos web.
 - `descubrir-skills`: búsqueda y comparación de skills en GitHub, Skills.sh y Agensi (fichas; no importar contenidos sin licencia y auditoría).
 - `auditar-skills`: revisión estática y control de seguridad/costes.
@@ -40,11 +40,11 @@ El empaquetador obtiene un commit exacto, valida los manifiestos y las once skil
 
 ```powershell
 $commit = git rev-parse HEAD
-python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.45.zip"
+python scripts/package_plugin.py --commit $commit --output "dist/gestor-de-skills-0.4.56.zip"
 python -m unittest discover -s tests -v
 ```
 
-También se crea `dist/gestor-de-skills-0.4.45.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
+También se crea `dist/gestor-de-skills-0.4.56.zip.sha256.json`, que registra el commit, la versión y los SHA-256 del ZIP y de cada archivo incluido. `dist/` es un artefacto local y no debe incorporarse al repositorio.
 
 ### Publicación y verificación
 
@@ -67,7 +67,7 @@ Para actualizar el plugin privado con el empaquetador reproducible, seguir `skil
 
 ## Inventario de habilidades, MCP y control de Debian (29/10/2026)
 
-Diez skills canónicas, sin crear otra duplicada. [Inventario ampliado del control de Debian](skills/inventariar-skills/references/inventario-control-debian-2026-10-29.md): Open Computer Use, Firefox DevTools MCP/Marionette, Codex CLI, CDC, GitHub Actions a demanda y Piper. Contiene versiones, diferencias entre instalado/validado, límites de permisos y **cuota de Codex frente a coste monetario**.
+Once skills canónicas, sin crear otra duplicada. [Inventario ampliado del control de Debian](skills/inventariar-skills/references/inventario-control-debian-2026-10-29.md): Open Computer Use, Firefox DevTools MCP/Marionette, Codex CLI, CDC, GitHub Actions a demanda y Piper. Contiene versiones, diferencias entre instalado/validado, límites de permisos y **cuota de Codex frente a coste monetario**.
 
 En el equipo Debian, el catálogo humano de herramientas ejecutables está en `/home/labgestor/utilidades/CATALOGO - Herramientas del laboratorio.md`, dentro de «Documentos → Centro de recursos → 02 - Caja de utilidades».
 
