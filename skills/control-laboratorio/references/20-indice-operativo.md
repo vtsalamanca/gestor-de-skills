@@ -16,7 +16,7 @@
 | `control-laboratorio` | 0.2.7 | Debian/TPM2/Bibliotecario/servicios | `skills/control-laboratorio/SKILL.md y references/14-guia-rapida.md` | L0/L3; E2E total pendiente |
 | `bibliotecario-memoria` | 0.3.10 | Recuperar, registrar, releer | `skills/bibliotecario-memoria/SKILL.md` | L0/L3 recuperación probada |
 | `ingenieria-fiable` | sin versión individual | Reparación y pruebas de software | `skills/ingenieria-fiable/SKILL.md y references/actualizar-skills.md` | L0 + escenarios |
-| `acceso_webs` | 0.5.5 | Web, sesiones, BrowserLearn | `skills/acceso_webs/SKILL.md` | L0 + escenarios |
+| `acceso_webs` | 0.5.7 | Web, sesiones, BrowserLearn | `skills/acceso_webs/SKILL.md` | L0 + escenarios |
 | `buscar-comparar-productos` | sin versión individual | Productos, precios, historial público | `skills/buscar-comparar-productos/SKILL.md` | L0 + escenarios |
 | `descubrir-skills` | sin versión individual | Buscar alternativas de habilidades | `skills/descubrir-skills/SKILL.md` | L0 |
 | `auditar-skills` | sin versión individual | Seguridad/coste/licencia de habilidades | `skills/auditar-skills/SKILL.md` | L0 |
