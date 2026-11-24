@@ -322,6 +322,8 @@ def assess(item, budget, min_ram=16, min_ssd=512, min_hz=144, require_keyboard=T
             reasons.append("NO_COINCIDE_BUSQUEDA")
         for required in must:
             if required.lower() not in text: unknown.append("REQUISITO_NO_VERIFICADO:"+required)
+    if profile=="general" and not storage_candidate_matches(product_query,title):
+        reasons.append("ACCESORIO_O_TIPO_INCORRECTO")
     if item.get("stock") is False: reasons.append("AGOTADO")
     elif item.get("stock") is None: unknown.append("STOCK")
     price = item.get("precio_eur")
@@ -481,6 +483,41 @@ def amazon_verificar_ficha_visual(item, args, factory=None):
 
 
 
+
+def storage_candidate_matches(query, title):
+    """Evita confundir un disco interno SATA con accesorios y carcasas.
+    Para otros productos la selección previa no cambia.
+    """
+    q=normalize(query).lower()
+    t=normalize(title or "").lower()
+    if not re.search(r"\b(?:ssd|hdd|disco(?:s)?\s+duro(?:s)?)\b",q):
+        return True
+    if re.search(r"\b(?:carcasa|caja|adaptador|cable|bandeja|soporte|funda|dock|enclosure|duplicador|usb.?sata)\b",t):
+        return False
+    if re.search(r"\b(?:externo|externa|portátil usb|portable usb)\b",t):
+        return False
+    if re.search(r"\busb\s*[23](?:[.,]\d+)?\b",t):
+        return False
+    if re.search(r"(?<!\d)3[.,]5(?=\s|\"|$)",t):
+        return False
+    if re.search(r"(?<!\d)2[.,]5(?=\s|$)",q) and not re.search(r"(?<!\d)2[.,]5(?=\s|\"|$)",t):
+        return False
+    if re.search(r"\bssd\b",q) and not re.search(r"\bssd\b|estado sólido|solid state",t):
+        return False
+    if re.search(r"\bhdd\b",q) and not re.search(r"\bhdd\b|disco duro",t):
+        return False
+    requested=re.search(r"(?<!\d)(\d{1,4})\s*(gb|tb)\b",q)
+    if requested:
+        wanted=int(requested.group(1))*(1000 if requested.group(2)=="tb" else 1)
+        observed=[int(n)*(1000 if unit=="tb" else 1) for n,unit in
+                  re.findall(r"(?<!\d)(\d{1,4})\s*(gb|tb)\b(?!\s*/\s*s)",t)]
+        group=({480,500,512} if wanted==500 else
+               {960,1000,1024} if wanted==1000 else {wanted})
+        # Ninguna variante de otra capacidad puede hacerse pasar por la solicitada.
+        if not observed or not all(x in group for x in observed):
+            return False
+    return True
+
 def amazon_por_acceso_webs(queries, args, factory=None):
     """Sólo tras fallo HTTP: listado es descubrimiento; precio exige ficha."""
     if factory is None:
@@ -499,7 +536,8 @@ def amazon_por_acceso_webs(queries, args, factory=None):
                           fuente_descubrimiento="amazon_firefox_atspi",
                           id_producto=c["id_producto"],
                           precio_indice_eur=c["precio_indice_eur"])
-                if item: found.append(item)
+                if item and storage_candidate_matches(query,item["nombre"]):
+                    found.append(item)
             rows.append({"tienda":"Amazon","consulta":query,
                          "resultado":"VISUAL_CANDIDATOS_PENDIENTES" if unique else
                                      "VISUAL_SIN_FICHAS_IDENTIFICABLES",
@@ -586,7 +624,8 @@ def run(args, transport=None):
     # Cuotas de descubrimiento por GPU y tienda: evita explorar solo RTX 5060 caras.
     selected=[]
     for shop in ("Amazon","El Corte Inglés","MediaMarkt"):
-        pool=[x for x in found if x["tienda"]==shop]
+        pool=[x for x in found if x["tienda"]==shop and
+              storage_candidate_matches(args.producto or "",x.get("nombre_ficha") or x["nombre"])]
         quota=args.max_fichas_por_tienda
         selected_shop=[]
         for j,gpu in enumerate(args.gpus if args.perfil=="portatil-gaming" else ["general"]):

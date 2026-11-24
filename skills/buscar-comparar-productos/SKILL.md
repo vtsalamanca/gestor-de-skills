@@ -2,7 +2,7 @@
 name: buscar-comparar-productos
 description: Investiga y compara productos físicos con búsquedas reales desde Debian, leyendo fichas actuales de comercios, verificando precio, modelo, stock, requisitos y envío; distingue ofertas confirmadas, pendientes, agotadas y bloqueos.
 metadata:
-  version: "0.3.7"
+  version: "0.3.8"
 ---
 
 # Buscar y comparar productos — ejecutor real en Debian
@@ -74,3 +74,12 @@ Para cada ficha se generan enlaces a Google con filtro before: (30 dias antes de
 6. Errores como URL_DISTINTA, DOCUMENTO_NO_VISIBLE, MODELO_NO_COINCIDE o SIN_OFERTA_PRINCIPAL quedan como **pendientes**, no precios confirmados. La mejora local no equivale a una actualización del plugin distribuido.
 
 Pruebas de regresión en tests/test_amazon_visual.py: identidad y tamaño, enlaces Amazon válidos, separación entre listado y ficha, selección de variante, vendedor, fallos de navegador e integración con el comparador. La consulta en vivo del 22/11 acreditó una variante 55″ con 449 € y vendedor Amazon; entrega al domicilio y garantía siguen pendientes.
+
+
+## Control de compatibilidad de discos SATA (v0.3.8, 24/11/2026)
+
+- Antes de ordenar ofertas de Amazon por precio, descartar accesorios (carcasas, cables, bandejas, adaptadores), productos USB externos y discos de 3,5 pulgadas cuando se pide unidad interna de 2,5 pulgadas.
+- Verificar la capacidad anunciada: una búsqueda de 500 GB admite comercialmente 480/500/512 GB, nunca una variante de 128 GB; 1 TB admite 960/1000/1024 GB. No interpretar «6 Gb/s» como capacidad.
+- Si la ficha no acredita la diagonal requerida, la oferta no puede ser seleccionada como compatible; las fichas de HDD usados o reacondicionados no se deben anunciar como nuevos.
+- La ficha HTTP y la inspección visual son pruebas independientes. Si el navegador no muestra oferta principal, mantener pendientes vendedor, estado, garantía y coste final; una cifra de listado nunca basta.
+- Prueba local: 65 tests unitarios superados, incluyendo regresiones de accesorios, capacidad y formato; comparaciones reales HDD/SSD Amazon de 24/11/2026. Cero servicios facturables.

@@ -70,6 +70,30 @@ class TestAmazonVisual(unittest.TestCase):
         self.assertEqual(verified[0]["estado"],"CANDIDATO_PENDIENTE")
         self.assertIn("ENVIO_DESTINO_Y_COSTE_TOTAL",verified[0]["pendientes"])
 
+    def test_storage_filter_excludes_cases_and_cables(self):
+        query="SSD SATA 2.5 500GB"
+        self.assertFalse(buscar.storage_candidate_matches(query,"SABRENT Carcasa HDD SSD de 2,5 pulgadas"))
+        self.assertFalse(buscar.storage_candidate_matches(query,"Cable adaptador SATA a USB para SSD 500GB"))
+        self.assertFalse(buscar.storage_candidate_matches("HDD SATA 2.5 500GB","Disco duro portátil 500 GB HDD USB 3.0 2.5 pulgadas"))
+        self.assertFalse(buscar.storage_candidate_matches(query,"Seagate BarraCuda HDD 500GB"))
+        self.assertTrue(buscar.storage_candidate_matches(query,"Crucial BX500 SSD interno 500GB SATA 2,5 pulgadas"))
+        self.assertTrue(buscar.storage_candidate_matches(query,"Silicon Power Ace A55 512GB SSD interno 2,5 pulgadas"))
+        self.assertTrue(buscar.storage_candidate_matches(query,"DIGIERA 512GB SSD SATA 6Gb/s interno 2,5 pulgadas"))
+        self.assertFalse(buscar.storage_candidate_matches(query,"Fikwot FS810 SSD interno 128GB SATA"))
+        self.assertFalse(buscar.storage_candidate_matches(query,"Ediloca SSD interno (128GB) SATA 500MB/s"))
+        self.assertFalse(buscar.storage_candidate_matches(query,"SSD 500GB/1TB SATA"))
+        self.assertTrue(buscar.storage_candidate_matches(query,"SSD SATA 480GB 2.5 pulgadas"))
+        self.assertFalse(buscar.storage_candidate_matches("HDD SATA 1TB","Seagate BarraCuda 500GB HDD SATA"))
+        self.assertTrue(buscar.storage_candidate_matches("portatil gaming RTX 4060","ASUS gaming RTX 4060"))
+        self.assertFalse(buscar.storage_candidate_matches("HDD 2.5 1TB","WD10EURX HDD interno 1TB 3.5 pulgadas"))
+        self.assertFalse(buscar.storage_candidate_matches("HDD 2.5 1TB","WD10EURX HDD interno 1TB"))
+        self.assertTrue(buscar.storage_candidate_matches("HDD 2.5 1TB","Seagate BarraCuda HDD interno 1TB 2,5 pulgadas"))
+        item={"nombre":"SABRENT Carcasa para SSD 500GB SATA","stock":True,
+              "precio_eur":10.0,"envio_a_destino_verificado":False,"garantia_verificada":False}
+        checked=buscar.assess(item,100,profile="general",product_query=query)
+        self.assertEqual(checked["estado"],"DESCARTADO")
+        self.assertIn("ACCESORIO_O_TIPO_INCORRECTO",checked["incumplimientos"])
+
     def test_buybox_variant_checked_and_seller_scope(self):
         from amazon_visual import _buybox_from_doc
         class Node:
