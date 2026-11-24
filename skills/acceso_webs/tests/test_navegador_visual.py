@@ -66,5 +66,35 @@ class TestVisualRecovery(unittest.TestCase):
     def test_navigation_retry_once(self):
         b=fake_browser();b.started=True;b._navegar_por_barra_y_confirmar=Mock(side_effect=[False,True]);FirefoxVisual.open(b,URL);self.assertEqual(b.recuperacion_navegacion,"M56_RECUPERAR_NAVEGACION_TRANSITORIA");self.assertEqual(b._navegar_por_barra_y_confirmar.call_count,2)
 
+class TestVerifiedPublicInput(unittest.TestCase):
+    def setup_browser(self):
+        b=fake_browser()
+        b._set_clipboard=Mock()
+        b._clipboard=Mock(return_value="45005")
+        return b
+    @patch("navegador_visual.time.sleep")
+    def test_paste_exact(self,_):
+        b=self.setup_browser()
+        self.assertTrue(b.introducir_texto_publico("45005",Mock(),Mock(return_value=True),Mock(side_effect=["005","45005"])))
+        self.assertEqual([c.args[0] for c in b.keys.hot.call_args_list],["a","v"])
+        b.keys.key.assert_not_called()
+    @patch("navegador_visual.time.sleep")
+    def test_truncated_never_submit(self,_):
+        b=self.setup_browser()
+        with self.assertRaisesRegex(AccesoVisualError,"VALOR_CAMPO_NO_CONFIRMADO"):
+            b.introducir_texto_publico("45005",Mock(),Mock(return_value=True),Mock(return_value="005"))
+        b.keys.key.assert_not_called()
+    @patch("navegador_visual.time.sleep")
+    def test_clipboard_mismatch(self,_):
+        b=self.setup_browser();b._clipboard.return_value="005"
+        with self.assertRaisesRegex(AccesoVisualError,"PORTAPAPELES_NO_CONFIRMADO"):
+            b.introducir_texto_publico("45005",Mock(),Mock(return_value=True),Mock())
+        b.keys.hot.assert_not_called()
+    def test_focus_failure(self):
+        b=self.setup_browser()
+        with self.assertRaisesRegex(AccesoVisualError,"FOCO_CAMPO_NO_CONFIRMADO"):
+            b.introducir_texto_publico("45005",Mock(),Mock(return_value=False),Mock())
+        b.keys.hot.assert_not_called()
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,7 @@
 ---
 name: acceso_webs
 description: Investiga estrategias autorizadas de acceso a sitios web, autenticación y sesiones, extracción eficiente y diseño de conectores reutilizables; prioriza bajo consumo computacional y presupuesto adicional cero.
-version: 0.5.5
+version: 0.5.7
 ---
 # acceso_webs — acceso, extracción y conectores eficientes
 
@@ -126,3 +126,6 @@ Estados obligatorios: HIPÓTESIS, DOCUMENTADO, PROBADO LOCALMENTE, VALIDADO EN O
 
 ## Aprendizaje y distribución
 Al resolver un problema, registrar estrategia validada y métricas, añadir un caso reproducible genérico y extraer patrones a la skill; evitar guardar detalles operativos sensibles del sitio o credenciales. Mantener este repositorio como fuente canónica. Después de cambios, validar, versionar y publicar en el mismo plugin privado y marketplace de Codex cuando existan herramientas/permisos, sin confundir commit con despliegue.
+
+## Entrada verificada en formularios públicos (0.5.7)
+Usar FirefoxVisual.introducir_texto_publico con callbacks que comprueben documento y foco sin alterar el portapapeles. Pega la consulta completa, verifica el valor exacto y no envía el formulario si difiere. No utilizar para credenciales ni pagos. Prueba real: selector de recogida de MediaMarkt con código postal público y lectura de disponibilidad por tienda. Once pruebas del navegador superadas; conservar el límite de intentos y cerrar solo pestañas propias.

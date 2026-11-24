@@ -166,6 +166,34 @@ class FirefoxVisual:
             if rc:raise AccesoVisualError("CLIPBOARD_SIN_ESCRITURA")
         except subprocess.TimeoutExpired:
             pass
+    def introducir_texto_publico(self, texto, comprobar_documento, enfocar_campo, leer_campo):
+        """Pegar una consulta pública y acreditar su valor; nunca enviar el formulario.
+        Los callbacks verifican URL/DOM sin alterar el foco ni el portapapeles.
+        No usar para credenciales, datos sensibles ni campos de cuenta o pago.
+        """
+        if not isinstance(texto,str) or not texto.strip() or len(texto)>256 or any(ord(c)<32 for c in texto):
+            raise AccesoVisualError("TEXTO_PUBLICO_INVALIDO")
+        self._verify_focus()
+        comprobar_documento()
+        if not enfocar_campo():
+            raise AccesoVisualError("FOCO_CAMPO_NO_CONFIRMADO")
+        time.sleep(1)
+        self._verify_focus()
+        comprobar_documento()
+        self._set_clipboard(texto)
+        if self._clipboard()!=texto:
+            raise AccesoVisualError("PORTAPAPELES_NO_CONFIRMADO")
+        self.keys.hot("a")
+        time.sleep(.25)
+        self.keys.hot("v")
+        for _ in range(8):
+            time.sleep(.25)
+            self._verify_focus()
+            comprobar_documento()
+            if leer_campo()==texto:
+                return True
+        raise AccesoVisualError("VALOR_CAMPO_NO_CONFIRMADO")
+
     def _url_actual(self):
         self._verify_focus()
         self.keys.hot("l");self.keys.hot("c");time.sleep(.17)
