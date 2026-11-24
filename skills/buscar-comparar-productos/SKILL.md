@@ -2,7 +2,7 @@
 name: buscar-comparar-productos
 description: Investiga y compara productos físicos con búsquedas reales desde Debian, leyendo fichas actuales de comercios, verificando precio, modelo, stock, requisitos y envío; distingue ofertas confirmadas, pendientes, agotadas y bloqueos.
 metadata:
-  version: "0.3.8"
+  version: "0.3.9"
 ---
 
 # Buscar y comparar productos — ejecutor real en Debian
@@ -83,3 +83,12 @@ Pruebas de regresión en tests/test_amazon_visual.py: identidad y tamaño, enlac
 - Si la ficha no acredita la diagonal requerida, la oferta no puede ser seleccionada como compatible; las fichas de HDD usados o reacondicionados no se deben anunciar como nuevos.
 - La ficha HTTP y la inspección visual son pruebas independientes. Si el navegador no muestra oferta principal, mantener pendientes vendedor, estado, garantía y coste final; una cifra de listado nunca basta.
 - Prueba local: 65 tests unitarios superados, incluyendo regresiones de accesorios, capacidad y formato; comparaciones reales HDD/SSD Amazon de 24/11/2026. Cero servicios facturables.
+
+
+## Extractor de ofertas visual genérico (0.3.9, 24/11/2026)
+
+- No se presupone categoría, lista de pulgadas ni formato concreto de variante. En la ficha cuyo dominio, ASIN y título han sido comprobados, priorizar el formulario de compra asociado al panel de vendedor y a un botón de compra. Leer importes completos en euros de elementos de texto hoja, sin pulsar el botón.
+- Fuente complementaria: opción marcada en un grupo de selección, con etiqueta compatible con el título exacto y un único importe distinto. Normalizar espacios, unidades y signos. No leer precios de opciones no seleccionadas ni radios de recomendaciones.
+- Si hay varios importes distintos dentro del formulario o discrepancia con la opción marcada, no acreditar un precio principal. Un diálogo de otras ofertas solo acredita precio separado cuando identifica inequívocamente un importe, vendedor y condición nueva. No inferir disponibilidad, envío, garantía ni coste total de esos importes.
+- Los procesos gráficos pueden necesitar más de 15 s: emplear el ejecutor autorizado con salida recuperable, comprobar finalización y cerrar únicamente pestañas propias. Un timeout de la herramienta no demuestra que el comercio sea inaccesible.
+- Regresión local: 75 pruebas del comparador, incluidas 10 nuevas de variantes de capacidad/color, coincidencia, opciones no marcadas, radios ajenos, formulario sin variante, precios históricos/portes, conflicto e importes de cuatro cifras. Prueba visual real 24/11: Kingston NV3 1 TB 146,95 EUR; Lexar NQ790 2 TB 265,99 EUR; TCL 55T8D 449 EUR. Precios y existencias de esas tres fichas recuperados por el formulario principal; entrega al destino y garantía no verificadas. No es una homologación exhaustiva de categorías ni de otras tiendas.

@@ -10,7 +10,7 @@ import time
 from urllib.parse import urlsplit, parse_qsl
 
 ASIN = re.compile(r"/(?:gp/product|dp)/([A-Z0-9]{10})(?:[/?]|$)", re.I)
-EURO = re.compile(r"(?<!\d)(\d{1,3}(?:\.\d{3})*,\d{2})\s*€")
+EURO = re.compile(r"(?<!\d)((?:\d{1,3}(?:\.\d{3})+|\d+),\d{2})\s*€")
 BLOCK = re.compile(r"captcha|just a moment|verifica que eres humano|robot check", re.I)
 
 def _euro(value):
@@ -289,15 +289,19 @@ class AmazonVisual:
                     joined=" ".join(v for _,v in lines)
                     if "opciones" not in joined.lower():
                         continue
-                    price=None
-                    seller=None
+                    # Do not treat the first amount in a multi-offer dialog as the product price.
+                    amounts=set()
+                    sellers=set()
                     for i,(role,label) in enumerate(lines):
-                        if price is None and role in ("static","text","link") and _euro(label) is not None:
-                            price=_euro(label)
-                        if label.strip().lower()=="vendedor" and i+1<len(lines):
-                            seller=lines[i+1][1].strip()
-                    if price is not None:
-                        result.update(offer_from_text(f"{price:.2f}".replace(".",",")+" €",seller))
+                        clean=label.strip()
+                        if role in ("static","text","section") and EURO.fullmatch(clean):
+                            amounts.update(_price_values(clean))
+                        if clean.lower() in ("vendedor","vendido por") and i+1<len(lines):
+                            value=lines[i+1][1].strip()
+                            if value and not _euro(value):
+                                sellers.add(value)
+                    if len(amounts)==1 and len(sellers)==1 and re.search(r"\bnuevo\b",joined,re.I):
+                        result.update(offer_from_text(f"{next(iter(amounts)):.2f}".replace(".",",")+" €",next(iter(sellers))))
                         result["error_detalle"]=None
                         return result
             except Exception:
@@ -324,36 +328,113 @@ def _walk_frame(root):
         except Exception:
             continue
 
+
+def _node_text(node, atspi):
+    """Accessible text only, not copied page contents."""
+    try:
+        if node.get_character_count():
+            return atspi.Text.get_text(node,0,-1).replace("\ufffc","").strip()
+    except Exception:
+        pass
+    return (node.get_name() or "").replace("\ufffc","").strip()
+
+def _option_key(text):
+    # Normalize units and spelling without a product-category whitelist.
+    import unicodedata
+    t=unicodedata.normalize("NFKC",text).casefold().replace("″",'"')
+    t=re.sub(r'(?<=\d)\s*(?:pulgadas|")', ' in ', t)
+    t=re.sub(r'(?<=\d)\s+(?=[a-z])', '', t)
+    return " ".join(re.findall(r"\w+",t))
+
+def _variant_matches(label,title):
+    key=_option_key(label)
+    return bool(key) and (" "+key+" ") in (" "+_option_key(title)+" ")
+
+def _ancestors(node, limit=9):
+    for _ in range(limit):
+        try:
+            node=node.get_parent()
+        except Exception:
+            return
+        if node is None:
+            return
+        yield node
+
+def _price_values(text):
+    return {float(m.group(1).replace(".","").replace(",",".")) for m in EURO.finditer(text or "")}
+
+def _seller_from_heading(node,atspi):
+    try:
+        parent=node.get_parent()
+        for child in _walk(parent,35):
+            if child is node or child.get_role_name() not in ("section","link"):
+                continue
+            value=_node_text(child,atspi)
+            if (1<=len(value)<=80 and "\n" not in value and not re.search(
+                r"remitente|vendedor|vendido por|envío|devoluciones|€|en stock",value,re.I)
+                and child.get_child_count()==0):
+                return value
+    except Exception:
+        pass
+    return None
+
 def _buybox_from_doc(doc, atspi, title):
-    """Precio de variante marcada y bloque vendedor en la ficha verificada."""
-    size=re.search(r'(?<![a-z0-9])(43|50|55|65|75|85|98)\s*(?:pulgadas|["″])',
-                   title.lower())
-    if not size:
-        return None
-    price=None
-    stock=None
+    """Generic selected variant / primary purchase form; ambiguity fails closed."""
+    variants=set()
+    variant_stock=False
+    primary=set()
+    primary_stock=False
     seller=None
+    seen_forms=set()
     for node in _walk(doc,11000):
         try:
             role=node.get_role_name()
             name=(node.get_name() or "").strip()
             if role=="radio button" and node.get_state_set().contains(atspi.StateType.CHECKED):
-                match=re.match(r'^\s*'+size.group(1)+r'["″]?\s+(.+)',name)
-                if match:
-                    price=_euro(match.group(1))
-                    stock=True if "en stock" in name.lower() else None
-            if role=="heading" and name=="Remitente / Vendedor":
-                parent=node.get_parent()
-                for i in range(parent.get_child_count()):
-                    child=parent.get_child_at_index(i)
-                    if child.get_role_name()=="section" and child.get_character_count():
-                        value=atspi.Text.get_text(child,0,-1).strip()
-                        if 1<=len(value)<=80 and "\n" not in value:
-                            seller=value
+                m=EURO.search(name)
+                if m and _variant_matches(name[:m.start()].strip(),title) and any(
+                    a.get_role_name() in ("panel","section","group") and re.search(r"selecciona|selección de|elige",a.get_name() or "",re.I) for a in _ancestors(node)):
+                    if re.search(r"desde|precio anterior|precio de lista|usado|reacondicionado|/mes|cuota",name,re.I):
+                        continue
+                    values=_price_values(name)
+                    if len(values)==1:
+                        variants.update(values)
+                        variant_stock |= bool(re.search(r"\ben stock\b",name,re.I))
+                    elif values:
+                        return None
+            if role=="heading" and name in ("Remitente / Vendedor","Vendido por"):
+                seller=_seller_from_heading(node,atspi) or seller
+            if role=="panel" and name.startswith("Información del vendedor, el envío y las opciones de compra"):
+                for form in _ancestors(node):
+                    if form.get_role_name()!="form":
+                        continue
+                    # AT-SPI wrappers can differ by identity; only accept a single anchored form.
+                    if id(form) in seen_forms:
+                        break
+                    seen_forms.add(id(form))
+                    children=list(_walk(form,1800))
+                    if not any(n.get_role_name()=="button" and (n.get_name() or "").strip() in
+                               ("Añadir a la cesta","Comprar ya","Comprar ahora") for n in children):
+                        break
+                    for part in children:
+                        if part.get_role_name() not in ("section","static","text") or part.get_child_count():
+                            continue
+                        label=_node_text(part,atspi)
+                        if EURO.fullmatch(label):
+                            primary.update(_price_values(label))
+                        elif re.fullmatch(r"En stock",label,re.I):
+                            primary_stock=True
+                    break
         except Exception:
             continue
-    if price is None:
+    # The document can contain unrelated recommendations, crossed-out prices and other variants.
+    # Only an unambiguous price from the two verified sources is eligible.
+    if len(primary)>1 or len(variants)>1 or (primary and variants and primary!=variants):
         return None
-    return {"precio_eur":price,"vendedor":seller,"stock":stock,
+    values=primary or variants
+    if not values:
+        return None
+    return {"precio_eur":next(iter(values)),"vendedor":seller,
+            "stock":True if primary_stock or variant_stock else None,
             "envio_a_destino_verificado":False,"garantia_verificada":False,
-            "origen_precio":"amazon_variante_marcada_atspi"}
+            "origen_precio":"amazon_formulario_compra_atspi" if primary else "amazon_variante_marcada_atspi"}

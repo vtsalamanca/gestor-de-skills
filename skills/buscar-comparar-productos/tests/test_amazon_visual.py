@@ -116,7 +116,7 @@ class TestAmazonVisual(unittest.TestCase):
         block=Node("section",children=[heading,seller])
         chosen=Node("radio button",'55" 449,00 € En stock',checked=True)
         other=Node("radio button",'65" 549,00 € En stock',checked=False)
-        root=Node("section",children=[other,chosen,block])
+        root=Node("section",children=[Node("panel","Selecciona un tamaño",children=[other,chosen]),block])
         row=_buybox_from_doc(root,Atspi,"TCL 55T8D 55 Pulgadas")
         self.assertEqual(row["precio_eur"],449)
         self.assertEqual(row["vendedor"],"Amazon")
